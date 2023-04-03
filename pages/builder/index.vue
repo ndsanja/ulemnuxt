@@ -18,7 +18,7 @@ const { isPreview } = useStateUiBuilder()
 
 
       <BuilderCanvas>
-        <Components :data="data" />
+        <ComponentsTest :data="data" />
       </BuilderCanvas>
       <BuilderToolsAddElements />
       <BuilderToolsStylesCodeEditor />

@@ -9,11 +9,9 @@ export const useDragAndDrop = () => {
   const dragData = useState<any>('dragData', () => {});
   const dropItemId = useState('dropItemId', () => '');
   const isOnDrag = useState('is-ondrag', () => false);
+  const clientMove = useState<any>('client-moving', () => null);
 
   const useOnDragStart = (e: any, isAddNew: boolean) => {
-    e.dataTransfer.dropEffect = 'move';
-    e.dataTransfer.effectAllowed = 'move';
-
     const dragItem = e.target.getAttribute('data-item');
     const dragNodeId = e.target.getAttribute('data-itemId');
     const dragNodeIndex = e.target.getAttribute('data-index');
@@ -83,6 +81,48 @@ export const useDragAndDrop = () => {
     }
   };
 
+  const useOnTouchStart = (e: any, isAddNew: any) => {
+    const dragItem = e.target.getAttribute('data-item');
+    const dragNodeId = e.target.getAttribute('data-itemId');
+    const dragNodeIndex = e.target.getAttribute('data-index');
+    const dragNodeParentId = e.target.getAttribute('data-parentId');
+
+    // e.target.classList.add('ontouch');
+
+    clientMove.value = e.target;
+
+    clientMove.value.style.height = clientMove.value.clientHeight;
+    clientMove.value.style.width = clientMove.value.clientWidth;
+    clientMove.value.style.position = 'fixed';
+
+    dragItemId.value = dragNodeId;
+    dragParentId.value = dragNodeParentId;
+    dragIndex.value = dragNodeIndex;
+    dragData.value = JSON.parse(dragItem);
+
+    isDragAddNew.value = isAddNew;
+    isOnDrag.value = true;
+    console.log(clientMove.value);
+  };
+
+  const useOnTouchMove = (e: any) => {
+    if (clientMove.value) {
+      if (e.clientX) {
+        // mousemove
+        clientMove.value.style.left =
+          e.clientX - clientMove.value.clientWidth / 2;
+        clientMove.value.style.top =
+          e.clientY - clientMove.value.clientHeight / 2;
+      } else {
+        // touchmove - assuming a single touchpoint
+        clientMove.value.style.left =
+          e.changedTouches[0].clientX - clientMove.value.clientWidth / 2;
+        clientMove.value.style.top =
+          e.changedTouches[0].clientY - clientMove.value.clientHeight / 2;
+      }
+    }
+  };
+
   return {
     useOnDragStart,
     useOnDrag,
@@ -91,6 +131,9 @@ export const useDragAndDrop = () => {
     useOnDragLeave,
     useOnDragEnd,
     useOnDrop,
+    useOnTouchStart,
+    useOnTouchMove,
+
     isOnDrag,
   };
 };
