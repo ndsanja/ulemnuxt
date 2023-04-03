@@ -31,4 +31,6 @@ const props = defineProps<Props>()
 }
 
 .ondrag {}
+
+.tets {}
 </style>
