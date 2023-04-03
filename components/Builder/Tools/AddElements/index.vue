@@ -14,7 +14,7 @@ const { useOnDrag, useOnDragEnter, useOnDragEnd, useOnDragLeave, useOnDragOver, 
       </div>
       <div class="grid grid-cols-3 gap-x-2 gap-y-3 px-2 py-2">
         <div v-for="(item, index) in addElementData" :key="item.id" @click.self="id = item.id"
-          :data-item="JSON.stringify(item)" :data-itemId="item.id" :data-index="index" :data-parent="item.parentId"
+          :data-item="JSON.stringify(item)" :data-itemId="item.id" :data-index="index" :data-parentId="item.parentId"
           :elements-data="item" :draggable="`${item.isRoot ? false : true}`"
           @dragstart.self="useOnDragStart($event, true)" @drag.self.prevent="useOnDrag($event)"
           @dragover.self.prevent="useOnDragOver($event)" @dragenter.self.prevent="useOnDragEnter($event)"

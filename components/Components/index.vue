@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { id, xs, sm, md, lg, xl } = useStore()
-const { useOnDrag, useOnDragEnter, useOnDragEnd, useOnDragLeave, useOnDragOver, useOnDragStart, useOnDrop } = useDragAndDrop()
+const { useOnDrag, useOnDragEnter, useOnDragEnd, useOnDragLeave, useOnDragOver, useOnDragStart, useOnDrop, isOnDrag } = useDragAndDrop()
 interface Props {
   data: any
 }
@@ -13,7 +13,7 @@ const props = defineProps<Props>()
   <Element v-for="(item, index ) in props.data" :key="item.id"
     :class="xl ? `${item.classes.xs} ${item.classes.sm} ${item.classes.md} ${item.classes.lg} ${item.classes.xl}` : lg ? `${item.classes.xs} ${item.classes.sm} ${item.classes.md} ${item.classes.lg}` : md ? `${item.classes.xs} ${item.classes.sm} ${item.classes.md}` : sm ? `${item.classes.xs} ${item.classes.sm}` : item.classes.xs"
     @click.self="id = item.id" :data-item="JSON.stringify(item)" :data-itemId="item.id" :data-index="index"
-    :data-parent="item.parentId" :elements-data="item" :draggable="`${item.isRoot ? false : true}`"
+    :data-parentId="item.parentId" :elements-data="item" :draggable="`${item.isRoot ? false : true}`"
     @dragstart.self="useOnDragStart($event, false)" @drag.self.prevent="useOnDrag($event)"
     @drop.self.prevent="useOnDrop($event)" @dragover.self.prevent="useOnDragOver($event)"
     @dragenter.self.prevent="useOnDragEnter($event)" @dragleave.self.prevent="useOnDragLeave($event)"
@@ -31,7 +31,9 @@ const props = defineProps<Props>()
   background: gray !important;
 }
 
-.ondrag {}
+.ondrag {
+  display: none;
+}
 
 .tets {}
 </style>
