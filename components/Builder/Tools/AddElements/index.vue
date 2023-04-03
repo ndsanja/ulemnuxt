@@ -13,12 +13,13 @@ const { useOnDrag, useOnDragEnter, useOnDragEnd, useOnDragLeave, useOnDragOver, 
       <div class="bg-slate-800 text-white text-sm px-2 h-[30px] flex items-center border-b-2 border-slate-900">Layout
       </div>
       <div class="grid grid-cols-3 gap-x-2 gap-y-3 px-2 py-2">
-        <div v-for="(item, index) in addElementData" :key="item.id" @click.self="id = item.id" :data-item="item.id"
-          :data-index="index" :data-parent="item.parentId" :elements-data="item"
-          :draggable="`${item.isRoot ? false : true}`" @dragstart.self="useOnDragStart($event, true)"
-          @drag.self.prevent="useOnDrag($event)" @dragover.self.prevent="useOnDragOver($event)"
-          @dragenter.self.prevent="useOnDragEnter($event)" @dragleave.self.prevent="useOnDragLeave($event)"
-          @dragend.self.prevent="useOnDragEnd($event)" @drop.self.prevent="useOnDrop($event)" class="">
+        <div v-for="(item, index) in addElementData" :key="item.id" @click.self="id = item.id"
+          :data-item="JSON.stringify(item)" :data-itemId="item.id" :data-index="index" :data-parent="item.parentId"
+          :elements-data="item" :draggable="`${item.isRoot ? false : true}`"
+          @dragstart.self="useOnDragStart($event, true)" @drag.self.prevent="useOnDrag($event)"
+          @dragover.self.prevent="useOnDragOver($event)" @dragenter.self.prevent="useOnDragEnter($event)"
+          @dragleave.self.prevent="useOnDragLeave($event)" @dragend.self.prevent="useOnDragEnd($event)"
+          @drop.self.prevent="useOnDrop($event)" class="">
           <div class="flex-1 border-2 rounded-md border-slate-500 aspect-square w-full">
             icon
           </div>

@@ -1,22 +1,29 @@
+import { v4 as uuidV4 } from 'uuid';
+
 export const useDragAndDrop = () => {
   const { isDragAddNew, getDataById, getAddElementDataById } = useStore();
+
+  const dragItemId = useState('dragItemId', () => '');
+  const dragParentId = useState('dragParentId', () => '');
+  const dragIndex = useState('dragIndex', () => '');
+  const dragData = useState<any>('dragData', () => {});
+  const dropItemId = useState('dropItemId', () => '');
 
   const useOnDragStart = (e: any, isAddNew: boolean) => {
     e.dataTransfer.dropEffect = 'move';
     e.dataTransfer.effectAllowed = 'move';
 
-    const dragNodeId = e.target.getAttribute('data-item');
+    const dragItem = e.target.getAttribute('data-item');
+    const dragNodeId = e.target.getAttribute('data-itemId');
     const dragNodeIndex = e.target.getAttribute('data-index');
     const dragNodeParentId = e.target.getAttribute('data-parent');
 
     e.target.classList.add('dragging');
 
-    e.dataTransfer.setData('itemData', [
-      dragNodeId,
-      dragNodeIndex,
-      dragNodeParentId,
-    ]);
-
+    dragItemId.value = dragNodeId;
+    dragParentId.value = dragNodeParentId;
+    dragIndex.value = dragNodeIndex;
+    dragData.value = JSON.parse(dragItem);
     isDragAddNew.value = isAddNew;
   };
 
@@ -40,46 +47,44 @@ export const useDragAndDrop = () => {
   };
 
   const useOnDrop = (e: any) => {
-    const dropNodeId = e.target.getAttribute('data-item');
+    const dropNodeId = e.target.getAttribute('data-itemId');
+    dropItemId.value = dropNodeId;
 
-    const dropData = e.dataTransfer.getData('itemData');
-    const dropDataArray = dropData?.split(',');
-    const dragItemId = dropDataArray[0];
-    const dragItemIndex = Number(dropDataArray[1]);
-    const dragParentId = dropDataArray[2];
+    const dropData = getDataById(dropItemId.value);
 
-    if (dropNodeId == dragItemId) {
+    if (dropItemId.value == dragItemId.value) {
       e.target.classList.remove('dragover');
       document
-        .querySelector(`[data-item = ${dragItemId}]`)
+        .querySelector(`[data-itemId = ${dragItemId.value}]`)
         ?.classList.remove('ondrag');
       return;
     }
 
     if (isDragAddNew.value === false) {
-      const dragItemData = getDataById(dragItemId);
-      if (dragItemData.value.parentId !== dropNodeId) {
-        const dropItemData = getDataById(dropNodeId);
-        dropItemData.value.children?.push({
-          ...dragItemData.value,
-          parentId: dropNodeId,
+      if (dragParentId.value !== dropItemId.value) {
+        dropData.value.children?.push({
+          ...dragData.value,
+          parentId: dropItemId.value,
         });
 
-        const removeItemFromParentOrigin = getDataById(dragParentId ?? '');
-        removeItemFromParentOrigin.value.children?.splice(dragItemIndex, 1);
+        const removeItemFromParentOrigin = getDataById(
+          dragParentId.value ?? ''
+        );
+        removeItemFromParentOrigin.value.children?.splice(dragIndex.value, 1);
       }
 
       e.target.classList.remove('dragover');
       document
-        .querySelector(`[data-item = ${dragItemId}]`)
+        .querySelector(`[data-itemId = ${dragItemId.value}]`)
         ?.classList.remove('ondrag');
     }
 
     if (isDragAddNew.value === true) {
-      const dragItemData = getAddElementDataById(dragItemId);
-      const dropItemData = getDataById(dropNodeId);
+      const dropItemData = getDataById(dropItemId.value);
+
+      const dragItemDataNewId = { ...dragData.value, id: `el-${uuidV4()}` };
       dropItemData.value.children?.push({
-        ...dragItemData.value,
+        ...dragItemDataNewId,
         parentId: dropNodeId,
       });
 
@@ -88,7 +93,7 @@ export const useDragAndDrop = () => {
 
       e.target.classList.remove('dragover');
       document
-        .querySelector(`[data-item = ${dragItemId}]`)
+        .querySelector(`[data-itemId = ${dragItemId.value}]`)
         ?.classList.remove('ondrag');
     }
   };

@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@pinia/nuxt': ^0.4.7
+  '@types/uuid': ^9.0.1
   '@unocss/nuxt': ^0.50.6
   '@unocss/reset': ^0.50.6
   '@unocss/runtime': ^0.50.6
@@ -20,6 +21,7 @@ dependencies:
   pinia: 2.0.33
 
 devDependencies:
+  '@types/uuid': 9.0.1
   '@unocss/nuxt': 0.50.6
   '@vueuse/core': 9.13.0
   '@vueuse/nuxt': 9.13.0_nuxt@3.3.1
@@ -1591,6 +1593,10 @@ packages:
       '@types/node': 18.15.3
     dev: true
     optional: true
+
+  /@types/uuid/9.0.1:
+    resolution: {integrity: sha512-rFT3ak0/2trgvp4yYZo5iKFEPsET7vKydKF+VRCxlQ9bpheehyAJH89dAkaLEq/j/RZXJIqcgsmPJKUP1Z28HA==}
+    dev: true
 
   /@types/web-bluetooth/0.0.16:
     resolution: {integrity: sha512-oh8q2Zc32S6gd/j50GowEjKLoOVOwHP/bWVjKJInBwQqdOYMdPrf1oVlelTlyfFK3CKxL1uahMDAr+vy8T7yMQ==}
