@@ -7,7 +7,24 @@ const { addElementData, id, getAddElementDataById } = useStore()
 const { useOnDrag, useOnDragEnter, useOnDragEnd, useOnDragLeave, useOnDragOver, useOnDragStart, useOnDrop } = useDragAndDrop()
 const globalId = ref(100)
 function clone() {
-  return { ...addElementData.value[0], id: globalId.value++ }
+  return {
+    id: `${globalId.value++}`,
+    isRoot: false,
+    parentId: '',
+    elKind: 'div',
+    content: 'section 1',
+    elId: '',
+    classes: {
+      xs: 'bg-green-500 min-h-[100px] min-w-[300px] p-4 border border-blue',
+      sm: '',
+      md: '',
+      lg: '',
+      xl: '',
+      xxl: '',
+    },
+    css: '',
+    children: [],
+  }
 }
 </script>
 

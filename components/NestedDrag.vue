@@ -14,7 +14,8 @@ const drag = ref(false)
 </script>
 
 <template>
-  <draggable class="dragArea" tag="div" :list="props.data" group="elements" item-key="id" delay="600">
+  <draggable class="dragArea" tag="div" :list="props.data" group="elements" item-key="id" delay="500"
+    delayOnTouchOnly="true">
     <template #item="{ element }">
       <Element
         :class="xl ? `${element.classes.xs} ${element.classes.sm} ${element.classes.md} ${element.classes.lg} ${element.classes.xl}` : lg ? `${element.classes.xs} ${element.classes.sm} ${element.classes.md} ${element.classes.lg}` : md ? `${element.classes.xs} ${element.classes.sm} ${element.classes.md}` : sm ? `${element.classes.xs} ${element.classes.sm}` : element.classes.xs">
