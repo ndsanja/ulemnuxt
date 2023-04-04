@@ -8,6 +8,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@types/sortablejs": "^1.15.1",
     "@types/uuid": "^9.0.1",
     "@unocss/nuxt": "^0.50.6",
     "@vueuse/core": "^9.13.0",
@@ -20,6 +21,9 @@
     "@unocss/reset": "^0.50.6",
     "@unocss/runtime": "^0.50.6",
     "@vueuse/components": "^9.13.0",
-    "pinia": "^2.0.33"
+    "@vueuse/integrations": "^9.13.0",
+    "pinia": "^2.0.33",
+    "sortablejs": "^1.15.0",
+    "vuedraggable": "^4.1.0"
   }
 }

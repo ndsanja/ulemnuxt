@@ -1,5 +1,4 @@
-<script setup lang="ts">
-
+<script setup>
 const { data } = useStore()
 const { isPreview } = useStateUiBuilder()
 

@@ -7,7 +7,7 @@ const initial: ElementDataType[] = [
     content: 'div 2',
     elId: '',
     classes: {
-      xs: 'min-h-screen h-full w-full bg-blue-300',
+      xs: 'min-h-full h-full w-full bg-blue-300',
       sm: '',
       md: '',
       lg: '',
