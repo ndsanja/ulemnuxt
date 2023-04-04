@@ -18,7 +18,6 @@ const { isPreview } = useStateUiBuilder()
       <BuilderCanvas>
         <NestedDrag :data="data" />
       </BuilderCanvas>
-      <pre>{{ data }}</pre>
       <BuilderToolsAddElements />
       <BuilderToolsStylesCodeEditor />
     </div>
