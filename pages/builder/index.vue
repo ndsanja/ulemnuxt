@@ -15,10 +15,10 @@ const { isPreview } = useStateUiBuilder()
       '!min-h-[calc(100vh-0px)] !max-h-[calc(100vh-0px)]': isPreview
     }">
 
-
       <BuilderCanvas>
-        <ComponentsTest :data="data" />
+        <NestedDrag :data="data" />
       </BuilderCanvas>
+      <pre>{{ data }}</pre>
       <BuilderToolsAddElements />
       <BuilderToolsStylesCodeEditor />
     </div>
