@@ -27,11 +27,15 @@ const positionY = ref()
   <BuilderToolsStylesPanelEditor un-cloack v-if="toBottom" class="fixed z-40 left-[5px] bottom-[5px] rounded w-[250px]"
     :class="{ '!hidden': isPreview }">
     <template #title>
-      <div class="flex items-center w-full">
-        <p class="flex-1">Element
-          {{
-            dataById?.id
-          }}
+      <div class="flex items-center justify-between w-full">
+        <p class="fflex-1 flex items-center space-x-1 text-[11px]">
+          <Icon name="ci:main-component" class="text-[16px]" />
+          <span v-if="dataById.id">
+            {{
+              dataById.content
+            }}
+          </span>
+          <span v-else>No item Selected</span>
         </p>
         <div v-if="toBottom" @click="clickExpanded" class="cursor-pointer">
           <Icon name="mdi:window-maximize" />
@@ -51,9 +55,8 @@ const positionY = ref()
             class="flex-1 flex items-center space-x-1 text-[11px]">
             <Icon name="ci:main-component" class="text-[16px]" />
             <span v-if="dataById.id">
-
               {{
-                dataById.id
+                dataById.content
               }}
             </span>
             <span v-else>No item Selected</span>
