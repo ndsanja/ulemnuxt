@@ -16,7 +16,8 @@ const { isPreview } = useStateUiBuilder()
     }">
 
       <BuilderCanvas>
-        <NestedDrag :data="data" />
+        <Components v-if="isPreview == true" :data="data" />
+        <ComponentsEditable v-else :data="data" />
       </BuilderCanvas>
       <BuilderToolsAddElements />
       <BuilderToolsStylesCodeEditor />
