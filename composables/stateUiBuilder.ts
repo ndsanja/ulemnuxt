@@ -17,7 +17,6 @@ export const useStateUiBuilder = () => {
 
   const closePreview = () => {
     isPreview.value = false;
-    setDisplay('xs');
   };
 
   return {

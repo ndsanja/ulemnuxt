@@ -3,7 +3,7 @@ import draggable from 'vuedraggable'
 import { v4 as uuidv4 } from 'uuid'
 
 const { toogleLeft, isPreview } = useStateUiBuilder()
-const { addElementData, id, getAddElementDataById } = useStore()
+const { addElementData, id, getAddElementDataById, currentIndex, currentParentId, idFromDrag, getDataById } = useStore()
 const { useOnDrag, useOnDragEnter, useOnDragEnd, useOnDragLeave, useOnDragOver, useOnDragStart, useOnDrop } = useDragAndDrop()
 
 const dataItem = ref<any>(null)
@@ -21,10 +21,33 @@ const handleStart = (evt: any) => {
   toogleLeft.value = false
 }
 
+
+
+const handleEnd = (evt: any) => {
+  idFromDrag.value = clone().id
+
+  currentIndex.value = Number(evt.newIndex)
+  currentParentId.value = evt.to.parentElement.attributes['data-elId'].value
+
+  const newDropData = getDataById(idFromDrag.value)
+
+  newDropData.value.parentId = currentParentId.value
+  newDropData.value.currentIndex = currentIndex.value
+
+  console.log(newDropData.value);
+
+}
+
 const handleChoose = (evt: any) => {
   dataItem.value = JSON.parse(evt.item.attributes['data-item'].value)
-  console.log(dataItem.value.id);
 }
+
+
+const handleClone = (evt: any) => {
+  console.log(evt);
+
+}
+
 
 </script>
 
@@ -36,7 +59,7 @@ const handleChoose = (evt: any) => {
       </div>
 
       <draggable class="dragArea grid grid-cols-3 gap-x-2 gap-y-3 px-2 py-2" tag="div" :list="addElementData"
-        :clone="clone" @start="handleStart" @choose="handleChoose"
+        :clone="clone" @start="handleStart" @choose="handleChoose" @add="handleEnd" @clone="handleClone"
         :group="{ name: 'elements', pull: 'clone', put: false }" item-key="id" delay="300" delayOnTouchOnly="true">
         <template #item="{ element }">
           <div :data-item="JSON.stringify(element)">

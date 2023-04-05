@@ -45,7 +45,7 @@ const clickBrekpoints = (display: string, fit: boolean) => {
       </div>
       <div class="font-bold text-xs">{{ displaySize.toFixed() }}px</div>
     </div>
-    <div class="flex justify-end items-center px-1 sm:px-2">
+    <div class="flex justify-end items-center px-2">
       <div @click="toogleLeft = !toogleLeft" class="cursor-pointer">
         <Icon style="font-size: 24px;" name="heroicons:plus-circle-solid" />
       </div>

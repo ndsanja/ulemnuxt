@@ -1,10 +1,33 @@
-const initial: ElementDataType[] = [];
+const initial: ElementDataType[] = [
+  {
+    id: 'root',
+    elName: 'root',
+    isRoot: true,
+    parentId: '',
+    currentIndex: null,
+    elKind: 'div',
+    content: 'root',
+    elId: '',
+    classes: {
+      xs: 'bg-white h-full w-full pb-4',
+      sm: '',
+      md: '',
+      lg: '',
+      xl: '',
+      xxl: '',
+    },
+    css: '',
+    children: [],
+  },
+];
 
 const sectionData = [
   {
     id: 'section',
+    elName: 'section',
     isRoot: false,
     parentId: '',
+    currentIndex: null,
     elKind: 'div',
     content: 'section',
     elId: '',
@@ -21,8 +44,10 @@ const sectionData = [
   },
   {
     id: 'container',
+    elName: 'container',
     isRoot: false,
     parentId: '',
+    currentIndex: null,
     elKind: 'div',
     content: 'container',
     elId: '',
@@ -39,8 +64,10 @@ const sectionData = [
   },
   {
     id: 'flex',
+    elName: 'flex',
     isRoot: false,
     parentId: '',
+    currentIndex: null,
     elKind: 'div',
     content: 'flex',
     elId: '',
@@ -57,8 +84,10 @@ const sectionData = [
   },
   {
     id: 'grid',
+    elName: 'grid',
     isRoot: false,
     parentId: '',
+    currentIndex: null,
     elKind: 'div',
     content: 'grid',
     elId: '',
@@ -85,8 +114,10 @@ type Classes = {
 };
 type ElementDataType = {
   id: any;
+  elName: string;
   isRoot: boolean;
   parentId: any;
+  currentIndex: any;
   elKind: string;
   content: string;
   elId: string;
@@ -102,7 +133,12 @@ export const useStore = () => {
     () => sectionData
   );
 
-  const id = useState('id', () => 1);
+  const id = useState('id', () => '');
+  const idFromDrag = useState('id-from-drag', () => '');
+  const currentIndex = useState('current-index', () => 0);
+  const currentParentId = useState('current-parent-id', () => '');
+  const hoverId = useState('hover-id', () => '');
+  const activeId = useState('active-id', () => '');
   const isDragAddNew = useState('drag-add-new', () => false);
 
   const getElementById = (elementId: any, data: ElementDataType[]) => {
@@ -155,6 +191,11 @@ export const useStore = () => {
     addElementData,
     id,
     isDragAddNew,
+    hoverId,
+    activeId,
+    currentIndex,
+    currentParentId,
+    idFromDrag,
     getElementById,
     getDataById,
     getAddElementDataById,

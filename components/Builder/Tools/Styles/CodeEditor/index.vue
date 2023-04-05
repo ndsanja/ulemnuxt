@@ -32,7 +32,7 @@ const positionY = ref()
           <Icon name="ci:main-component" class="text-[16px]" />
           <span v-if="dataById.id">
             {{
-              dataById.content
+              dataById.elName
             }}
           </span>
           <span v-else>No item Selected</span>
@@ -56,7 +56,7 @@ const positionY = ref()
             <Icon name="ci:main-component" class="text-[16px]" />
             <span v-if="dataById.id">
               {{
-                dataById.content
+                dataById.elName
               }}
             </span>
             <span v-else>No item Selected</span>
