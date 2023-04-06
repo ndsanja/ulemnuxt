@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 const initial = [
   {
     id: 'root',
@@ -140,6 +142,8 @@ export const useStore = () => {
   const hoverId = useState('hover-id', () => '');
   const activeId = useState('active-id', () => '');
   const isDragAddNew = useState('drag-add-new', () => false);
+  const currentData = useState<any>('current-data', () => null);
+  const currentParentData = useState<any>('current-parent-data', () => null);
 
   const getElementById = (elementId: any, data: ElementDataType[]) => {
     let resultElement: ElementDataType | any = {};
@@ -186,6 +190,28 @@ export const useStore = () => {
   );
   const xl = computed(() => displaySize.value >= Breakpoints.xl);
 
+  const handleDelete = (index: any) => {
+    const currentParentData = getDataById(currentParentId.value);
+    currentParentData.value.children?.splice(Number(index), 1);
+  };
+
+  const changeIdObj = (obj: any, newId: any) => {
+    obj.id = newId;
+    obj.children.forEach((item: any) => {
+      changeIdObj(item, newId);
+    });
+  };
+  const handleDuplicate = (elId: any) => {
+    const currentData = getDataById(elId);
+    const copyCurrentData = JSON.parse(JSON.stringify(currentData.value));
+    const currentParentData = getDataById(currentParentId.value);
+
+    currentParentData.value.children.push({
+      ...copyCurrentData,
+      id: uuidv4(),
+    });
+  };
+
   return {
     data,
     addElementData,
@@ -196,9 +222,13 @@ export const useStore = () => {
     currentIndex,
     currentParentId,
     idFromDrag,
+    currentData,
+    currentParentData,
     getElementById,
     getDataById,
     getAddElementDataById,
+    handleDelete,
+    handleDuplicate,
     dataById,
     displaySize,
     xs,

@@ -2,7 +2,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import draggable from 'vuedraggable'
 
-const { id, xs, sm, md, lg, xl, getDataById, hoverId, activeId, currentIndex, currentParentId } = useStore()
+const { id, xs, sm, md, lg, xl, getDataById, hoverId, activeId, currentIndex, currentParentId, handleDelete, handleDuplicate } = useStore()
 const { isDisabledDragAndDrop } = useDragAndDrop()
 
 
@@ -22,20 +22,6 @@ const handleCLick = (e: any, elId: any) => {
   activeId.value = elId
   currentParentId.value = e.target.parentElement.parentElement.attributes['data-elId'].value
 }
-
-
-const handleDelete = (index: any) => {
-  const removeItemFromParentOrigin = getDataById(currentParentId.value);
-  removeItemFromParentOrigin.value.children?.splice(Number(index), 1);
-}
-
-const handleDuplicate = (elId: any) => {
-  let currentData = getDataById(elId)
-  let parrentData = getDataById(currentParentId.value)
-
-  parrentData.value.children.push({ ...currentData.value, id: uuidv4() })
-}
-
 
 </script>
 
