@@ -19,27 +19,23 @@ const props = defineProps<Props>()
 const handleCLick = (e: any, elId: any) => {
   id.value = elId
   activeId.value = elId
+  currentParentId.value = e.target.parentElement.parentElement.attributes['data-elId'].value
 }
 
-const handleCurrentChooseItem = (evt: any) => {
-  evt.stopPropagation();
-  currentParentId.value = evt.item.parentElement.parentElement.attributes['data-elId'].value
-  currentIndex.value = Number(evt?.oldIndex)
-}
 
-const handleDelete = () => {
+const handleDelete = (index: any) => {
   const removeItemFromParentOrigin = getDataById(currentParentId.value);
-  removeItemFromParentOrigin.value.children?.splice(currentIndex.value, 1);
+  removeItemFromParentOrigin.value.children?.splice(Number(index), 1);
 }
 
 
 </script>
 
 <template>
-  <draggable class="dragArea" tag="div" :list="props.data" group="elements" item-key="id" delay="300" swapThreshold="0.08"
-    delayOnTouchOnly="true" @choose="handleCurrentChooseItem">
-    <template #item="{ element }">
-      <Element :data-elId="element.id" :data-parentId="element.parentId" :data-index="element.currentIndex"
+  <draggable class="dragArea" tag="div" :list="props.data" group="elements" item-key="id" swapThreshold="0.08" delay="300"
+    :delayOnTouchOnly="true">
+    <template #item="{ element, index }">
+      <Element :data-elId="element.id" :data-parentId="element.parentId"
         @click.self.prevent="handleCLick($event, element?.id)" @mouseover.self.prevent="hoverId = element.id"
         :class="`${dataClasses(element)} ${hoverId == element.id && `hover:border-green-500 hover:border-2`} ${activeId == element.id && `activeEl`}`"
         class=" p-[8px]">
@@ -52,7 +48,7 @@ const handleDelete = () => {
           <div>add</div>
           <div>dup</div>
           <div>cop</div>
-          <div @click.self="handleDelete">del</div>
+          <div @click.self="handleDelete(index)">del</div>
         </div>
         <ComponentsEditable :data="element.children" />
       </Element>

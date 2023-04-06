@@ -35,9 +35,9 @@ const handleChoose = (evt: any) => {
       <div class="bg-slate-800 text-white text-sm px-2 h-[30px] flex items-center border-b-2 border-slate-900">Layout
       </div>
 
-      <draggable class="dragArea grid grid-cols-3 gap-x-2 gap-y-3 px-2 py-2" tag="div" :list="addElementData"
-        :clone="clone" @start="handleStart" @choose="handleChoose"
-        :group="{ name: 'elements', pull: 'clone', put: false }" item-key="id" delay="300" delayOnTouchOnly="true">
+      <draggable class="dragArea grid grid-cols-3 gap-x-2 gap-y-3 px-2 py-2" tag="div" :list="addElementData" delay="100"
+        :delayOnTouchOnly="true" :clone="clone" @start="handleStart" @choose="handleChoose"
+        :group="{ name: 'elements', pull: 'clone', put: false }" item-key="id">
         <template #item="{ element }">
           <div :data-item="JSON.stringify(element)">
             <div class="flex-1 border-2 rounded-md border-slate-500 aspect-square max-h-80px w-full">
