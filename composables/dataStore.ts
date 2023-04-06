@@ -1,4 +1,4 @@
-const initial: ElementDataType[] = [
+const initial = [
   {
     id: 'root',
     elName: 'root',
@@ -9,7 +9,7 @@ const initial: ElementDataType[] = [
     content: 'root',
     elId: '',
     classes: {
-      xs: 'bg-white h-full w-full pb-4',
+      xs: 'thisRoot bg-white h-full w-full',
       sm: '',
       md: '',
       lg: '',

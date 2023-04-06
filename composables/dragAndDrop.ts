@@ -10,6 +10,7 @@ export const useDragAndDrop = () => {
   const dropItemId = useState('dropItemId', () => '');
   const isOnDrag = useState('is-ondrag', () => false);
   const clientMove = useState<any>('client-moving', () => null);
+  const isDisabledDragAndDrop = useState('dragItemId', () => false);
 
   const useOnDragStart = (e: any, isAddNew: boolean) => {
     const dragItem = e.target.getAttribute('data-item');
@@ -135,5 +136,6 @@ export const useDragAndDrop = () => {
     useOnTouchMove,
 
     isOnDrag,
+    isDisabledDragAndDrop
   };
 };

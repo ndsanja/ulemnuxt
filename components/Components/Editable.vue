@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable'
 
-const { id, xs, sm, md, lg, xl, getDataById, hoverId, activeId, currentIndex, currentParentId, idFromDrag } = useStore()
+const { id, xs, sm, md, lg, xl, getDataById, hoverId, activeId, currentIndex, currentParentId } = useStore()
+const { isDisabledDragAndDrop } = useDragAndDrop()
 
 
 interface Props {
@@ -15,40 +16,31 @@ const dataClasses = (element: any) => {
 const props = defineProps<Props>()
 
 
-const handleCLick = (elId: any) => {
+const handleCLick = (e: any, elId: any) => {
   id.value = elId
   activeId.value = elId
 }
 
+const handleCurrentChooseItem = (evt: any) => {
+  evt.stopPropagation();
+  currentParentId.value = evt.item.parentElement.parentElement.attributes['data-elId'].value
+  currentIndex.value = Number(evt?.oldIndex)
+}
+
 const handleDelete = () => {
-  const currentItem = getDataById(activeId.value)
-  const removeItemFromParentOrigin = getDataById(currentItem.value.parentId);
-  removeItemFromParentOrigin.value.children?.splice(currentItem.value.currentIndex, 1);
+  const removeItemFromParentOrigin = getDataById(currentParentId.value);
+  removeItemFromParentOrigin.value.children?.splice(currentIndex.value, 1);
 }
 
-const handleStart = (evt: any) => {
-  idFromDrag.value = evt.item.attributes['data-elId'].value
-}
 
-const handleEnd = (evt: any) => {
-  currentIndex.value = Number(evt.newIndex)
-  currentParentId.value = evt.to.parentElement.attributes['data-elId'].value
-
-  const newDropData = getDataById(idFromDrag.value)
-  newDropData.value.parentId = currentParentId.value
-  newDropData.value.currentIndex = currentIndex.value
-
-  console.log(newDropData.value);
-
-} 
 </script>
 
 <template>
-  <draggable class="dragArea" tag="div" :list="props.data" group="elements" item-key="id" delay="300" swapThreshold="0.1"
-    delayOnTouchOnly="true" @end="handleEnd" @start="handleStart">
+  <draggable class="dragArea" tag="div" :list="props.data" group="elements" item-key="id" delay="300" swapThreshold="0.08"
+    delayOnTouchOnly="true" @choose="handleCurrentChooseItem">
     <template #item="{ element }">
       <Element :data-elId="element.id" :data-parentId="element.parentId" :data-index="element.currentIndex"
-        @click.self.prevent="handleCLick(element?.id)" @mouseover.self.prevent="hoverId = element.id"
+        @click.self.prevent="handleCLick($event, element?.id)" @mouseover.self.prevent="hoverId = element.id"
         :class="`${dataClasses(element)} ${hoverId == element.id && `hover:border-green-500 hover:border-2`} ${activeId == element.id && `activeEl`}`"
         class=" p-[8px]">
         <div v-if="activeId == element.id"
@@ -62,7 +54,7 @@ const handleEnd = (evt: any) => {
           <div>cop</div>
           <div @click="handleDelete">del</div>
         </div>
-        <ComponentsEditable :data="element.children" class="min-h-[20px] min-w-[20px]" />
+        <ComponentsEditable :data="element.children" />
       </Element>
     </template>
   </draggable>
