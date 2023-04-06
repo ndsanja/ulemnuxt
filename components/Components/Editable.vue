@@ -52,7 +52,7 @@ const handleDelete = () => {
           <div>add</div>
           <div>dup</div>
           <div>cop</div>
-          <div @click="handleDelete">del</div>
+          <div @click.self="handleDelete">del</div>
         </div>
         <ComponentsEditable :data="element.children" />
       </Element>
