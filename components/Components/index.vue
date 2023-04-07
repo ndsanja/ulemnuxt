@@ -11,7 +11,7 @@ const props = defineProps<Props>()
 <template>
   <Element v-for="(item, index ) in props.data" :key="item?.id"
     :class="xl ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md} ${item?.classes?.lg} ${item?.classes?.xl}` : lg ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md} ${item?.classes?.lg}` : md ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md}` : sm ? `${item?.classes?.xs} ${item?.classes?.sm}` : item?.classes?.xs">
-    <Components v-if="item?.children?.length" :data="item?.children ?? []" />
+    <Components :data="item.children" />
   </Element>
 </template>
 
