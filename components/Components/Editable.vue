@@ -3,15 +3,15 @@ import { v4 as uuidv4 } from 'uuid';
 import draggable from 'vuedraggable'
 
 const { id, xs, sm, md, lg, xl, getDataById, hoverId, activeId, currentIndex, currentParentId, handleDelete, handleDuplicate } = useStore()
-const { isDisabledDragAndDrop } = useDragAndDrop()
+const { drag, dragOver, drop, useOnDragStart, useOnDragEnd, useOnDraging } = useDragAndDrop()
 
 
 interface Props {
   data: any
 }
 
-const dataClasses = (element: any) => {
-  return xl ? `${element?.classes?.xs} ${element?.classes?.sm} ${element?.classes?.md} ${element?.classes?.lg} ${element?.classes?.xl}` : lg ? `${element?.classes?.xs} ${element?.classes?.sm} ${element?.classes?.md} ${element?.classes?.lg}` : md ? `${element?.classes?.xs} ${element?.classes?.sm} ${element?.classes?.md}` : sm ? `${element?.classes?.xs} ${element?.classes?.sm}` : element?.classes?.xs
+const dataClasses = (item: any) => {
+  return xl ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md} ${item?.classes?.lg} ${item?.classes?.xl}` : lg ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md} ${item?.classes?.lg}` : md ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md}` : sm ? `${item?.classes?.xs} ${item?.classes?.sm}` : item?.classes?.xs
 }
 
 const props = defineProps<Props>()
@@ -20,40 +20,35 @@ const props = defineProps<Props>()
 const handleCLick = (e: any, elId: any) => {
   id.value = elId
   activeId.value = elId
-  currentParentId.value = e.target.parentElement.parentElement.attributes['data-elId'].value
+  currentParentId.value = e.target.parentdata.parentElement.attributes['data-elId'].value
 }
 
 </script>
 
 <template>
-  <draggable class="dragArea" tag="div" :list="props.data" group="elements" item-key="id" swapThreshold="0.08" delay="300"
-    :delayOnTouchOnly="true">
-    <template #item="{ element, index }">
-      <Element :data-elId="element.id" :data-parentId="element.parentId"
-        @click.self.prevent="handleCLick($event, element?.id)" @mouseover.self.prevent="hoverId = element.id"
-        :class="`${dataClasses(element)} ${hoverId == element.id && `hover:outline hover:outline-offset-1 hover:outline-2 hover:outline-green-500`} ${activeId == element.id && `outline outline-offset-1 outline-2 outline-green-500 relative`}`"
-        class=" p-[8px]">
-        <div v-if="activeId == element.id"
-          class="absolute min-w-[20px] min-h-[20px] px-1 bg-green-500 border border-white -top-[21px] left-0 z-40 text-[11px] flex items-center justify-center">
-          <p>{{ element.elName }}</p>
-        </div>
-        <div v-if="activeId == element.id"
-          class="absolute min-w-[20px] h-[28px] px-1 bg-green-500 border border-white -top-[29px] right-0 z-40 flex items-center justify-between gap-2">
-          <div>
-            <Icon name="fluent:add-square-24-regular" class="text-24px cursor-pointer"
-              @click.self="handleDuplicate(element.id)" />
-          </div>
-          <div class="h-28px w-1px bg-white"></div>
-          <div>
-            <Icon name="fluent:settings-24-regular" class="text-24px cursor-pointer" @click.self="handleDelete(index)" />
-          </div>
-        </div>
-        <ComponentsEditable :data="element.children" />
-      </Element>
-    </template>
-  </draggable>
+  <Element v-for="(item, index) in data" :data-itemId="item.id" :data-item="JSON.stringify(item)" :data-index="index"
+    draggable="true" @mousedown.self.prevent="useOnDragStart($event, false)" @mousemove.self.prevent="useOnDraging"
+    @mouseup.self.prevent="useOnDragEnd" @touchstart.self.prevent="useOnDragStart($event, false)"
+    @touchmove.self.prevent="useOnDraging" @touchend.self.prevent="useOnDragEnd"
+    :class="`${dataClasses(item)} ${hoverId == data.id && `hover:outline hover:outline-offset-1 hover:outline-2 hover:outline-green-500`} ${activeId == data.id && `outline outline-offset-1 outline-2 outline-green-500 relative`}`"
+    class=" p-[8px]">
+    <!-- <div v-if="activeId == data.id"
+                        class="absolute min-w-[20px] min-h-[20px] px-1 bg-green-500 border border-white -top-[21px] left-0 z-40 text-[11px] flex items-center justify-center">
+                        <p>{{ data.elName }}</p>
+                      </div>
+                      <div v-if="activeId == data.id"
+                        class="absolute min-w-[20px] h-[28px] px-1 bg-green-500 border border-white -top-[29px] right-0 z-40 flex items-center justify-between gap-2">
+                        <div>
+                          <Icon name="fluent:add-square-24-regular" class="text-24px cursor-pointer"
+                            @click.self="handleDuplicate(data.id)" />
+                        </div>
+                        <div class="h-28px w-1px bg-white"></div>
+                        <div>
+                          <Icon name="fluent:settings-24-regular" class="text-24px cursor-pointer" @click.self="handleDelete(index)" />
+                        </div>
+                      </div> -->
+    <ComponentsEditable :data="item.children" />
+  </Element>
 </template>
 
-<style scoped>
-.dragArea {}
-</style>
+<style scoped></style>

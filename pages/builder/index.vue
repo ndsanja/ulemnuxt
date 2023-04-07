@@ -19,10 +19,9 @@ const { id, xs, sm, md, lg, xl, getDataById, hoverId, activeId, currentIndex, cu
 
       <BuilderCanvas>
         <Components v-if="isPreview == true" :data="data" />
-        <Element v-else :data-elId="data[0].id"
-          :class="xl ? `${data[0].classes.xs} ${data[0].classes.sm} ${data[0].classes.md} ${data[0].classes.lg} ${data[0].classes.xl}` : lg ? `${data[0].classes.xs} ${data[0].classes.sm} ${data[0].classes.md} ${data[0].classes.lg}` : md ? `${data[0].classes.xs} ${data[0].classes.sm} ${data[0].classes.md}` : sm ? `${data[0].classes.xs} ${data[0].classes.sm}` : data[0].classes.xs">
-          <ComponentsEditable :data="data[0].children" />
-        </Element>
+
+        <ComponentsEditable :data="data" />
+
       </BuilderCanvas>
       <BuilderToolsAddElements />
       <BuilderToolsStylesCodeEditor />
