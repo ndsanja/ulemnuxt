@@ -2,7 +2,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 const { id, xs, sm, md, lg, xl, getDataById, hoverId, activeId, currentIndex, currentParentId, handleDelete, handleDuplicate } = useStore()
-const { drag, dragOver, drop, useOnDragStart, useOnDragEnd, useOnDraging, isDraging } = useDragAndDrop()
+const { drag, dragOver, drop, useOnDragStart, useOnDragEnd, useOnDraging, useMouseOver, isDraging } = useDragAndDrop()
 
 
 interface Props {
@@ -40,8 +40,8 @@ const handleMouseOver = (e: any, itemId: any) => {
     @mousedown.self.prevent="useOnDragStart($event, false)" @mousemove.self.prevent="useOnDraging"
     @mouseup.self.prevent="useOnDragEnd" @touchstart.self.prevent="useOnDragStart($event, false)"
     @touchmove.self.prevent="useOnDraging" @touchend.self.prevent="useOnDragEnd"
-    @mouseover.self.prevent="handleMouseOver($event, item.id)" @touchenter.self.prevent="handleDragOver" :class="`${dataClasses(item)} ${hoverId == item.id && `hover:outline hover:outline-offset-1 hover:outline-2 hover:outline-green-500`} ${activeId == item.
-      id && `outline outline-offset-1 outline-2 outline-green-500 relative`}`" class="m-2 p-1">
+    @mouseover.self.prevent="handleMouseOver($event, item.id)" :class="`${dataClasses(item)} ${hoverId == item.id && `hover:outline hover:outline-offset-1 hover:outline-2 hover:outline-green-500`} ${activeId == item.
+      id && `outline outline-offset-1 outline-2 outline-green-500 relative`} `" class="m-2 p-1">
 
     <div v-if="activeId == item.id || hoverId == item.id"
       class="absolute min-w-[20px] min-h-[20px] px-1 bg-green-500 border border-white -top-[21px] left-0 z-40 text-[11px] flex items-center justify-center">
@@ -68,7 +68,18 @@ const handleMouseOver = (e: any, itemId: any) => {
 
 <style scoped>
 .dragItem {
-  outline: 3px blue solid;
-  outline-offset: 2px;
+  position: relative !important;
+}
+
+.dragItem::after {
+  content: "";
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  background: white;
+  opacity: 0.60;
+  position: absolute;
 }
 </style>
