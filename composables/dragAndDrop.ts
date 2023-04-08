@@ -1,7 +1,8 @@
 import { v4 as uuidV4 } from 'uuid';
 
 export const useDragAndDrop = () => {
-  const { isDragAddNew, getDataById, activeId, hoverId } = useStore();
+  const { toogleLeft } = useStateUiBuilder();
+  const { isDragAddNew, getDataById, getAddElementDataById } = useStore();
 
   interface Drag {
     ref?: any;
@@ -90,40 +91,48 @@ export const useDragAndDrop = () => {
   const dragOver = useState<DragOver>('dragOver', () => initDragOver);
   const startX = useState<any>('startX', () => null);
   const startY = useState<any>('startY', () => null);
+  const isDragStart = useState('is-draging', () => false);
   const isDraging = useState('is-draging', () => false);
   const isOnDrag = useState('is-ondrag', () => false);
   const isDisabledDragAndDrop = useState('dragItemId', () => false);
   const overlapItemId = useState<any>('overlapItemId', () => null);
   const dragItemId = useState<any>('dragItemId', () => null);
+  const longPress = useState<any>('longPress', () => null);
 
   const useOnDragStart = (e: any, isAddNew: boolean) => {
-    root.value = document.querySelector('.thisRoot');
-    drag.value.ref = e;
-    isDraging.value = true;
-    dragItemId.value = e.target.attributes['data-itemId'].value;
+    longPress.value = setTimeout(function () {
+      isDraging.value = true;
 
-    //get initial touch position
-    if (e.clientX) {
-      startX.value = e.clientX;
-      startY.value = e.clientY;
-    } else {
-      startX.value = e.touches[0].clientX;
-      startY.value = e.touches[0].clientY;
-    }
+      isDragAddNew.value = isAddNew;
+      isDragStart.value = true;
+      root.value = document.querySelector('.thisRoot');
+      drag.value.ref = e;
+      dragItemId.value = e.target.attributes['data-itemId'].value;
 
-    //set item data
-    drag.value.item = e.target.attributes['data-item'].value;
-    drag.value.itemId = e.target.attributes['data-itemId'].value;
-    drag.value.itemIndex = e.target.attributes['data-item'].value;
-    drag.value.itemIndexOld = e.target.attributes['data-item'].value;
-    drag.value.parentId = e.target.parentNode.attributes['data-itemId'].value;
-    drag.value.parentIndex = e.target.parentNode.attributes['data-index'].value;
-    drag.value.parent = e.target.parentNode.attributes['data-item'].value;
+      //get initial touch position
+      if (e.clientX) {
+        startX.value = e.clientX;
+        startY.value = e.clientY;
+      } else {
+        startX.value = e.touches[0].clientX;
+        startY.value = e.touches[0].clientY;
+      }
 
-    isDragAddNew.value = isAddNew;
+      //set item data
+      drag.value.item = e.target.attributes['data-item'].value;
+      drag.value.itemId = e.target.attributes['data-itemId'].value;
+      drag.value.itemIndex = e.target.attributes['data-item'].value;
+      drag.value.itemIndexOld = e.target.attributes['data-item'].value;
+      drag.value.parentId = e.target.parentNode.attributes['data-itemId'].value;
+      drag.value.parentIndex =
+        e.target.parentNode.attributes['data-index'].value;
+      drag.value.parent = e.target.parentNode.attributes['data-item'].value;
+    }, 500);
   };
 
   const useOnDraging = (e: any) => {
+    if (!isDragStart) return;
+
     if (!isDraging.value) return;
 
     if (drag.value.ref) {
@@ -188,30 +197,73 @@ export const useDragAndDrop = () => {
   };
 
   const useOnDragEnd = (e: any) => {
-    e.target.classList.remove('dragging');
-    e.target.classList.remove('dragover');
-    e.target.classList.remove('ondrag');
+    if (!isDraging.value) {
+      overlapItemId.value = null;
+      dragItemId.value = null;
+      isDraging.value = false;
+      isDragStart.value = false;
+      clearTimeout(longPress.value);
 
-    overlapItemId.value = null;
-    dragItemId.value = null;
+      return;
+    }
 
-    isDraging.value = false;
+    if (isDragAddNew.value === true) {
+      const dragItemData = getAddElementDataById(dragItemId.value);
+      const copyData = JSON.parse(JSON.stringify(dragItemData.value));
+      const dropItemData = getDataById(overlapItemId.value);
+
+      dropItemData.value.children.push({ ...copyData, id: uuidV4() });
+
+      overlapItemId.value = null;
+      dragItemId.value = null;
+      isDraging.value = false;
+      isDragStart.value = false;
+      clearTimeout(longPress.value);
+
+      return;
+    }
+
+    if (isDragAddNew.value === false) {
+      const dragItemData = getDataById(dragItemId.value);
+      const dropItemData = getDataById(overlapItemId.value);
+      dropItemData.value.children.push({ ...dragItemData.value });
+
+      const dragParentData = getDataById(drag.value.parentId ?? '');
+      dragParentData.value.children?.splice(drag.value.itemIndex, 1);
+
+      overlapItemId.value = null;
+      dragItemId.value = null;
+      isDraging.value = false;
+      isDragStart.value = false;
+      clearTimeout(longPress.value);
+
+      return;
+    }
   };
 
-  const useMouseOver = (e: any, itemId: any) => {
-    hoverId.value = itemId;
-    if (isDraging.value && hoverId.value == itemId) {
-      e.target.style.outline = '3px blue solid';
-      e.target.style['outline-offset'] = '2px';
-    } else {
-      if (hoverId.value == itemId) {
-        e.target.style.outline = '2px green solid';
-        e.target.style['outline-offset'] = '2px';
+  const onDragStart = (e: any, item: any, isAddNew: boolean) => {
+    longPress.value = setTimeout(function () {
+      isDragStart.value = true;
+
+      isDragAddNew.value = isAddNew;
+      root.value = document.querySelector('.thisRoot');
+      drag.value.ref = e;
+      drag.value.item = item;
+      dragItemId.value = drag.value.item.id;
+
+      // console.log(e);
+
+      //get initial touch position
+      if (e.clientX) {
+        startX.value = e.clientX;
+        startY.value = e.clientY;
       } else {
-        e.target.style.outline = '';
-        e.target.style['outline-offset'] = '';
+        startX.value = e.touches[0].clientX;
+        startY.value = e.touches[0].clientY;
       }
-    }
+
+      toogleLeft.value = false;
+    }, 500);
   };
 
   return {
@@ -226,6 +278,6 @@ export const useDragAndDrop = () => {
     useOnDragStart,
     useOnDragEnd,
     useOnDraging,
-    useMouseOver,
+    onDragStart,
   };
 };

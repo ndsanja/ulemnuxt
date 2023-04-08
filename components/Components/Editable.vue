@@ -2,7 +2,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 const { id, xs, sm, md, lg, xl, getDataById, hoverId, activeId, currentIndex, currentParentId, handleDelete, handleDuplicate } = useStore()
-const { drag, dragOver, drop, useOnDragStart, useOnDragEnd, useOnDraging, useMouseOver, isDraging, overlapItemId, dragItemId } = useDragAndDrop()
+const { drag, dragOver, drop, useOnDragStart, useOnDragEnd, useOnDraging, isDraging, overlapItemId, dragItemId } = useDragAndDrop()
 
 
 interface Props {
@@ -40,7 +40,6 @@ const handleMouseOver = (e: any, itemId: any) => {
     @mousedown.self.prevent="useOnDragStart($event, false)" @mousemove.self.prevent="useOnDraging"
     @mouseup.self.prevent="useOnDragEnd" @touchstart.self.prevent="useOnDragStart($event, false)"
     @touchmove.self.prevent="useOnDraging" @touchend.self.prevent="useOnDragEnd"
-    @mouseover.self.prevent="handleMouseOver($event, item.id)"
     :class="`${dataClasses(item)} ${hoverId == item.id && `hover:outline hover:outline-offset-1 hover:outline-2 hover:outline-green-500`} ${activeId == item.
       id && `outline outline-offset-1 outline-2 outline-green-500 relative`} ${overlapItemId == item.id && 'dropTarget'} ${dragItemId == item.id && 'dragItem'}`" class="m-2 p-1">
 

@@ -2,7 +2,7 @@
 
 const { toogleLeft, isPreview } = useStateUiBuilder()
 const { addElementData } = useStore()
-const { drag, dragOver, drop, useOnDragStart, useOnDragEnd, useOnDraging, useMouseOver, isDraging, overlapItemId, dragItemId } = useDragAndDrop()
+const { drag, dragOver, drop, useOnDragStart, useOnDragEnd, useOnDraging, isDraging, overlapItemId, dragItemId, onDragStart } = useDragAndDrop()
 
 const handleClick = (e: any) => {
   // console.log(e);
@@ -20,8 +20,10 @@ const handleClick = (e: any) => {
       <div class="grid grid-cols-3 gap-x-2 gap-y-3 px-2 py-2">
 
         <div v-for="(item, index) in addElementData" :key="item.id" :data-itemId="item.id"
-          :data-item="JSON.stringify(item)" :data-index="index" draggable="true"
-          @mousedown.prevent="useOnDragStart($event, true)">
+          :data-item="JSON.stringify(item)" :data-index="index" @mousedown.prevent="onDragStart($event, item, true)"
+          @mousemove.prevent="useOnDraging" @mouseup.prevent="useOnDragEnd"
+          @touchstart.prevent="onDragStart($event, item, true)" @touchmove.prevent="useOnDraging"
+          @touchend.prevent="useOnDragEnd">
           <div class="flex-1 border-2 rounded-md border-slate-500 h-80px w-80px bg-red">
             icon
           </div>
