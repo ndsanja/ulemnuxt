@@ -1,6 +1,8 @@
 import { v4 as uuidV4 } from 'uuid';
 
 export const useDragAndDrop = () => {
+  const { isDragAddNew, getDataById } = useStore();
+
   interface Drag {
     ref?: any;
     x?: any;
@@ -56,6 +58,7 @@ export const useDragAndDrop = () => {
     x: null,
     y: null,
   };
+
   const initDrop: Drop = {
     ref: null,
     item: null,
@@ -67,6 +70,7 @@ export const useDragAndDrop = () => {
     parentId: null,
     parentIndex: null,
   };
+
   const initDragOver: DragOver = {
     ref: null,
     item: null,
@@ -78,7 +82,9 @@ export const useDragAndDrop = () => {
     parentId: null,
     parentIndex: null,
   };
-  const { isDragAddNew, getDataById } = useStore();
+
+  const root = useState<any>('root', () => null);
+  const dropItem = useState<any>('dropItem', () => null);
   const drag = useState<Drag>('drag', () => initDrag);
   const drop = useState<Drop>('drop', () => initDrop);
   const dragOver = useState<DragOver>('dragOver', () => initDragOver);
@@ -99,6 +105,7 @@ export const useDragAndDrop = () => {
   const isDisabledDragAndDrop = useState('dragItemId', () => false);
 
   const useOnDragStart = (e: any, isAddNew: boolean) => {
+    root.value = document.querySelector('.thisRoot');
     drag.value.ref = e;
     isDraging.value = true;
 
@@ -133,6 +140,7 @@ export const useDragAndDrop = () => {
     drag.value.parent = e.target.parentNode.attributes['data-item'].value;
 
     e.target.classList.add('dragging');
+    e.target.classList.add('dragItem');
 
     isDragAddNew.value = isAddNew;
   };
@@ -162,8 +170,79 @@ export const useDragAndDrop = () => {
       // set x & y
       drag.value.x = drag.value.ref.target.offsetLeft;
       drag.value.y = drag.value.ref.target.offsetTop;
+
+      // get all child Node recursively
+      function getAllChildren(element: any): any {
+        const allChildren = [];
+        // check if the element has any children
+        if (element.hasChildNodes()) {
+          // iterate over all child nodes of the element
+          for (let childNode of element.childNodes) {
+            // check if the child node is an element node
+            if (childNode.nodeType === Node.ELEMENT_NODE) {
+              // add the child element to the array of all children
+              allChildren.push(childNode);
+              // recursively get all the nested children of the child element
+              allChildren.push(...getAllChildren(childNode));
+            }
+          }
+        }
+        return allChildren;
+      }
+      let items = getAllChildren(root.value);
+
+      // filtered childNode by Id
+      let filteredItems = items.filter((e: any) => {
+        if (e.hasAttribute('data-itemId')) {
+          return e.attributes['data-itemId'].value != drag.value.itemId;
+        }
+      });
+
+      //evalute is overlap
+      for (dropItem.value of filteredItems) {
+        if (dropItem.value) {
+          let div = document.createElement('div');
+          div.style.width = '100%';
+          div.style.height = '4px';
+          div.style.background = 'purple';
+
+          const itemRect = dropItem.value.getBoundingClientRect();
+
+          if (
+            drag.value.x >= itemRect.left &&
+            drag.value.x <= itemRect.right &&
+            drag.value.y >= itemRect.top &&
+            drag.value.y <= itemRect.bottom &&
+            isDraging.value == true
+          ) {
+            dropItem.value.style.outline = '3px blue solid';
+            dropItem.value.style['outline-offset'] = '2px';
+          } else {
+            dropItem.value.style.outline = '';
+            dropItem.value.style['outline-offset'] = '';
+          }
+        }
+      }
+
+      // console.log(items);
     }
-    e.target.classList.add('ondrag');
+
+    // e.target.classList.add('ondrag');
+    // const dropTargetRect = e.target.getBoundingClientRect();
+    // if (
+    //   drag.value.x >= dropTargetRect.left &&
+    //   drag.value.x <= dropTargetRect.right &&
+    //   drag.value.y >= dropTargetRect.top &&
+    //   drag.value.y <= dropTargetRect.bottom
+    // ) {
+    //   // dropTarget.classList.add('over');
+    //   console.log(e.target.attributes['data-itemId'].value);
+    // } else {
+    //   console.log('not');
+
+    //   // dropTarget.classList.remove('over');
+    // }
+    // console.log(e.target.attributes['data-itemId'].value);
   };
 
   const useOnDragEnd = (e: any) => {
@@ -171,12 +250,18 @@ export const useDragAndDrop = () => {
     e.target.classList.remove('dragover');
     e.target.classList.remove('ondrag');
 
-    // drag.value.ref.target.style.position = '';
+    drag.value.ref.target.style.position = '';
     drag.value.ref.target.style['z-index'] = '';
     drag.value.ref.target.style.height = '';
     drag.value.ref.target.style.width = '';
 
+    if (dropItem.value) {
+      dropItem.value.style.outline = '';
+      dropItem.value.style['outline-offset'] = '';
+    }
+
     isDraging.value = false;
+    e.target.classList.remove('dragItem');
   };
 
   // const useOnDragEnter = (e: any) => {
