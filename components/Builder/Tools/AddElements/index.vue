@@ -1,31 +1,13 @@
 <script setup lang="ts">
-import draggable from 'vuedraggable'
-import { v4 as uuidv4 } from 'uuid'
 
 const { toogleLeft, isPreview } = useStateUiBuilder()
 const { addElementData } = useStore()
+const { drag, dragOver, drop, useOnDragStart, useOnDragEnd, useOnDraging, useMouseOver, isDraging, overlapItemId, dragItemId } = useDragAndDrop()
 
-const dataItem = ref<any>(null)
-const globalIncrement = ref(1)
+const handleClick = (e: any) => {
+  // console.log(e);
 
-function clone() {
-  return {
-    ...dataItem.value,
-    id: uuidv4(),
-    content: dataItem.value.content + " " + globalIncrement.value++
-  }
 }
-
-const handleStart = (evt: any) => {
-  toogleLeft.value = false
-}
-
-
-const handleChoose = (evt: any) => {
-  dataItem.value = JSON.parse(evt.item.attributes['data-item'].value)
-}
-
-
 </script>
 
 <template>
@@ -35,18 +17,18 @@ const handleChoose = (evt: any) => {
       <div class="bg-slate-800 text-white text-sm px-2 h-[30px] flex items-center border-b-2 border-slate-900">Layout
       </div>
 
-      <draggable class="dragArea grid grid-cols-3 gap-x-2 gap-y-3 px-2 py-2" tag="div" :list="addElementData" delay="100"
-        :delayOnTouchOnly="true" :clone="clone" @start="handleStart" @choose="handleChoose"
-        :group="{ name: 'elements', pull: 'clone', put: false }" item-key="id">
-        <template #item="{ element }">
-          <div :data-item="JSON.stringify(element)">
-            <div class="flex-1 border-2 rounded-md border-slate-500 aspect-square max-h-80px w-full">
-              icon
-            </div>
-            <div class="text-xs text-center mt-1">{{ element.id }}</div>
+      <div class="grid grid-cols-3 gap-x-2 gap-y-3 px-2 py-2">
+
+        <div v-for="(item, index) in addElementData" :key="item.id" :data-itemId="item.id"
+          :data-item="JSON.stringify(item)" :data-index="index" draggable="true"
+          @mousedown.prevent="useOnDragStart($event, true)">
+          <div class="flex-1 border-2 rounded-md border-slate-500 h-80px w-80px bg-red">
+            icon
           </div>
-        </template>
-      </draggable>
+          <div class="text-xs text-center mt-1">{{ item.elName }}</div>
+        </div>
+
+      </div>
 
     </div>
     <div>

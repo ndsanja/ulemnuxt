@@ -93,11 +93,14 @@ export const useDragAndDrop = () => {
   const isDraging = useState('is-draging', () => false);
   const isOnDrag = useState('is-ondrag', () => false);
   const isDisabledDragAndDrop = useState('dragItemId', () => false);
+  const overlapItemId = useState<any>('overlapItemId', () => null);
+  const dragItemId = useState<any>('dragItemId', () => null);
 
   const useOnDragStart = (e: any, isAddNew: boolean) => {
     root.value = document.querySelector('.thisRoot');
     drag.value.ref = e;
     isDraging.value = true;
+    dragItemId.value = e.target.attributes['data-itemId'].value;
 
     //get initial touch position
     if (e.clientX) {
@@ -116,9 +119,6 @@ export const useDragAndDrop = () => {
     drag.value.parentId = e.target.parentNode.attributes['data-itemId'].value;
     drag.value.parentIndex = e.target.parentNode.attributes['data-index'].value;
     drag.value.parent = e.target.parentNode.attributes['data-item'].value;
-
-    e.target.classList.add('dragging');
-    e.target.classList.add('dragItem');
 
     isDragAddNew.value = isAddNew;
   };
@@ -179,16 +179,11 @@ export const useDragAndDrop = () => {
             drag.value.y <= itemRect.bottom &&
             isDraging.value == true
           ) {
-            dropItem.value.style.outline = '3px blue solid';
-            dropItem.value.style['outline-offset'] = '2px';
-          } else {
-            dropItem.value.style.outline = '';
-            dropItem.value.style['outline-offset'] = '';
+            overlapItemId.value =
+              dropItem.value.attributes['data-itemId'].value;
           }
         }
       }
-
-      //   // console.log(items);
     }
   };
 
@@ -197,19 +192,10 @@ export const useDragAndDrop = () => {
     e.target.classList.remove('dragover');
     e.target.classList.remove('ondrag');
 
-    drag.value.ref.target.style.position = '';
-    drag.value.ref.target.style['z-index'] = '';
-    drag.value.ref.target.style.height = '';
-    drag.value.ref.target.style.width = '';
-    drag.value.ref.target.style.opacity = '';
-
-    if (dropItem.value) {
-      dropItem.value.style.outline = '';
-      dropItem.value.style['outline-offset'] = '';
-    }
+    overlapItemId.value = null;
+    dragItemId.value = null;
 
     isDraging.value = false;
-    e.target.classList.remove('dragItem');
   };
 
   const useMouseOver = (e: any, itemId: any) => {
@@ -234,6 +220,8 @@ export const useDragAndDrop = () => {
     drag,
     drop,
     dragOver,
+    overlapItemId,
+    dragItemId,
     isDraging,
     useOnDragStart,
     useOnDragEnd,
