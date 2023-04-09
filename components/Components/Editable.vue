@@ -60,7 +60,11 @@ const handleMouseOver = (e: any, itemId: any) => {
       <p>{{ item.elName }}</p>
     </div>
 
+    <!-- <div :class="{ 'hidden': false, 'block w-full h-3px bg-blue-700 my-1': overlapItemId == item.id }"></div> -->
+
     <ComponentsEditable :data="item.children" />
+
+    <div :class="{ 'hidden': false, 'block w-full h-3px bg-blue-700 my-[6px]': overlapItemId == item.id }"></div>
   </Element>
 </template>
 

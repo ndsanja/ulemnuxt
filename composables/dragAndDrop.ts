@@ -2,7 +2,8 @@ import { v4 as uuidV4 } from 'uuid';
 
 export const useDragAndDrop = () => {
   const { toogleLeft } = useStateUiBuilder();
-  const { isDragAddNew, getDataById, getAddElementDataById } = useStore();
+  const { isDragAddNew, getDataById, getAddElementDataById, id, activeId } =
+    useStore();
 
   interface Drag {
     ref?: any;
@@ -107,6 +108,17 @@ export const useDragAndDrop = () => {
     isAddNew: boolean,
     delay: number
   ) => {
+    if (e.clientX) {
+      drag.value.x = e.clientX;
+      drag.value.x = e.clientY;
+    } else {
+      drag.value.x = e.touches[0].clientX;
+      drag.value.y = e.touches[0].clientY;
+    }
+
+    id.value = e.target.attributes['data-itemId'].value;
+    activeId.value = e.target.attributes['data-itemId'].value;
+
     if (item.id == 'root') return;
 
     longPress.value = setTimeout(function () {
@@ -118,13 +130,6 @@ export const useDragAndDrop = () => {
       isDragAddNew.value = isAddNew;
 
       //get initial touch position
-      if (e.clientX) {
-        startX.value = drag.value.ref.clientX;
-        startY.value = drag.value.ref.clientY;
-      } else {
-        startX.value = drag.value.ref.touches[0].clientX;
-        startY.value = drag.value.ref.touches[0].clientY;
-      }
 
       //set item data
       drag.value.item = item;
@@ -185,11 +190,6 @@ export const useDragAndDrop = () => {
       //evalute is overlap
       for (dropItem.value of filteredItems) {
         if (dropItem.value) {
-          let div = document.createElement('div');
-          div.style.width = '100%';
-          div.style.height = '4px';
-          div.style.background = 'purple';
-
           const itemRect = dropItem.value.getBoundingClientRect();
 
           if (
@@ -208,6 +208,15 @@ export const useDragAndDrop = () => {
   };
 
   const useOnDragEnd = (e: any) => {
+    // if (
+    //   (drag.value.x == e.clientX && drag.value.y == e.clientY) ||
+    //   (drag.value.x == e.touches[0].clientX &&
+    //     drag.value.y == e.touches[0].clientY)
+    // ) {
+    //   id.value = e.target.attributes['data-itemId'].value;
+    //   activeId.value = e.target.attributes['data-itemId'].value;
+    // }
+
     if (!isDraging.value && !isDragStart.value) {
       overlapItemId.value = null;
       drag.value.itemId = null;
