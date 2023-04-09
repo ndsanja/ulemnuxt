@@ -132,7 +132,7 @@ export const useDragAndDrop = () => {
   };
 
   const useOnDraging = (e: any) => {
-    if (!isDragStart) return;
+    if (!isDragStart.value) return;
     isDraging.value = true;
 
     if (!isDraging.value) return;
@@ -199,7 +199,7 @@ export const useDragAndDrop = () => {
   };
 
   const useOnDragEnd = (e: any) => {
-    if (!isDraging.value) {
+    if (!isDraging.value && !isDragStart.value) {
       overlapItemId.value = null;
       drag.value.itemId = null;
       isDragStart.value = false;
