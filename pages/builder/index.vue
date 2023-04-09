@@ -29,11 +29,9 @@ const handleCLick = (e: any, elId: any) => {
 
       <BuilderCanvas>
         <Components v-if="isPreview == true" :data="data" />
-        <Element :data-itemId="data[0].id" :data-item="JSON.stringify(data[0])" :data-index="0"
-          @click.self.prevent="handleCLick($event, data[0].id)"
-          :class="`${dataClasses(data[0])} ${hoverId == data[0].id && `hover:outline hover:outline-offset-1 hover:outline-2 hover:outline-green-500`} ${activeId == data[0].id && `outline outline-offset-1 outline-2 outline-green-500 relative`}`">
-          <ComponentsEditable :data="data[0].children" />
-        </Element>
+        <div class="rootBuilder">
+          <ComponentsEditable :data="data" />
+        </div>
 
       </BuilderCanvas>
       <BuilderToolsAddElements />

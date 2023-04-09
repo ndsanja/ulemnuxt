@@ -99,39 +99,41 @@ export const useDragAndDrop = () => {
   const dragItemId = useState<any>('dragItemId', () => null);
   const longPress = useState<any>('longPress', () => null);
 
-  const useOnDragStart = (e: any, isAddNew: boolean) => {
+  const useOnDragStart = (e: any, item: any, index: any, isAddNew: boolean) => {
+    if (item.id == 'root') return;
     longPress.value = setTimeout(function () {
-      isDraging.value = true;
-
-      isDragAddNew.value = isAddNew;
-      isDragStart.value = true;
-      root.value = document.querySelector('.thisRoot');
+      root.value = document.querySelector('.rootBuilder');
       drag.value.ref = e;
-      dragItemId.value = e.target.attributes['data-itemId'].value;
+      drag.value.itemId = item.id;
+
+      isDragStart.value = true;
+      isDragAddNew.value = isAddNew;
 
       //get initial touch position
       if (e.clientX) {
-        startX.value = e.clientX;
-        startY.value = e.clientY;
+        startX.value = drag.value.ref.clientX;
+        startY.value = drag.value.ref.clientY;
       } else {
-        startX.value = e.touches[0].clientX;
-        startY.value = e.touches[0].clientY;
+        startX.value = drag.value.ref.touches[0].clientX;
+        startY.value = drag.value.ref.touches[0].clientY;
       }
 
       //set item data
-      drag.value.item = e.target.attributes['data-item'].value;
-      drag.value.itemId = e.target.attributes['data-itemId'].value;
-      drag.value.itemIndex = e.target.attributes['data-item'].value;
-      drag.value.itemIndexOld = e.target.attributes['data-item'].value;
-      drag.value.parentId = e.target.parentNode.attributes['data-itemId'].value;
+      drag.value.item = item;
+      drag.value.itemId = item.id;
+      drag.value.itemIndex = Number(index);
+      drag.value.itemIndexOld = Number(index);
+      drag.value.parentId =
+        drag.value.ref.target.parentNode.attributes['data-itemId'].value;
       drag.value.parentIndex =
-        e.target.parentNode.attributes['data-index'].value;
-      drag.value.parent = e.target.parentNode.attributes['data-item'].value;
-    }, 500);
+        drag.value.ref.target.parentNode.attributes['data-index'].value;
+      drag.value.parent = getDataById(drag.value.parentId).value;
+    }, 1000);
   };
 
   const useOnDraging = (e: any) => {
     if (!isDragStart) return;
+    isDraging.value = true;
 
     if (!isDraging.value) return;
 
@@ -199,42 +201,42 @@ export const useDragAndDrop = () => {
   const useOnDragEnd = (e: any) => {
     if (!isDraging.value) {
       overlapItemId.value = null;
-      dragItemId.value = null;
-      isDraging.value = false;
+      drag.value.itemId = null;
       isDragStart.value = false;
+      isDraging.value = false;
       clearTimeout(longPress.value);
 
       return;
     }
 
     if (isDragAddNew.value === true) {
-      const dragItemData = getAddElementDataById(dragItemId.value);
+      const dragItemData = getAddElementDataById(drag.value.itemId);
       const copyData = JSON.parse(JSON.stringify(dragItemData.value));
       const dropItemData = getDataById(overlapItemId.value);
 
       dropItemData.value.children.push({ ...copyData, id: uuidV4() });
 
       overlapItemId.value = null;
-      dragItemId.value = null;
-      isDraging.value = false;
+      drag.value.itemId = null;
       isDragStart.value = false;
+      isDraging.value = false;
       clearTimeout(longPress.value);
 
       return;
     }
 
     if (isDragAddNew.value === false) {
-      const dragItemData = getDataById(dragItemId.value);
+      const dragItemData = getDataById(drag.value.itemId);
       const dropItemData = getDataById(overlapItemId.value);
       dropItemData.value.children.push({ ...dragItemData.value });
 
       const dragParentData = getDataById(drag.value.parentId ?? '');
-      dragParentData.value.children?.splice(drag.value.itemIndex, 1);
+      dragParentData.value.children?.splice(Number(drag.value.itemIndex), 1);
 
       overlapItemId.value = null;
-      dragItemId.value = null;
-      isDraging.value = false;
+      drag.value.itemId = null;
       isDragStart.value = false;
+      isDraging.value = false;
       clearTimeout(longPress.value);
 
       return;
@@ -249,7 +251,7 @@ export const useDragAndDrop = () => {
       root.value = document.querySelector('.thisRoot');
       drag.value.ref = e;
       drag.value.item = item;
-      dragItemId.value = drag.value.item.id;
+      drag.value.itemId = item.id;
 
       // console.log(e);
 
@@ -263,7 +265,7 @@ export const useDragAndDrop = () => {
       }
 
       toogleLeft.value = false;
-    }, 500);
+    }, 1000);
   };
 
   return {

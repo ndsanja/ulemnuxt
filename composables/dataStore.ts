@@ -11,7 +11,7 @@ const initial = [
     content: 'root',
     elId: '',
     classes: {
-      xs: 'thisRoot bg-white h-full w-full relative',
+      xs: 'thisRoot bg-white h-full w-full relative pb-100px',
       sm: '',
       md: '',
       lg: '',
@@ -30,7 +30,7 @@ const initial = [
         content: 'section',
         elId: '',
         classes: {
-          xs: 'bg-green-500 h-[100px] w-[300px] w-full',
+          xs: 'bg-green-500 min-h-[100px] min-w-[300px] w-full',
           sm: '',
           md: '',
           lg: '',
@@ -50,7 +50,7 @@ const initial = [
         content: 'section',
         elId: '',
         classes: {
-          xs: 'bg-red-500 h-[100px] w-[300px] w-full',
+          xs: 'bg-red-500 min-h-[100px] min-w-[300px] w-full',
           sm: '',
           md: '',
           lg: '',
@@ -69,7 +69,7 @@ const initial = [
             content: 'section',
             elId: '',
             classes: {
-              xs: 'bg-yellow-500 h-[100px] w-[300px] w-full',
+              xs: 'bg-yellow-500 min-h-[100px] min-w-[300px] w-full',
               sm: '',
               md: '',
               lg: '',
@@ -91,7 +91,7 @@ const initial = [
         content: 'section',
         elId: '',
         classes: {
-          xs: 'bg-blue-500 h-[100px] w-[300px] w-full',
+          xs: 'bg-blue-500 min-h-[100px] min-w-[300px] w-full',
           sm: '',
           md: '',
           lg: '',
@@ -111,7 +111,7 @@ const initial = [
         content: 'section',
         elId: '',
         classes: {
-          xs: 'bg-green-500 h-[100px] w-[300px] w-full',
+          xs: 'bg-green-500 min-h-[100px] min-w-[300px] w-full',
           sm: '',
           md: '',
           lg: '',

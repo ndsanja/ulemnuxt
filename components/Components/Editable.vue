@@ -37,11 +37,12 @@ const handleMouseOver = (e: any, itemId: any) => {
 <template>
   <Element v-for="(item, index) in data" :key="item.id" :data-itemId="item.id" :data-item="JSON.stringify(item)"
     :data-index="index" draggable="true" @click.self.prevent="handleCLick($event, item.id)"
-    @mousedown.self.prevent="useOnDragStart($event, false)" @mousemove.self.prevent="useOnDraging"
-    @mouseup.self.prevent="useOnDragEnd" @touchstart.self.prevent="useOnDragStart($event, false)"
+    @mousedown.self.prevent="useOnDragStart($event, item, index, false)" @mousemove.self.prevent="useOnDraging"
+    @mouseup.self.prevent="useOnDragEnd" @touchstart.self.prevent="useOnDragStart($event, item, index, false)"
     @touchmove.self.prevent="useOnDraging" @touchend.self.prevent="useOnDragEnd"
+    @mouseover.self.prevent="handleMouseOver($event, item.id)"
     :class="`${dataClasses(item)} ${hoverId == item.id && `hover:outline hover:outline-offset-1 hover:outline-2 hover:outline-green-500`} ${activeId == item.
-      id && `outline outline-offset-1 outline-2 outline-green-500 relative`} ${overlapItemId == item.id && 'dropTarget'} ${dragItemId == item.id && 'dragItem'}`" class="m-2 p-1">
+      id && `outline outline-offset-1 outline-2 outline-green-500 relative`} ${overlapItemId == item.id && 'dropTarget'} ${drag.itemId == item.id && 'dragItem'}`" class="">
 
     <div v-if="activeId == item.id || hoverId == item.id"
       class="absolute min-w-[20px] min-h-[20px] px-1 bg-green-500 border border-white -top-[21px] left-0 z-40 text-[11px] flex items-center justify-center">
