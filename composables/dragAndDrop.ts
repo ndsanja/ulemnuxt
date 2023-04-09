@@ -248,7 +248,7 @@ export const useDragAndDrop = () => {
       isDragStart.value = true;
 
       isDragAddNew.value = isAddNew;
-      root.value = document.querySelector('.thisRoot');
+      root.value = document.querySelector('.rootBuilder');
       drag.value.ref = e;
       drag.value.item = item;
       drag.value.itemId = item.id;
