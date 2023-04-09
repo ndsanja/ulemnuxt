@@ -20,9 +20,9 @@ const handleClick = (e: any) => {
       <div class="grid grid-cols-3 gap-x-2 gap-y-3 px-2 py-2">
 
         <div v-for="(item, index) in addElementData" :key="item.id" :data-itemId="item.id"
-          :data-item="JSON.stringify(item)" :data-index="index" @mousedown.prevent="onDragStart($event, item, true)"
+          :data-item="JSON.stringify(item)" :data-index="index" @mousedown.prevent="onDragStart($event, item, true, 300)"
           @mousemove.prevent="useOnDraging" @mouseup.prevent="useOnDragEnd"
-          @touchstart.prevent="onDragStart($event, item, true)" @touchmove.prevent="useOnDraging"
+          @touchstart.prevent="onDragStart($event, item, true, 500)" @touchmove.prevent="useOnDraging"
           @touchend.prevent="useOnDragEnd">
           <div class="flex-1 border-2 rounded-md border-slate-500 h-80px w-80px bg-red">
             icon

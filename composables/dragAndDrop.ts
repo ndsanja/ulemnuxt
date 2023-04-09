@@ -98,9 +98,17 @@ export const useDragAndDrop = () => {
   const overlapItemId = useState<any>('overlapItemId', () => null);
   const dragItemId = useState<any>('dragItemId', () => null);
   const longPress = useState<any>('longPress', () => null);
+  const touchDelay = useState('touchDelay', () => 500);
 
-  const useOnDragStart = (e: any, item: any, index: any, isAddNew: boolean) => {
+  const useOnDragStart = (
+    e: any,
+    item: any,
+    index: any,
+    isAddNew: boolean,
+    delay: number
+  ) => {
     if (item.id == 'root') return;
+
     longPress.value = setTimeout(function () {
       root.value = document.querySelector('.rootBuilder');
       drag.value.ref = e;
@@ -128,11 +136,12 @@ export const useDragAndDrop = () => {
       drag.value.parentIndex =
         drag.value.ref.target.parentNode.attributes['data-index'].value;
       drag.value.parent = getDataById(drag.value.parentId).value;
-    }, 1000);
+    }, delay);
   };
 
   const useOnDraging = (e: any) => {
     if (!isDragStart.value) return;
+
     isDraging.value = true;
 
     if (!isDraging.value) return;
@@ -243,7 +252,7 @@ export const useDragAndDrop = () => {
     }
   };
 
-  const onDragStart = (e: any, item: any, isAddNew: boolean) => {
+  const onDragStart = (e: any, item: any, isAddNew: boolean, delay: number) => {
     longPress.value = setTimeout(function () {
       isDragStart.value = true;
 
@@ -265,7 +274,7 @@ export const useDragAndDrop = () => {
       }
 
       toogleLeft.value = false;
-    }, 1000);
+    }, delay);
   };
 
   return {

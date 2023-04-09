@@ -37,30 +37,27 @@ const handleMouseOver = (e: any, itemId: any) => {
 <template>
   <Element v-for="(item, index) in data" :key="item.id" :data-itemId="item.id" :data-item="JSON.stringify(item)"
     :data-index="index" draggable="true" @click.self.prevent="handleCLick($event, item.id)"
-    @mousedown.self.prevent="useOnDragStart($event, item, index, false)" @mousemove.self.prevent="useOnDraging"
-    @mouseup.self.prevent="useOnDragEnd" @touchstart.self.prevent="useOnDragStart($event, item, index, false)"
+    @mousedown.self.prevent="useOnDragStart($event, item, index, false, 300)" @mousemove.self.prevent="useOnDraging"
+    @mouseup.self.prevent="useOnDragEnd" @touchstart.self.prevent="useOnDragStart($event, item, index, false, 500)"
     @touchmove.self.prevent="useOnDraging" @touchend.self.prevent="useOnDragEnd"
     @mouseover.self.prevent="handleMouseOver($event, item.id)"
     :class="`${dataClasses(item)} ${hoverId == item.id && `hover:outline hover:outline-offset-1 hover:outline-2 hover:outline-green-500`} ${activeId == item.
       id && `outline outline-offset-1 outline-2 outline-green-500 relative`} ${overlapItemId == item.id && 'dropTarget'} ${drag.itemId == item.id && 'dragItem'}`" class="">
 
-    <div v-if="activeId == item.id || hoverId == item.id"
-      class="absolute min-w-[20px] min-h-[20px] px-1 bg-green-500 border border-white -top-[21px] left-0 z-40 text-[11px] flex items-center justify-center">
-      <p>{{ item.elName }}</p>
+    <div v-if="activeId == item.id"
+      class="absolute min-w-[20px] min-h-[20px] px-1 bg-green-500 border border-white -top-[21px] left-0 z-40 text-[11px] flex items-center justify-start space-x-1 rounded-t overflow-hidden">
+
+      <p class="w-full">{{ item.elName }}</p>
+
+      <div class="flex items-center justify-center border-l border-white pl-1">
+        <Icon name="fluent:settings-24-regular" class="text-16px cursor-pointer" @click.self="handleDelete(index)" />
+      </div>
+
     </div>
 
-    <div v-if="activeId == item.id"
-      class="absolute min-w-[20px] h-[28px] px-1 bg-green-500 border border-white -top-[29px] right-0 z-40 flex items-center justify-between gap-2">
-
-      <div>
-        <Icon name="fluent:add-square-24-regular" class="text-24px cursor-pointer"
-          @click.self="handleDuplicate(item.id)" />
-      </div>
-      <div class="h-28px w-1px bg-white"></div>
-      <div>
-        <Icon name="fluent:settings-24-regular" class="text-24px cursor-pointer" @click.self="handleDelete(index)" />
-      </div>
-
+    <div v-if="overlapItemId == item.id"
+      class="absolute min-w-[20px] min-h-[20px] px-1 bg-blue-500 border border-white -top-[21px] left-0 z-40 text-[11px] flex items-center justify-center">
+      <p>{{ item.elName }}</p>
     </div>
 
     <ComponentsEditable :data="item.children" />
@@ -72,6 +69,7 @@ const handleMouseOver = (e: any, itemId: any) => {
   outline: 3px blue solid;
   outline-offset: 2px;
   cursor: move;
+  position: relative !important;
 }
 
 .dragItem {
@@ -85,7 +83,6 @@ const handleMouseOver = (e: any, itemId: any) => {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 100;
   background: white;
   opacity: 0.60;
   position: absolute;
