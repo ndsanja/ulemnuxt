@@ -319,30 +319,39 @@ export const useDragAndDrop = () => {
       drop.value.item = getDataById(drop.value.itemId);
 
       if (isDropBefore.value) {
-        const dragItemData = getDataById(drag.value.itemId);
         const dragParentData = getDataById(drag.value.parentId ?? '');
-        dragParentData.value.children?.splice(Number(drop.value.itemIndex), 0, {
-          ...dragItemData.value,
-        });
-
-        dragParentData.value.children?.splice(
-          Number(drag.value.itemIndex) + 1,
-          1
+        const temp = JSON.parse(
+          JSON.stringify(dragParentData.value.children[drag.value.itemIndex])
         );
+
+        dragParentData.value.children.splice(drag.value.itemIndex, 1);
+        if (drag.value.itemIndex < drop.value.itemIndex) {
+          dragParentData.value.children.splice(drop.value.itemIndex - 1, 0, {
+            ...temp,
+          });
+        } else {
+          dragParentData.value.children.splice(drop.value.itemIndex, 0, {
+            ...temp,
+          });
+        }
       }
 
       if (isDropAfter.value) {
-        const dragItemData = getDataById(drag.value.itemId);
         const dragParentData = getDataById(drag.value.parentId ?? '');
-        dragParentData.value.children?.splice(
-          Number(drop.value.itemIndex) + 1,
-          0,
-          {
-            ...dragItemData.value,
-          }
+        const temp = JSON.parse(
+          JSON.stringify(dragParentData.value.children[drag.value.itemIndex])
         );
 
-        dragParentData.value.children?.splice(Number(drag.value.itemIndex), 1);
+        dragParentData.value.children.splice(drag.value.itemIndex, 1);
+        if (drag.value.itemIndex < drop.value.itemIndex) {
+          dragParentData.value.children.splice(drop.value.itemIndex, 0, {
+            ...temp,
+          });
+        } else {
+          dragParentData.value.children.splice(drop.value.itemIndex + 1, 0, {
+            ...temp,
+          });
+        }
       }
 
       if (isDropInside.value) {
