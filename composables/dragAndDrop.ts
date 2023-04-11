@@ -35,8 +35,10 @@ export const useDragAndDrop = () => {
 
   interface DragOver {
     ref: any;
-    // x?: any,
-    // y?: any,
+    boundingTop: any;
+    boundingBottom: any;
+    boundingLeft: any;
+    boundingRight: any;
     item?: any;
     itemId?: any;
     itemIndex?: any;
@@ -75,6 +77,10 @@ export const useDragAndDrop = () => {
 
   const initDragOver: DragOver = {
     ref: null,
+    boundingTop: null,
+    boundingBottom: null,
+    boundingLeft: null,
+    boundingRight: null,
     item: null,
     itemId: null,
     itemIndex: null,
@@ -100,6 +106,10 @@ export const useDragAndDrop = () => {
   const dragItemId = useState<any>('dragItemId', () => null);
   const longPress = useState<any>('longPress', () => null);
   const touchDelay = useState('touchDelay', () => 500);
+  const isDropBefore = useState('dropBefore', () => false);
+  const isDropAfter = useState('dropAfter', () => false);
+  const isDropInside = useState('dropInside', () => false);
+  const testItemId = useState('tetst', () => null);
 
   const useOnDragStart = (
     e: any,
@@ -116,8 +126,8 @@ export const useDragAndDrop = () => {
       drag.value.y = e.touches[0].clientY;
     }
 
-    id.value = e.target.attributes['data-itemId'].value;
-    activeId.value = e.target.attributes['data-itemId'].value;
+    id.value = item.id;
+    activeId.value = item.id;
 
     if (item.id == 'root') return;
 
@@ -128,8 +138,6 @@ export const useDragAndDrop = () => {
 
       isDragStart.value = true;
       isDragAddNew.value = isAddNew;
-
-      //get initial touch position
 
       //set item data
       drag.value.item = item;
@@ -144,7 +152,7 @@ export const useDragAndDrop = () => {
     }, delay);
   };
 
-  const useOnDraging = (e: any) => {
+  const useOnDraging = (e: any, itemId: any) => {
     if (!isDragStart.value) return;
 
     isDraging.value = true;
@@ -191,6 +199,14 @@ export const useDragAndDrop = () => {
       for (dropItem.value of filteredItems) {
         if (dropItem.value) {
           const itemRect = dropItem.value.getBoundingClientRect();
+          dragOver.value.boundingTop = itemRect.top;
+          dragOver.value.boundingBottom = itemRect.bottom;
+          dragOver.value.boundingLeft = itemRect.left;
+          dragOver.value.boundingRight = itemRect.right;
+
+          const pxToPercent = (pxOrigin: any, pxDiff: any) => {
+            return (pxDiff / pxOrigin) * 100;
+          };
 
           if (
             drag.value.x >= itemRect.left &&
@@ -201,6 +217,68 @@ export const useDragAndDrop = () => {
           ) {
             overlapItemId.value =
               dropItem.value.attributes['data-itemId'].value;
+            drop.value.itemIndex =
+              dropItem.value.attributes['data-index'].value;
+
+            if (e.clientX) {
+              if (overlapItemId.value == itemId) {
+                if (
+                  drag.value.y >= itemRect.top &&
+                  drag.value.y <=
+                    itemRect.bottom - (itemRect.bottom - itemRect.top) / 1.5
+                ) {
+                  isDropBefore.value = true;
+                  isDropAfter.value = false;
+                  isDropInside.value = false;
+                  console.log('before');
+                } else if (
+                  drag.value.y <= itemRect.bottom &&
+                  drag.value.y >=
+                    itemRect.top + (itemRect.bottom - itemRect.top) / 1.5
+                ) {
+                  isDropBefore.value = false;
+                  isDropAfter.value = true;
+                  isDropInside.value = false;
+                  console.log('after');
+                } else {
+                  isDropBefore.value = false;
+                  isDropAfter.value = false;
+                  isDropInside.value = true;
+                  console.log('inside');
+                }
+              }
+            } else {
+              if (
+                drag.value.y >= itemRect.top &&
+                drag.value.y <=
+                  itemRect.bottom - (itemRect.bottom - itemRect.top) / 1.5
+              ) {
+                isDropBefore.value = true;
+                isDropAfter.value = false;
+                isDropInside.value = false;
+                console.log('before');
+              } else if (
+                drag.value.y <= itemRect.bottom &&
+                drag.value.y >=
+                  itemRect.top + (itemRect.bottom - itemRect.top) / 1.5
+              ) {
+                isDropBefore.value = false;
+                isDropAfter.value = true;
+                isDropInside.value = false;
+                console.log('after');
+              } else {
+                isDropBefore.value = false;
+                isDropAfter.value = false;
+                isDropInside.value = true;
+                console.log('inside');
+              }
+            }
+
+            dragOver.value.itemId =
+              dropItem.value.attributes['data-itemId'].value;
+            dragOver.value.itemIndex =
+              dropItem.value.attributes['data-index'].value;
+            dragOver.value.item = dropItem.value.attributes['data-item'].value;
           }
         }
       }
@@ -208,15 +286,6 @@ export const useDragAndDrop = () => {
   };
 
   const useOnDragEnd = (e: any) => {
-    // if (
-    //   (drag.value.x == e.clientX && drag.value.y == e.clientY) ||
-    //   (drag.value.x == e.touches[0].clientX &&
-    //     drag.value.y == e.touches[0].clientY)
-    // ) {
-    //   id.value = e.target.attributes['data-itemId'].value;
-    //   activeId.value = e.target.attributes['data-itemId'].value;
-    // }
-
     if (!isDraging.value && !isDragStart.value) {
       overlapItemId.value = null;
       drag.value.itemId = null;
@@ -228,11 +297,13 @@ export const useDragAndDrop = () => {
     }
 
     if (isDragAddNew.value === true) {
-      const dragItemData = getAddElementDataById(drag.value.itemId);
-      const copyData = JSON.parse(JSON.stringify(dragItemData.value));
-      const dropItemData = getDataById(overlapItemId.value);
+      drop.value.itemId = overlapItemId.value;
+      drop.value.item = getDataById(drop.value.itemId);
 
-      dropItemData.value.children.push({ ...copyData, id: uuidV4() });
+      const dragItemData = getDataById(drag.value.itemId);
+      const copyData = JSON.parse(JSON.stringify(dragItemData.value));
+
+      drop.value.item.children.push({ ...copyData, id: uuidV4() });
 
       overlapItemId.value = null;
       drag.value.itemId = null;
@@ -244,12 +315,43 @@ export const useDragAndDrop = () => {
     }
 
     if (isDragAddNew.value === false) {
-      const dragItemData = getDataById(drag.value.itemId);
-      const dropItemData = getDataById(overlapItemId.value);
-      dropItemData.value.children.push({ ...dragItemData.value });
+      drop.value.itemId = overlapItemId.value;
+      drop.value.item = getDataById(drop.value.itemId);
 
-      const dragParentData = getDataById(drag.value.parentId ?? '');
-      dragParentData.value.children?.splice(Number(drag.value.itemIndex), 1);
+      if (isDropBefore.value) {
+        const dragItemData = getDataById(drag.value.itemId);
+        const dragParentData = getDataById(drag.value.parentId ?? '');
+        dragParentData.value.children?.splice(Number(drop.value.itemIndex), 0, {
+          ...dragItemData.value,
+        });
+
+        dragParentData.value.children?.splice(
+          Number(drag.value.itemIndex) + 1,
+          1
+        );
+      }
+
+      if (isDropAfter.value) {
+        const dragItemData = getDataById(drag.value.itemId);
+        const dragParentData = getDataById(drag.value.parentId ?? '');
+        dragParentData.value.children?.splice(
+          Number(drop.value.itemIndex) + 1,
+          0,
+          {
+            ...dragItemData.value,
+          }
+        );
+
+        dragParentData.value.children?.splice(Number(drag.value.itemIndex), 1);
+      }
+
+      if (isDropInside.value) {
+        const dragItemData = getDataById(drag.value.itemId);
+        drop.value.item.children.push({ ...dragItemData.value });
+
+        const dragParentData = getDataById(drag.value.parentId ?? '');
+        dragParentData.value.children?.splice(Number(drag.value.itemIndex), 1);
+      }
 
       overlapItemId.value = null;
       drag.value.itemId = null;
@@ -270,8 +372,6 @@ export const useDragAndDrop = () => {
       drag.value.ref = e;
       drag.value.item = item;
       drag.value.itemId = item.id;
-
-      // console.log(e);
 
       //get initial touch position
       if (e.clientX) {
@@ -295,6 +395,10 @@ export const useDragAndDrop = () => {
     overlapItemId,
     dragItemId,
     isDraging,
+    isDropAfter,
+    isDropBefore,
+    isDropInside,
+    testItemId,
     useOnDragStart,
     useOnDragEnd,
     useOnDraging,
