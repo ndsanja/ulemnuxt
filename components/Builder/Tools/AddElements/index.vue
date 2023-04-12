@@ -21,8 +21,8 @@ const handleClick = (e: any) => {
 
         <div v-for="(item, index) in addElementData" :key="item.id" :data-itemId="item.id"
           :data-item="JSON.stringify(item)" :data-index="index" @mousedown.prevent="onDragStart($event, item, true, 300)"
-          @mousemove.prevent="useOnDraging" @mouseup.prevent="useOnDragEnd"
-          @touchstart.prevent="onDragStart($event, item, true, 500)" @touchmove.prevent="useOnDraging"
+          @mousemove.prevent="useOnDraging($event, item.id)" @mouseup.prevent="useOnDragEnd"
+          @touchstart.prevent="onDragStart($event, item, true, 500)" @touchmove.prevent="useOnDraging($event, item.id)"
           @touchend.prevent="useOnDragEnd">
           <div class="flex-1 border-2 rounded-md border-slate-500 h-80px w-80px bg-red">
             icon

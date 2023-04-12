@@ -42,7 +42,7 @@ const handleMouseOver = (e: any, itemId: any) => {
     @touchstart.self.prevent="useOnDragStart($event, item, index, false, 500)"
     @touchmove.self.prevent="useOnDraging($event, item.id)" @touchend.self.prevent="useOnDragEnd"
     @mouseover.self.prevent="handleMouseOver($event, item.id)"
-    :class="`${dataClasses(item)} ${hoverId == item.id && `hover:outline hover:outline-offset-1 hover:outline-2 hover:outline-green-500`} ${activeId == item.
+    :class="`${item.id} ${dataClasses(item)} ${hoverId == item.id && `hover:outline hover:outline-offset-1 hover:outline-2 hover:outline-green-500`} ${activeId == item.
       id && `outline outline-offset-1 outline-2 outline-green-500 relative`} ${overlapItemId == item.id && 'dropTarget'} ${drag.itemId == item.id && 'dragItem'} ${overlapItemId == item.id && isDropBefore ? 'mt-20px' : ''} ${overlapItemId == item.id && isDropAfter ? 'mb-20px' : ''}`"
     class="">
 
