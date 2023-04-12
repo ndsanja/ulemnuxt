@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { v4 as uuidv4 } from 'uuid';
 
-const { id, xs, sm, md, lg, xl, getDataById, hoverId, activeId, currentIndex, currentParentId, handleDelete, handleDuplicate } = useStore()
-const { drag, dragOver, drop, useOnDragStart, useOnDragEnd, useOnDraging, isDraging, overlapItemId, dragItemId, testItemId, isDropAfter, isDropBefore, isDropInside } = useDragAndDrop()
+const { id, sm, md, lg, xl, hoverId, activeId, handleDelete } = useStore()
+const { drag, useOnDragStart, useOnDragEnd, useOnDraging, isDraging, overlapItemId, testItemId, isDropAfter, isDropBefore, isDropInside } = useDragAndDrop()
 
 
 interface Props {
@@ -24,9 +23,6 @@ const handleCLick = (e: any, elId: any) => {
   }
 }
 
-const handleDragOver = (e: any) => {
-  console.log(e);
-}
 
 const handleMouseOver = (e: any, itemId: any) => {
   hoverId.value = itemId
@@ -35,34 +31,39 @@ const handleMouseOver = (e: any, itemId: any) => {
 </script>
 
 <template>
-  <Element v-for="(item, index) in data" :key="item.id" :data-itemId="item.id" :data-item="JSON.stringify(item)"
+  <Element v-for="(item, index) in props.data" :key="item.id" :data-itemId="item.id" :data-item="JSON.stringify(item)"
     :data-index="index" draggable="true" @click.self.prevent="handleCLick($event, item.id)"
     @mousedown.self.prevent="useOnDragStart($event, item, index, false, 300)"
     @mousemove.self.prevent="useOnDraging($event, item.id)" @mouseup.self.prevent="useOnDragEnd"
     @touchstart.self.prevent="useOnDragStart($event, item, index, false, 500)"
     @touchmove.self.prevent="useOnDraging($event, item.id)" @touchend.self.prevent="useOnDragEnd"
     @mouseover.self.prevent="handleMouseOver($event, item.id)"
-    :class="`${item.id} ${dataClasses(item)} ${hoverId == item.id && `hover:outline hover:outline-offset-1 hover:outline-2 hover:outline-green-500`} ${activeId == item.
+    :class="`${item.id} ${dataClasses(item)} ${hoverId == item.id && `hover:outline hover:outline-offset-1 hover:outline-2 hover:outline-green-500 relative`} ${activeId == item.
       id && `outline outline-offset-1 outline-2 outline-green-500 relative`} ${overlapItemId == item.id && 'dropTarget'} ${drag.itemId == item.id && 'dragItem'} ${overlapItemId == item.id && isDropBefore ? 'mt-20px' : ''} ${overlapItemId == item.id && isDropAfter ? 'mb-20px' : ''}`"
     class="">
 
     <div v-if="activeId == item.id"
-      class="absolute min-w-[20px] min-h-[20px] px-1 bg-green-500 border border-white -top-[21px] left-0 z-40 text-[11px] flex items-center justify-start space-x-1 rounded-t overflow-hidden">
+      style="position: absolute; top: -21px; left: 0; z-index: 40; min-width: 20px; min-height: 20px; padding: 0 4px; background-color: #22c55e; border: 1px solid white; font-size: 11px; display: flex; align-items: center; justify-content: start; gap: 4px; border-top-left-radius: 4px; border-top-right-radius: 4px; overflow: hidden">
 
-      <p class="w-full">{{ item.elName }}</p>
+      <p style="width: 100%;">{{ item.elName }}</p>
 
-      <div class="flex items-center justify-center border-l border-white pl-1">
-        <Icon name="fluent:settings-24-regular" class="text-16px cursor-pointer" @click.self="handleDelete(index)" />
+      <div
+        style="display: flex; align-items: center; justify-content: center; border-left: 1px white solid; padding-left: 4px;">
+        <Icon name="fluent:settings-24-regular" style="font-size: 16px; cursor: pointer;"
+          @click.self="handleDelete(index)" />
       </div>
+    </div>
 
+    <div v-if="hoverId == item.id"
+      style="position: absolute; top: -21px; left: 0; z-index: 40; min-width: 20px; min-height: 20px; padding: 0 4px; background-color: transparent; color: #052e16; font-size: 11px; display: flex; align-items: center; justify-content: start; gap: 4px; border-top-left-radius: 4px; border-top-right-radius: 4px; overflow: hidden">
+
+      <p style="width: 100%;">{{ item.elName }}</p>
     </div>
 
     <div v-if="overlapItemId == item.id"
       class="absolute min-w-[20px] min-h-[20px] px-1 bg-blue-500 border border-white -top-[21px] left-0 z-40 text-[11px] flex items-center justify-center">
-      <p>{{ item.elName }} {{ testItemId }}</p>
+      <p>{{ item.elName }}</p>
     </div>
-
-    <!-- <div :class="{ 'hidden': false, 'block w-full h-3px bg-blue-700 my-1': overlapItemId == item.id }"></div> -->
 
     <ComponentsEditable :data="item.children" />
 
@@ -81,8 +82,8 @@ const handleMouseOver = (e: any, itemId: any) => {
 
 <style scoped>
 .dropTarget {
-  outline: 3px blue solid;
-  outline-offset: 2px;
+  outline: 2px blue solid;
+  outline-offset: 1px;
   cursor: move;
   position: relative !important;
 }

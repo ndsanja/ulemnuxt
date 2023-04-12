@@ -29,7 +29,7 @@ const handleCLick = (e: any, elId: any) => {
 
       <BuilderCanvas>
         <Components v-if="isPreview == true" :data="data" />
-        <div class="rootBuilder">
+        <div v-else class="rootBuilder">
           <ComponentsEditable :data="data" />
         </div>
 

@@ -2,12 +2,8 @@
 
 const { toogleLeft, isPreview } = useStateUiBuilder()
 const { addElementData } = useStore()
-const { drag, dragOver, drop, useOnDragStart, useOnDragEnd, useOnDraging, isDraging, overlapItemId, dragItemId, onDragStart } = useDragAndDrop()
+const { useOnDragEnd, useOnDraging, onDragStart } = useDragAndDrop()
 
-const handleClick = (e: any) => {
-  // console.log(e);
-
-}
 </script>
 
 <template>

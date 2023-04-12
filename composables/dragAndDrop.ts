@@ -291,7 +291,7 @@ export const useDragAndDrop = () => {
       const dragItemData = getAddElementDataById(drag.value.itemId);
       const copyData = JSON.parse(JSON.stringify(dragItemData.value));
 
-      if (isDropBefore.value) {
+      if (isDropBefore.value && drop.value.itemId != 'root') {
         const dropItemData = getDataById(drop.value.parentId);
         dropItemData.value.children.splice(drop.value.itemIndex, 0, {
           ...copyData,
@@ -299,13 +299,14 @@ export const useDragAndDrop = () => {
         });
       }
 
-      if (isDropAfter.value) {
+      if (isDropAfter.value && drop.value.itemId != 'root') {
         const dropItemData = getDataById(drop.value.parentId);
         dropItemData.value.children.splice(drop.value.itemIndex + 1, 0, {
           ...copyData,
           id: uuidV4(),
         });
       }
+
       if (isDropInside.value) {
         drop.value.item.children.push({ ...copyData, id: uuidV4() });
       }
@@ -323,7 +324,7 @@ export const useDragAndDrop = () => {
       drop.value.itemId = overlapItemId.value;
       drop.value.item = getDataById(drop.value.itemId);
 
-      if (isDropBefore.value) {
+      if (isDropBefore.value && drop.value.itemId != 'root') {
         if (drag.value.parentId == drop.value.parentId) {
           const dragParentData = getDataById(drag.value.parentId ?? '');
           const temp = JSON.parse(
@@ -355,7 +356,7 @@ export const useDragAndDrop = () => {
         }
       }
 
-      if (isDropAfter.value) {
+      if (isDropAfter.value && drop.value.itemId != 'root') {
         if (drag.value.parentId == drop.value.parentId) {
           const dragParentData = getDataById(drag.value.parentId ?? '');
           const temp = JSON.parse(
