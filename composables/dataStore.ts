@@ -46,7 +46,7 @@ const initial = [
         isRoot: false,
         parentId: '',
         currentIndex: null,
-        elKind: 'div',
+        elKind: 'section',
         content: 'section',
         elId: '',
         classes: {
@@ -132,7 +132,7 @@ const sectionData = [
     isRoot: false,
     parentId: '',
     currentIndex: null,
-    elKind: 'div',
+    elKind: 'section',
     content: 'section',
     elId: '',
     classes: {

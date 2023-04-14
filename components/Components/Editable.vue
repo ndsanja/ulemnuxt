@@ -31,8 +31,9 @@ const handleMouseOver = (e: any, itemId: any) => {
 </script>
 
 <template>
-  <Element v-for="(item, index) in props.data" :key="item.id" :data-itemId="item.id" :data-item="JSON.stringify(item)"
-    :data-index="index" draggable="true" @click.self.prevent="handleCLick($event, item.id)"
+  <Element v-for="(item, index) in props.data" :key="item.id" :dataItemProps="item" :data-itemId="item.id"
+    :data-item="JSON.stringify(item)" :data-index="index" draggable="true"
+    @click.self.prevent="handleCLick($event, item.id)"
     @mousedown.self.prevent="useOnDragStart($event, item, index, false, 300)"
     @mousemove.self.prevent="useOnDraging($event, item.id)" @mouseup.self.prevent="useOnDragEnd"
     @touchstart.self.prevent="useOnDragStart($event, item, index, false, 500)"
