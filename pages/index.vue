@@ -1,8 +1,5 @@
 <script setup lang="ts">
-
-
-
-const { data, displaySize } = useStore()
+const { data } = useStore()
 </script>
 
 <template>

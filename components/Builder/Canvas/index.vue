@@ -11,7 +11,7 @@ watch(width, () => {
 </script>
 
 <template>
-  <div class="wrapper bg-slate-700" un-cloak>
+  <div class="wrapper tw-bg-slate-700" un-cloak>
     <div ref="el" :class="{
       'responsive': true,
       'isPreviePosition': isPreview,

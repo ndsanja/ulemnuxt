@@ -8,6 +8,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.6.6",
     "@types/sortablejs": "^1.15.1",
     "@types/uuid": "^9.0.1",
     "@unocss/nuxt": "^0.50.6",

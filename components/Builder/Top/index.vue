@@ -10,43 +10,43 @@ const clickBrekpoints = (display: string, fit: boolean) => {
 
 <template>
   <header :class="{
-    'flex items-center justify-between h-[40px] w-full bg-slate-800 border-b-2 border-slate-900 text-white': true,
+    'tw-flex tw-items-center tw-justify-between tw-h-[40px] tw-w-full tw-bg-slate-800 tw-border-b-2 tw-border-slate-900 tw-text-white': true,
     '!hidden': isPreview,
   }">
     <NuxtLink to="/" class="px-2">Ulem</NuxtLink>
 
-    <div class="flex items-center justify-center space-x-4 text-[18px]">
-      <div v-if="!isPreview" @click="openPreview" class="cursor-pointer">
+    <div class="tw-flex tw-items-center tw-justify-center tw-space-x-4 tw-text-[18px]">
+      <div v-if="!isPreview" @click="openPreview" class="tw-cursor-pointer">
         <Icon name="heroicons:eye-solid" style="font-size: 24px;" />
       </div>
       <div @click="clickBrekpoints('fit', true)"
-        :class="{ 'cursor-pointer text-[20px]': true, 'text-2xl font-bold text-blue-500': display == 'fit' }">
+        :class="{ 'tw-cursor-pointer tw-text-[20px]': true, 'tw-text-2xl tw-font-bold tw-text-blue-500': display == 'fit' }">
         <Icon name="fluent:auto-fit-width-24-regular" />
       </div>
       <div @click="clickBrekpoints('xs', false)"
-        :class="{ 'cursor-pointer': true, 'text-2xl font-bold text-blue-500': display == 'xs' }">
+        :class="{ 'tw-cursor-pointer': true, 'tw-text-2xl tw-font-bold tw-text-blue-500': display == 'xs' }">
         <Icon name="heroicons:device-phone-mobile-solid" />
       </div>
       <div @click="clickBrekpoints('sm', false)"
-        :class="{ 'cursor-pointer': true, 'text-2xl font-bold text-blue-500': display == 'sm' }">
+        :class="{ 'tw-cursor-pointer': true, 'tw-text-2xl tw-font-bold tw-text-blue-500': display == 'sm' }">
         <Icon name="heroicons:device-phone-mobile-solid" class="rotate-90" />
       </div>
       <div @click="clickBrekpoints('md', false)"
-        :class="{ 'cursor-pointer': true, 'text-2xl font-bold text-blue-500': display == 'md' }">
+        :class="{ 'tw-cursor-pointer': true, 'tw-text-2xl tw-font-bold tw-text-blue-500': display == 'md' }">
         <Icon name="heroicons:device-tablet-solid" />
       </div>
       <div @click="clickBrekpoints('lg', false)"
-        :class="{ 'cursor-pointer': true, 'text-xl font-bold text-blue-500': display == 'lg' }">
+        :class="{ 'tw-cursor-pointer': true, 'tw-text-xl tw-font-bold tw-text-blue-500': display == 'lg' }">
         <Icon name="material-symbols:laptop-mac-outline" />
       </div>
       <div @click="clickBrekpoints('xl', false)"
-        :class="{ 'cursor-pointer': true, 'text-xl font-bold text-blue-500': display == 'xl' }">
+        :class="{ 'tw-cursor-pointer': true, 'tw-text-xl tw-font-bold tw-text-blue-500': display == 'xl' }">
         <Icon name="heroicons:computer-desktop-solid" />
       </div>
-      <div class="font-bold text-xs">{{ displaySize.toFixed() }}px</div>
+      <div class="tw-font-bold tw-text-xs">{{ displaySize.toFixed() }}px</div>
     </div>
-    <div class="flex justify-end items-center px-2">
-      <div @click="toogleLeft = !toogleLeft" class="cursor-pointer">
+    <div class="tw-flex tw-justify-end tw-items-center tw-px-2">
+      <div @click="toogleLeft = !toogleLeft" class="tw-cursor-pointer">
         <Icon style="font-size: 24px;" name="heroicons:plus-circle-solid" />
       </div>
     </div>

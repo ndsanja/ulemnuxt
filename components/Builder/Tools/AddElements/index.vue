@@ -7,30 +7,34 @@ const { useOnDragEnd, useOnDraging, onDragStart } = useDragAndDrop()
 </script>
 
 <template>
-  <div un-cloak v-show="toogleLeft" :class="{ '!hidden': isPreview }"
-    class="min-h-[calc(100vh-40px)] max-h-[calc(100vh-40px)] w-[250px] fixed top-[40px] right-0 overflow-y-scroll bg-slate-700 text-white border-l-2 border-l-slate-900 z-40">
+  <div un-cloak v-show="toogleLeft" :class="{ '!tw-hidden': isPreview }"
+    class="tw-min-h-[calc(100vh-40px)] tw-max-h-[calc(100vh-40px)] tw-w-[250px] tw-fixed tw-top-[40px] tw-right-0 tw-overflow-y-scroll tw-bg-slate-700 tw-text-white tw-border-l-2 tw-border-l-slate-900 tw-z-40">
     <div>
-      <div class="bg-slate-800 text-white text-sm px-2 h-[30px] flex items-center border-b-2 border-slate-900">Layout
+      <div
+        class="tw-bg-slate-800 tw-text-white tw-text-sm tw-px-2 h-[30px] tw-flex tw-items-center tw-border-b-2 tw-border-slate-900">
+        Layout
       </div>
 
-      <div class="grid grid-cols-3 gap-x-2 gap-y-3 px-2 py-2">
+      <div class="tw-grid tw-grid-cols-3 tw-gap-x-2 tw-gap-y-3 tw-px-2 tw-py-2">
 
         <div v-for="(item, index) in addElementData" :key="item.id" :data-itemId="item.id"
           :data-item="JSON.stringify(item)" :data-index="index" @mousedown.prevent="onDragStart($event, item, true, 300)"
           @mousemove.prevent="useOnDraging($event, item.id)" @mouseup.prevent="useOnDragEnd"
           @touchstart.prevent="onDragStart($event, item, true, 500)" @touchmove.prevent="useOnDraging($event, item.id)"
           @touchend.prevent="useOnDragEnd">
-          <div class="flex-1 border-2 rounded-md border-slate-500 h-80px w-80px bg-red">
+          <div class="tw-flex-1 tw-border-2 tw-rounded-md tw-border-slate-500 tw-h-[80px] tw-w-[80px] tw-bg-red-500">
             icon
           </div>
-          <div class="text-xs text-center mt-1">{{ item.elName }}</div>
+          <div class="tw-text-xs tw-text-center tw-mt-1">{{ item.elName }}</div>
         </div>
 
       </div>
 
     </div>
     <div>
-      <div class="bg-slate-800 text-white text-sm px-2 h-[30px] flex items-center border-b-2 border-slate-900">Basic
+      <div
+        class="tw-bg-slate-800 tw-text-white tw-text-sm px-2 tw-h-[30px] tw-flex tw-items-center tw-border-b-2 tw-border-slate-900">
+        Basic
       </div>
       <div>
         <div>Div</div>
@@ -42,7 +46,9 @@ const { useOnDragEnd, useOnDraging, onDragStart } = useDragAndDrop()
       </div>
     </div>
     <div>
-      <div class="bg-slate-800 text-white text-sm px-2 h-[30px] flex items-center border-b-2 border-slate-900">Typograpy
+      <div
+        class="tw-bg-slate-800 tw-text-white tw-text-sm px-2 tw-h-[30px] tw-flex tw-items-center tw-border-b-2 tw-border-slate-900">
+        Typograpy
       </div>
       <div>
         <div>Heading</div>
@@ -54,7 +60,9 @@ const { useOnDragEnd, useOnDraging, onDragStart } = useDragAndDrop()
       </div>
     </div>
     <div>
-      <div class="bg-slate-800 text-white text-sm px-2 h-[30px] flex items-center border-b-2 border-slate-900">Typograpy
+      <div
+        class="tw-bg-slate-800 tw-text-white tw-text-sm px-2 tw-h-[30px] tw-flex tw-items-center tw-border-b-2 tw-border-slate-900">
+        Typograpy
       </div>
       <div>
         <div>Image</div>
@@ -63,7 +71,9 @@ const { useOnDragEnd, useOnDraging, onDragStart } = useDragAndDrop()
       </div>
     </div>
     <div>
-      <div class="bg-slate-800 text-white text-sm px-2 h-[30px] flex items-center border-b-2 border-slate-900">Advanced
+      <div
+        class="tw-bg-slate-800 tw-text-white tw-text-sm px-2 tw-h-[30px] tw-flex tw-items-center tw-border-b-2 tw-border-slate-900">
+        Advanced
       </div>
       <div>
         <div>Search</div>
@@ -75,12 +85,11 @@ const { useOnDragEnd, useOnDraging, onDragStart } = useDragAndDrop()
         <div>Slider</div>
         <div>Tab</div>
         <div>Back to Top</div>
-        <div>Map</div>
-        <div>Faceboox</div>
-        <div>Twitter</div>
-        <div>WA</div>
-      </div>
+      <div>Map</div>
+      <div>Faceboox</div>
+      <div>Twitter</div>
+      <div>WA</div>
     </div>
-
   </div>
-</template>
+
+</div></template>

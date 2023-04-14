@@ -38,8 +38,8 @@ const handleMouseOver = (e: any, itemId: any) => {
     @touchstart.self.prevent="useOnDragStart($event, item, index, false, 500)"
     @touchmove.self.prevent="useOnDraging($event, item.id)" @touchend.self.prevent="useOnDragEnd"
     @mouseover.self.prevent="handleMouseOver($event, item.id)"
-    :class="`${item.id} ${dataClasses(item)} ${hoverId == item.id && `hover:outline hover:outline-offset-1 hover:outline-2 hover:outline-green-500 relative`} ${activeId == item.
-      id && `outline outline-offset-1 outline-2 outline-green-500 relative`} ${overlapItemId == item.id && 'dropTarget'} ${drag.itemId == item.id && 'dragItem'} ${overlapItemId == item.id && isDropBefore ? 'mt-20px' : ''} ${overlapItemId == item.id && isDropAfter ? 'mb-20px' : ''}`"
+    :class="`${item.id} ${dataClasses(item)} ${hoverId == item.id && `hover:tw-outline hover:tw-outline-offset-1 hover:tw-outline-2 hover:tw-outline-green-500 tw-relative`} ${activeId == item.
+      id && `tw-outline tw-outline-offset-1 tw-outline-2 tw-outline-green-500 tw-relative`} ${overlapItemId == item.id && 'dropTarget'} ${drag.itemId == item.id && 'dragItem'} ${overlapItemId == item.id && isDropBefore ? 'tw-mt-[20px]' : ''} ${overlapItemId == item.id && isDropAfter ? 'tw-mb-[20px]' : ''}`"
     class="">
 
     <div v-if="activeId == item.id"
@@ -61,21 +61,21 @@ const handleMouseOver = (e: any, itemId: any) => {
     </div>
 
     <div v-if="overlapItemId == item.id"
-      class="absolute min-w-[20px] min-h-[20px] px-1 bg-blue-500 border border-white -top-[21px] left-0 z-40 text-[11px] flex items-center justify-center">
+      class="tw-absolute tw-min-w-[20px] tw-min-h-[20px] tw-px-1 tw-bg-blue-500 tw-border tw-border-white -tw-top-[21px] tw-left-0 tw-z-40 tw-text-[11px] tw-flex tw-items-center tw-justify-center">
       <p>{{ item.elName }}</p>
     </div>
 
     <ComponentsEditable :data="item.children" />
 
     <div
-      :class="{ 'hidden': false, 'block w-full h-3px bg-blue-700 my-[6px]': overlapItemId == item.id && isDropInside }">
+      :class="{ 'tw-hidden': false, 'tw-block tw-w-full tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropInside }">
     </div>
 
     <div
-      :class="{ 'hidden': false, 'block absolute -top-20px left-0 right-0 h-3px bg-blue-700 my-[6px]': overlapItemId == item.id && isDropBefore }">
+      :class="{ 'tw-hidden': false, 'tw-block tw-absolute -tw-top-[20px] tw-left-0 tw-right-0 tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropBefore }">
     </div>
     <div
-      :class="{ 'hidden': false, 'block absolute -bottom-20px left-0 right-0  h-3px bg-blue-700 my-[6px]': overlapItemId == item.id && isDropAfter }">
+      :class="{ 'tw-hidden': false, 'tw-block tw-absolute -tw-bottom-[20px] tw-left-0 tw-right-0 tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropAfter }">
     </div>
   </Element>
 </template>

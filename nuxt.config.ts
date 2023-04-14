@@ -8,7 +8,13 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: ['@vueuse/nuxt', 'nuxt-icon', '@pinia/nuxt', 'nuxt-lodash'],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@vueuse/nuxt',
+    'nuxt-icon',
+    '@pinia/nuxt',
+    'nuxt-lodash',
+  ],
   pinia: {
     autoImports: [
       // automatically imports `defineStore`

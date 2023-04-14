@@ -1,4 +1,4 @@
-import { v4 as uuidV4 } from 'uuid';
+import { v4 as uuidV4 } from "uuid";
 
 export const useDragAndDropBackup = () => {
   const { isDragAddNew, getDataById, activeId, hoverId } = useStore();
@@ -83,35 +83,37 @@ export const useDragAndDropBackup = () => {
     parentIndex: null,
   };
 
-  const root = useState<any>('root', () => null);
-  const dropItem = useState<any>('dropItem', () => null);
-  const drag = useState<Drag>('drag', () => initDrag);
-  const drop = useState<Drop>('drop', () => initDrop);
-  const dragOver = useState<DragOver>('dragOver', () => initDragOver);
+  const root = useState<any>("root", () => null);
+  const dropItem = useState<any>("dropItem", () => null);
+  const drag = useState<Drag>("drag", () => initDrag);
+  const drop = useState<Drop>("drop", () => initDrop);
+  const dragOver = useState<DragOver>("dragOver", () => initDragOver);
 
-  const startX = useState<any>('startX', () => null);
-  const startY = useState<any>('startY', () => null);
-  const elementX = useState<any>('deltaX', () => null);
-  const elementY = useState<any>('deltaY', () => null);
-  const isDraging = useState('is-draging', () => false);
+  const startX = useState<any>("startX", () => null);
+  const startY = useState<any>("startY", () => null);
+  const elementX = useState<any>("deltaX", () => null);
+  const elementY = useState<any>("deltaY", () => null);
+  const isDraging = useState("is-draging", () => false);
 
-  const dragItemId = useState('dragItemId', () => '');
-  const dragParentId = useState('dragParentId', () => '');
-  const dragIndex = useState('dragIndex', () => '');
-  const dragData = useState<any>('dragData', () => {});
-  const dropItemId = useState('dropItemId', () => '');
-  const isOnDrag = useState('is-ondrag', () => false);
-  const clientMove = useState<any>('client-moving', () => null);
-  const isDisabledDragAndDrop = useState('dragItemId', () => false);
+  const dragItemId = useState("dragItemId", () => "");
+  const dragParentId = useState("dragParentId", () => "");
+  const dragIndex = useState("dragIndex", () => "");
+  const dragData = useState<any>("dragData", () => {});
+  const dropItemId = useState("dropItemId", () => "");
+  const isOnDrag = useState("is-ondrag", () => false);
+  const clientMove = useState<any>("client-moving", () => null);
+  const isDisabledDragAndDrop = useState("dragItemId", () => false);
 
   const useOnDragStart = (e: any, isAddNew: boolean) => {
-    root.value = document.querySelector('.thisRoot');
+    root.value = document.querySelector(".thisRoot");
     drag.value.ref = e;
     isDraging.value = true;
 
     //set size height & width
-    drag.value.ref.target.style.height = `${drag.value.ref.target.clientHeight}px`;
-    drag.value.ref.target.style.width = `${drag.value.ref.target.clientWidth}px`;
+    drag.value.ref.target.style.height =
+      `${drag.value.ref.target.clientHeight}px`;
+    drag.value.ref.target.style.width =
+      `${drag.value.ref.target.clientWidth}px`;
 
     //get initial touch position
     if (e.clientX) {
@@ -131,16 +133,16 @@ export const useDragAndDropBackup = () => {
     // drag.value.ref.target.style['z-index'] = 100;
 
     //set item data
-    drag.value.item = e.target.attributes['data-item'].value;
-    drag.value.itemId = e.target.attributes['data-itemId'].value;
-    drag.value.itemIndex = e.target.attributes['data-item'].value;
-    drag.value.itemIndexOld = e.target.attributes['data-item'].value;
-    drag.value.parentId = e.target.parentNode.attributes['data-itemId'].value;
-    drag.value.parentIndex = e.target.parentNode.attributes['data-index'].value;
-    drag.value.parent = e.target.parentNode.attributes['data-item'].value;
+    drag.value.item = e.target.attributes["data-item"].value;
+    drag.value.itemId = e.target.attributes["data-itemId"].value;
+    drag.value.itemIndex = e.target.attributes["data-item"].value;
+    drag.value.itemIndexOld = e.target.attributes["data-item"].value;
+    drag.value.parentId = e.target.parentNode.attributes["data-itemId"].value;
+    drag.value.parentIndex = e.target.parentNode.attributes["data-index"].value;
+    drag.value.parent = e.target.parentNode.attributes["data-item"].value;
 
-    e.target.classList.add('dragging');
-    e.target.classList.add('dragItem');
+    e.target.classList.add("dragging");
+    e.target.classList.add("dragItem");
 
     isDragAddNew.value = isAddNew;
   };
@@ -198,18 +200,18 @@ export const useDragAndDropBackup = () => {
 
       // filtered childNode by Id
       let filteredItems = items.filter((e: any) => {
-        if (e.hasAttribute('data-itemId')) {
-          return e.attributes['data-itemId'].value != drag.value.itemId;
+        if (e.hasAttribute("data-itemId")) {
+          return e.attributes["data-itemId"].value != drag.value.itemId;
         }
       });
 
       //evalute is overlap
       for (dropItem.value of filteredItems) {
         if (dropItem.value) {
-          let div = document.createElement('div');
-          div.style.width = '100%';
-          div.style.height = '4px';
-          div.style.background = 'purple';
+          let div = document.createElement("div");
+          div.style.width = "100%";
+          div.style.height = "4px";
+          div.style.background = "purple";
 
           const itemRect = dropItem.value.getBoundingClientRect();
 
@@ -220,11 +222,11 @@ export const useDragAndDropBackup = () => {
             drag.value.y <= itemRect.bottom &&
             isDraging.value == true
           ) {
-            dropItem.value.style.outline = '3px blue solid';
-            dropItem.value.style['outline-offset'] = '2px';
+            dropItem.value.style.outline = "3px blue solid";
+            dropItem.value.style["outline-offset"] = "2px";
           } else {
-            dropItem.value.style.outline = '';
-            dropItem.value.style['outline-offset'] = '';
+            dropItem.value.style.outline = "";
+            dropItem.value.style["outline-offset"] = "";
           }
         }
       }
@@ -251,37 +253,37 @@ export const useDragAndDropBackup = () => {
   };
 
   const useOnDragEnd = (e: any) => {
-    e.target.classList.remove('dragging');
-    e.target.classList.remove('dragover');
-    e.target.classList.remove('ondrag');
+    e.target.classList.remove("dragging");
+    e.target.classList.remove("dragover");
+    e.target.classList.remove("ondrag");
 
-    drag.value.ref.target.style.position = '';
-    drag.value.ref.target.style['z-index'] = '';
-    drag.value.ref.target.style.height = '';
-    drag.value.ref.target.style.width = '';
-    drag.value.ref.target.style.opacity = '';
+    drag.value.ref.target.style.position = "";
+    drag.value.ref.target.style["z-index"] = "";
+    drag.value.ref.target.style.height = "";
+    drag.value.ref.target.style.width = "";
+    drag.value.ref.target.style.opacity = "";
 
     if (dropItem.value) {
-      dropItem.value.style.outline = '';
-      dropItem.value.style['outline-offset'] = '';
+      dropItem.value.style.outline = "";
+      dropItem.value.style["outline-offset"] = "";
     }
 
     isDraging.value = false;
-    e.target.classList.remove('dragItem');
+    e.target.classList.remove("dragItem");
   };
 
   const useMouseOver = (e: any, itemId: any) => {
     hoverId.value = itemId;
     if (isDraging.value && hoverId.value == itemId) {
-      e.target.style.outline = '3px blue solid';
-      e.target.style['outline-offset'] = '2px';
+      e.target.style.outline = "3px blue solid";
+      e.target.style["outline-offset"] = "2px";
     } else {
       if (hoverId.value == itemId) {
-        e.target.style.outline = '2px green solid';
-        e.target.style['outline-offset'] = '2px';
+        e.target.style.outline = "2px green solid";
+        e.target.style["outline-offset"] = "2px";
       } else {
-        e.target.style.outline = '';
-        e.target.style['outline-offset'] = '';
+        e.target.style.outline = "";
+        e.target.style["outline-offset"] = "";
       }
     }
   };
