@@ -64,6 +64,7 @@ enum Element {
   <ElementImg v-else-if="props.dataItemProps.elKind == Element.Img">
     <slot />
   </ElementImg>
+  <!-- <ElementTypography :data="props.dataItemProps" v-else-if="props.dataItemProps.elKind == Element.P" /> -->
   <ElementDiv v-else>
     <slot />
   </ElementDiv>

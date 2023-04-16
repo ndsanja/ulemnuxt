@@ -33,12 +33,11 @@ const handleMouseOver = (e: any, itemId: any) => {
 <template>
   <Element v-for="(item, index) in props.data" :key="item.id" :dataItemProps="item" :data-itemId="item.id"
     :data-item="JSON.stringify(item)" :data-index="index" draggable="true"
-    @click.self.prevent="handleCLick($event, item.id)"
+    @mouseover.self.prevent="handleMouseOver($event, item.id)" @click.self.prevent="handleCLick($event, item.id)"
     @mousedown.self.prevent="useOnDragStart($event, item, index, false, 300)"
     @mousemove.self.prevent="useOnDraging($event, item.id)" @mouseup.self.prevent="useOnDragEnd"
     @touchstart.self.prevent="useOnDragStart($event, item, index, false, 500)"
-    @touchmove.self.prevent="useOnDraging($event, item.id)" @touchend.self.prevent="useOnDragEnd"
-    @mouseover.self.prevent="handleMouseOver($event, item.id)"
+    @touchmove.self.prevent.passive="useOnDraging($event, item.id)" @touchend.self.prevent="useOnDragEnd"
     :class="`${item.id} ${dataClasses(item)} ${hoverId == item.id && `hover:tw-outline hover:tw-outline-offset-1 hover:tw-outline-2 hover:tw-outline-green-500 tw-relative`} ${activeId == item.
       id && `tw-outline tw-outline-offset-1 tw-outline-2 tw-outline-green-500 tw-relative`} ${overlapItemId == item.id && 'dropTarget'} ${drag.itemId == item.id && 'dragItem'} ${overlapItemId == item.id && isDropBefore ? 'tw-mt-[20px]' : ''} ${overlapItemId == item.id && isDropAfter ? 'tw-mb-[20px]' : ''}`"
     class="">
@@ -66,7 +65,9 @@ const handleMouseOver = (e: any, itemId: any) => {
       <p>{{ item.elName }}</p>
     </div>
 
+
     <ComponentsEditable :data="item.children" />
+
 
     <div
       :class="{ 'tw-hidden': false, 'tw-block tw-w-full tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropInside }">
@@ -78,6 +79,10 @@ const handleMouseOver = (e: any, itemId: any) => {
     <div
       :class="{ 'tw-hidden': false, 'tw-block tw-absolute -tw-bottom-[20px] tw-left-0 tw-right-0 tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropAfter }">
     </div>
+
+    <ElementTypography v-if="item.elKind == 'p'" :data="item" :id="item.elId"
+      class="w-full block m-2 bg-transparent focus:outline-none" @mouseover.self="handleMouseOver($event, item.id)"
+      @click.stop.self="handleCLick($event, item.id)" />
   </Element>
 </template>
 
