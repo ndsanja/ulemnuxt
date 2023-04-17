@@ -12,23 +12,25 @@ const { typographyFocus } = useDragAndDrop()
 const { activeId, id, hoverId } = useStore()
 const { isDraging } = useDragAndDrop()
 
-const resizeTextarea = () => {
-  let textarea = document.querySelector(`[data-itemId="${props.data.id}"]`)
-  typographyFocus.value = textarea
-  if (textarea) {
-    // @ts-ignore
-    textarea.style.height = 'auto';
-    // @ts-ignore
-    textarea.style.height = textarea.scrollHeight + 'px';
-  }
-}
+// const resizeTextarea = () => {
+//   let textarea = document.querySelector(`[data-itemId="${props.data.id}"]`)
+//   typographyFocus.value = textarea
+//   if (textarea) {
+//     // @ts-ignore
+//     textarea.style.height = 'auto';
+//     // @ts-ignore
+//     textarea.style.height = textarea.scrollHeight + 'px';
+//   }
+// }
 
-onMounted(() => {
+// onMounted(() => {
 
-  watchEffect(() => {
-    resizeTextarea()
-  })
-})
+//   watchEffect(() => {
+//     resizeTextarea()
+//   })
+// })
+
+const { textarea, triggerResize } = useTextareaAutosize()
 
 const handleCLick = (e: any, elId: any) => {
   id.value = elId
@@ -48,7 +50,10 @@ const handleMouseOver = (e: any, itemId: any) => {
 
 
 <template>
-  <textarea :data-itemId="props.data.id" @mouseover.self.prevent="handleMouseOver($event, props.data.id)"
-    @click.stop.prevent="handleCLick($event, props.data.id)" v-model="props.data.content" @input="resizeTextarea" rows="1"
+  <!-- <textarea :data-itemId="props.data.id" @mouseover.self.prevent="handleMouseOver($event, props.data.id)"
+        @click.stop.prevent="handleCLick($event, props.data.id)" v-model="props.data.content" @input="resizeTextarea" rows="1"
+        style="resize: none;" class="w-full focus:outline-none bg-transparent" /> -->
+  <textarea ref="textarea" :data-itemId="props.data.id" @mouseover.self.prevent="handleMouseOver($event, props.data.id)"
+    @click.stop.prevent="handleCLick($event, props.data.id)" v-model="props.data.content" @input="triggerResize" rows="1"
     style="resize: none;" class="w-full focus:outline-none bg-transparent" />
 </template>
