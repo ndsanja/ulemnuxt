@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const { id, sm, md, lg, xl, hoverId, activeId, handleDelete, dataClasses } = useStore()
+const { id, hoverId, activeId, handleDelete, dataClasses } = useStore()
 const { drag, useOnDragStart, useOnDragEnd, useOnDraging, isDraging, overlapItemId, isTouch, isDropAfter, isDropBefore, isDropInside, typographyFocus } = useDragAndDrop()
 
 
@@ -50,7 +50,7 @@ const handleMouseOver = (e: any, itemId: any) => {
     class="">
 
     <div v-show="activeId == item.id"
-      style="position: absolute; top: -21px; left: 0; z-index: 40; min-width: 20px; min-height: 20px; padding: 0 4px; background-color: #22c55e; border: 1px solid white; font-size: 11px; display: flex; align-items: center; justify-content: start; gap: 4px; border-top-left-radius: 4px; border-top-right-radius: 4px; overflow: hidden">
+      style="position: absolute; top: -21px; left: 0; z-index: 40; min-width: 24px; height: 20px; padding: 0 4px; background-color: #22c55e; border: 1px solid white; font-size: 11px; display: flex; align-items: center; justify-content: start; gap: 4px; border-top-left-radius: 4px; border-top-right-radius: 4px; overflow: hidden">
 
       <p style="width: 100%;">{{ item.elName }}</p>
 
@@ -65,13 +65,13 @@ const handleMouseOver = (e: any, itemId: any) => {
         @mousedown.stop.prevent="useOnDragStart($event, item, index, false, 300)"
         @mousemove.self.prevent="useOnDraging($event, item.id)" @mouseup.self.prevent="useOnDragEnd"
         style=" display: flex; align-items: center; justify-content: center; border-left: 1px white solid; padding-left: 4px;">
-        <Icon name="fluent:arrow-move-24-regular" style="font-size: 16px; cursor: pointer;"
+        <Icon name="fluent:arrow-move-24-regular" style="font-size: 16px; cursor: move;"
           @click.self="handleDelete(index)" />
       </div>
     </div>
 
     <div v-if="hoverId == item.id"
-      style="position: absolute; top: -21px; left: 0; z-index: 40; min-width: 20px; min-height: 20px; padding: 0 4px; background-color: transparent; color: #052e16; font-size: 11px; display: flex; align-items: center; justify-content: start; gap: 4px; border-top-left-radius: 4px; border-top-right-radius: 4px; overflow: hidden">
+      style="position: absolute; top: -21px; left: 0; z-index: 40; min-width: 24px; height: 20px; padding: 0 4px; background-color: transparent; color: #052e16; font-size: 11px; display: flex; align-items: center; justify-content: start; gap: 4px; border-top-left-radius: 4px; border-top-right-radius: 4px; overflow: hidden">
 
       <p style="width: 100%;">{{ item.elName }}</p>
     </div>
@@ -85,12 +85,12 @@ const handleMouseOver = (e: any, itemId: any) => {
     <ElementTypography
       v-show="item.elKind == 'p' || item.elKind == 'h1' || item.elKind == 'h2' || item.elKind == 'h3' || item.elKind == 'h4' || item.elKind == 'h5' || item.elKind == 'h6'"
       :data="item" class="bg-transparent focus:outline-none"
-      :class="`${item.id} ${dataClasses(item)} ${drag.itemId == item.id && 'dragItem'} ${overlapItemId == item.id && 'dropTarget tw-text-black'} ${overlapItemId == item.id && isDropBefore ? 'tw-mt-[20px]' : ''} ${overlapItemId == item.id && isDropAfter ? 'tw-mb-[20px]' : ''}`"
+      :class="`${item.id} ${dataClasses(item)} ${drag.itemId == item.id && 'dragItem'}`"
       @mouseover.self="handleMouseOver($event, item.id)" @click.stop="handleCLick($event, item.id)" />
 
 
     <div
-      :class="{ 'tw-hidden': false, 'tw-block tw-w-full tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropInside && item.elKind != 'p' }">
+      :class="{ 'tw-hidden': false, 'tw-block tw-w-full tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropInside && (item.elKind != 'p' || item.elKind != 'h1' || item.elKind != 'h2' || item.elKind != 'h3' || item.elKind != 'h4' || item.elKind != 'h5' || item.elKind != 'h6') }">
     </div>
 
     <div
