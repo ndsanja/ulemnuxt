@@ -335,13 +335,13 @@ export const useStore = () => {
   };
 
   const dataClasses = (item: any) => {
-    return xl
+    return xl.value
       ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md} ${item?.classes?.lg} ${item?.classes?.xl}`
-      : lg
+      : lg.value
       ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md} ${item?.classes?.lg}`
-      : md
+      : md.value
       ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md}`
-      : sm
+      : sm.value
       ? `${item?.classes?.xs} ${item?.classes?.sm}`
       : item?.classes?.xs;
   };

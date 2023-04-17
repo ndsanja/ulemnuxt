@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const { id, sm, md, lg, xl, hoverId, activeId, handleDelete } = useStore()
+const { id, sm, md, lg, xl, hoverId, activeId, handleDelete, dataClasses } = useStore()
 const { drag, useOnDragStart, useOnDragEnd, useOnDraging, isDraging, overlapItemId, isTouch, isDropAfter, isDropBefore, isDropInside, typographyFocus } = useDragAndDrop()
 
 
@@ -10,9 +10,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const dataClasses = (item: any) => {
-  return xl ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md} ${item?.classes?.lg} ${item?.classes?.xl}` : lg ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md} ${item?.classes?.lg}` : md ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md}` : sm ? `${item?.classes?.xs} ${item?.classes?.sm}` : item?.classes?.xs
-}
+
 
 const handleCLick = (e: any, elId: any) => {
   id.value = elId
