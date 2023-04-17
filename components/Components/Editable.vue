@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 const { id, sm, md, lg, xl, hoverId, activeId, handleDelete } = useStore()
-const { drag, useOnDragStart, useOnDragEnd, useOnDraging, isDraging, overlapItemId, testItemId, isDropAfter, isDropBefore, isDropInside } = useDragAndDrop()
+const { drag, useOnDragStart, useOnDragEnd, useOnDraging, isDraging, overlapItemId, isTouch, isDropAfter, isDropBefore, isDropInside, typographyFocus } = useDragAndDrop()
 
 
 interface Props {
@@ -22,6 +22,16 @@ const handleCLick = (e: any, elId: any) => {
     isDraging.value = false
   }
 }
+const handleTouch = (e: any, elId: any) => {
+  id.value = elId
+  activeId.value = elId
+  isTouch.value = true
+  typographyFocus.value.blur()
+
+  if (elId == 'root') {
+    isDraging.value = false
+  }
+}
 
 
 const handleMouseOver = (e: any, itemId: any) => {
@@ -34,15 +44,14 @@ const handleMouseOver = (e: any, itemId: any) => {
   <Element v-for="(item, index) in props.data" :key="item.id" :dataItemProps="item" :data-itemId="item.id"
     :data-item="JSON.stringify(item)" :data-index="index" draggable="true"
     @mouseover.self.prevent="handleMouseOver($event, item.id)" @click.self.prevent="handleCLick($event, item.id)"
+    @touchstart.self.prevent.passive="handleTouch($event, item.id)"
     @mousedown.self.prevent="useOnDragStart($event, item, index, false, 300)"
     @mousemove.self.prevent="useOnDraging($event, item.id)" @mouseup.self.prevent="useOnDragEnd"
-    @touchstart.self.prevent="useOnDragStart($event, item, index, false, 500)"
-    @touchmove.self.prevent.passive="useOnDraging($event, item.id)" @touchend.self.prevent="useOnDragEnd"
-    :class="`${item.id} ${dataClasses(item)} ${hoverId == item.id && `hover:tw-outline hover:tw-outline-offset-1 hover:tw-outline-2 hover:tw-outline-green-500 tw-relative`} ${activeId == item.
-      id && `tw-outline tw-outline-offset-1 tw-outline-2 tw-outline-green-500 tw-relative`} ${overlapItemId == item.id && 'dropTarget'} ${drag.itemId == item.id && 'dragItem'} ${overlapItemId == item.id && isDropBefore ? 'tw-mt-[20px]' : ''} ${overlapItemId == item.id && isDropAfter ? 'tw-mb-[20px]' : ''}`"
+    :class="`${item.id} ${dataClasses(item)} ${hoverId == item.id && `hover:tw-outline hover:tw-outline-offset-1 hover:tw-outline-2 hover:tw-outline-green-500 tw-relative tw-text-black`} ${activeId == item.
+      id && `tw-outline tw-outline-offset-1 tw-outline-2 tw-outline-green-500 tw-relative tw-text-black`} ${overlapItemId == item.id && 'dropTarget tw-text-black'} ${drag.itemId == item.id && 'dragItem'} ${overlapItemId == item.id && isDropBefore ? 'tw-mt-[20px]' : ''} ${overlapItemId == item.id && isDropAfter ? 'tw-mb-[20px]' : ''}`"
     class="">
 
-    <div v-if="activeId == item.id"
+    <div v-show="activeId == item.id"
       style="position: absolute; top: -21px; left: 0; z-index: 40; min-width: 20px; min-height: 20px; padding: 0 4px; background-color: #22c55e; border: 1px solid white; font-size: 11px; display: flex; align-items: center; justify-content: start; gap: 4px; border-top-left-radius: 4px; border-top-right-radius: 4px; overflow: hidden">
 
       <p style="width: 100%;">{{ item.elName }}</p>
@@ -50,6 +59,15 @@ const handleMouseOver = (e: any, itemId: any) => {
       <div
         style="display: flex; align-items: center; justify-content: center; border-left: 1px white solid; padding-left: 4px;">
         <Icon name="fluent:settings-24-regular" style="font-size: 16px; cursor: pointer;"
+          @click.self="handleDelete(index)" />
+      </div>
+
+      <div @touchstart.prevent="useOnDragStart($event, item, index, false, 300)"
+        @touchmove.prevent="useOnDraging($event, item.id)" @touchend.prevent="useOnDragEnd"
+        @mousedown.prevent="useOnDragStart($event, item, index, false, 300)"
+        @mousemove.self.prevent="useOnDraging($event, item.id)" @mouseup.self.prevent="useOnDragEnd"
+        style=" display: flex; align-items: center; justify-content: center; border-left: 1px white solid; padding-left: 4px;">
+        <Icon name="fluent:arrow-move-24-regular" style="font-size: 16px; cursor: pointer;"
           @click.self="handleDelete(index)" />
       </div>
     </div>
@@ -66,11 +84,14 @@ const handleMouseOver = (e: any, itemId: any) => {
     </div>
 
 
-    <ComponentsEditable :data="item.children" />
+    <ElementTypography v-show="item.elKind == 'p'" :data="item" :data-itemId="item.id"
+      class="w-full inline-block bg-transparent focus:outline-none"
+      :class="`${item.id} ${dataClasses(item)} ${drag.itemId == item.id && 'dragItem'} ${overlapItemId == item.id && 'dropTarget tw-text-black'} ${overlapItemId == item.id && isDropBefore ? 'tw-mt-[20px]' : ''} ${overlapItemId == item.id && isDropAfter ? 'tw-mb-[20px]' : ''}`"
+      @mouseover.self="handleMouseOver($event, item.id)" @click.stop.self="handleCLick($event, item.id)" />
 
 
     <div
-      :class="{ 'tw-hidden': false, 'tw-block tw-w-full tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropInside }">
+      :class="{ 'tw-hidden': false, 'tw-block tw-w-full tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropInside && item.elKind != 'p' }">
     </div>
 
     <div
@@ -80,9 +101,7 @@ const handleMouseOver = (e: any, itemId: any) => {
       :class="{ 'tw-hidden': false, 'tw-block tw-absolute -tw-bottom-[20px] tw-left-0 tw-right-0 tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropAfter }">
     </div>
 
-    <ElementTypography v-if="item.elKind == 'p'" :data="item" :id="item.elId"
-      class="w-full block m-2 bg-transparent focus:outline-none" @mouseover.self="handleMouseOver($event, item.id)"
-      @click.stop.self="handleCLick($event, item.id)" />
+    <ComponentsEditable :data="item.children" />
   </Element>
 </template>
 

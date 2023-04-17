@@ -109,7 +109,9 @@ export const useDragAndDrop = () => {
   const isDropBefore = useState('dropBefore', () => false);
   const isDropAfter = useState('dropAfter', () => false);
   const isDropInside = useState('dropInside', () => false);
+  const isTouch = useState('isTouch', () => false);
   const testItemId = useState('tetst', () => null);
+  const typographyFocus = useState<any>('typographyFocus', () => null);
 
   const useOnDragStart = (
     e: any,
@@ -121,6 +123,7 @@ export const useDragAndDrop = () => {
     if (e.clientX) {
       drag.value.x = e.clientX;
       drag.value.x = e.clientY;
+      isTouch.value = false;
     } else {
       drag.value.x = e.touches[0].clientX;
       drag.value.y = e.touches[0].clientY;
@@ -133,7 +136,7 @@ export const useDragAndDrop = () => {
 
     longPress.value = setTimeout(function () {
       root.value = document.querySelector('.rootBuilder');
-      drag.value.ref = e;
+      drag.value.ref = document.querySelector(`[data-itemId="${item.id}"]`);
       drag.value.itemId = item.id;
 
       isDragStart.value = true;
@@ -145,9 +148,9 @@ export const useDragAndDrop = () => {
       drag.value.itemIndex = Number(index);
       drag.value.itemIndexOld = Number(index);
       drag.value.parentId =
-        drag.value.ref.target.parentNode.attributes['data-itemId'].value;
+        drag.value.ref.parentNode.attributes['data-itemId'].value;
       drag.value.parentIndex =
-        drag.value.ref.target.parentNode.attributes['data-index'].value;
+        drag.value.ref.parentNode.attributes['data-index'].value;
       drag.value.parent = getDataById(drag.value.parentId).value;
     }, delay);
   };
@@ -459,6 +462,9 @@ export const useDragAndDrop = () => {
     isDropBefore,
     isDropInside,
     testItemId,
+    isDragStart,
+    isTouch,
+    typographyFocus,
     useOnDragStart,
     useOnDragEnd,
     useOnDraging,

@@ -7,43 +7,46 @@ interface Props {
 const props = defineProps<Props>()
 
 const { getDataById } = useStore()
-const item = getDataById(props.data.id)
+const { typographyFocus } = useDragAndDrop()
 
-// const { textarea, triggerResize } = useTextareaAutosize()
-
-// const textarea = ref<any>()
-
-// const resizeTextarea = () => {
-//   textarea.value.style.height = 'auto';
-//   textarea.value.style.height = textarea.value.scrollHeight + 'px';
-// }
-
-
-const test = ref('loram test')
+const { activeId, id, hoverId } = useStore()
+const { isDraging } = useDragAndDrop()
 
 const resizeTextarea = () => {
-  let textarea = document.getElementById(props.data.elId)
+  let textarea = document.querySelector(`[data-itemId="${props.data.id}"]`)
+  typographyFocus.value = textarea
   if (textarea) {
+    // @ts-ignore
     textarea.style.height = 'auto';
+    // @ts-ignore
     textarea.style.height = textarea.scrollHeight + 'px';
   }
 }
 
-onMounted(() => {
-  watchEffect(() => {
-    resizeTextarea()
-  })
+
+watch(props.data.content, () => {
+  resizeTextarea()
 })
 
+const handleCLick = (e: any, elId: any) => {
+  id.value = elId
+  activeId.value = elId
 
-// watch(item.value.content, () => {
-//   triggerResize()
-// })
+  if (elId == 'root') {
+    isDraging.value = false
+  }
+}
+
+
+const handleMouseOver = (e: any, itemId: any) => {
+  hoverId.value = itemId
+
+}
 </script>
 
 
 <template>
-  <!-- <textarea ref="textarea" v-model="item.content" class="resize-none" /> -->
-  <textarea ref="textarea" v-model="item.content" @input="resizeTextarea" rows="1" style="resize: none;"
-    class="w-full inline-block focus:outline-none bg-transparent" />
+  <textarea @mouseover.self.prevent="handleMouseOver($event, props.data.id)"
+    @click.stop.self.prevent="handleCLick($event, props.data.id)" v-model="props.data.content" @input="resizeTextarea"
+    rows="1" style="resize: none;" class="w-full focus:outline-none bg-transparent" />
 </template>
