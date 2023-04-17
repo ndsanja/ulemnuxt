@@ -1,5 +1,5 @@
 export const useStateUiBuilder = () => {
-  const toogleRight = useState('toogleRight', () => false);
+  const toogleRight = useState('toogleRight', () => true);
   const toogleLeft = useState('toogleLeft', () => false);
   const display = useState('display', () => 'xs');
   const isPreview = useState('isPreview', () => false);

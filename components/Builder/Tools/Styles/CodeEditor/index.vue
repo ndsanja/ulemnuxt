@@ -7,7 +7,7 @@ const { width, height } = useWindowSize()
 
 const handle = ref<HTMLElement | null>(null)
 const toogleEditor = ref(true)
-const toBottom = ref(false)
+const toBottom = ref(true)
 
 const clickToBottom = () => {
   toogleEditor.value = false
@@ -157,6 +157,7 @@ const positionY = ref()
             v-model="dataById.classes.xl"></textarea>
         </template>
 
-    </div>
-  </BuilderToolsStylesPanelEditor>
-</Draggable></template>
+      </div>
+    </BuilderToolsStylesPanelEditor>
+  </Draggable>
+</template>
