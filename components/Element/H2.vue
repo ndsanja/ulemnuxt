@@ -1,0 +1,11 @@
+<script setup lang="ts">
+const { dataClasses } = useStore()
+interface Props {
+  item: any
+}
+
+const props = defineProps<Props>()
+</script>
+<template>
+  <h2 :class="dataClasses(props.item.classes)">{{ props.item.content }}</h2>
+</template>

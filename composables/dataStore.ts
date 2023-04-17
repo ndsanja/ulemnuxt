@@ -103,7 +103,7 @@ const initial = [
       },
       {
         id: '5',
-        elName: 'section 5',
+        elName: 'paragraph',
         isRoot: false,
         parentId: '',
         currentIndex: null,
@@ -123,12 +123,12 @@ const initial = [
       },
       {
         id: '6',
-        elName: 'section 6',
+        elName: 'heading 1',
         isRoot: false,
         parentId: '',
         currentIndex: null,
-        elKind: 'p',
-        content: '',
+        elKind: 'h1',
+        content: 'untuk konten',
         elId: '6',
         classes: {
           xs: 'text-3xl text-blue-500',
@@ -334,6 +334,18 @@ export const useStore = () => {
     });
   };
 
+  const dataClasses = (item: any) => {
+    return xl
+      ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md} ${item?.classes?.lg} ${item?.classes?.xl}`
+      : lg
+      ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md} ${item?.classes?.lg}`
+      : md
+      ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md}`
+      : sm
+      ? `${item?.classes?.xs} ${item?.classes?.sm}`
+      : item?.classes?.xs;
+  };
+
   return {
     data,
     addElementData,
@@ -351,6 +363,7 @@ export const useStore = () => {
     getAddElementDataById,
     handleDelete,
     handleDuplicate,
+    dataClasses,
     dataById,
     displaySize,
     xs,

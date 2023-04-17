@@ -64,13 +64,6 @@ enum Element {
   <ElementImg v-else-if="props.dataItemProps.elKind == Element.Img">
     <slot />
   </ElementImg>
-  <ElementP v-else-if="props.dataItemProps.elKind === Element.P" :item="props.dataItemProps" />
-  <ElementH1 v-else-if="props.dataItemProps.elKind === Element.H1" :item="props.dataItemProps" />
-  <ElementH2 v-else-if="props.dataItemProps.elKind === Element.H2" :item="props.dataItemProps" />
-  <ElementH3 v-else-if="props.dataItemProps.elKind === Element.H3" :item="props.dataItemProps" />
-  <ElementH4 v-else-if="props.dataItemProps.elKind === Element.H4" :item="props.dataItemProps" />
-  <ElementH5 v-else-if="props.dataItemProps.elKind === Element.H5" :item="props.dataItemProps" />
-  <ElementH6 v-else-if="props.dataItemProps.elKind === Element.H6" :item="props.dataItemProps" />
   <ElementDiv v-else>
     <slot />
   </ElementDiv>

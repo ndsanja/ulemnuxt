@@ -8,6 +8,11 @@ const { width, height } = useWindowSize()
 const handle = ref<HTMLElement | null>(null)
 const toogleEditor = ref(true)
 const toBottom = ref(true)
+const styleBreakpoint = ref('xs')
+
+const changeStyleBreakpoint = (breakpoint: any) => {
+  styleBreakpoint.value = breakpoint
+}
 
 const clickToBottom = () => {
   toogleEditor.value = false
@@ -72,18 +77,16 @@ const positionY = ref()
       </template>
 
       <div v-if="toogleEditor" class="tw-text-center tw-text-white tw-text-xs">
-        <p v-if="xs" class="">XS Breakpoint </p>
-        <p v-if="sm" class="">SM Breakpoint </p>
-        <p v-if="md" class="">MD Breakpoint </p>
-        <p v-if="lg" class="">LG Breakpoint </p>
-        <p v-if="xl" class="">XL Breakpoint </p>
-        <!-- <p v-if="xxl" class="">2XL Breakpoint </p> -->
+        <p v-if="styleBreakpoint == 'xs'" class="">XS Breakpoint </p>
+        <p v-if="styleBreakpoint == 'sm'" class="">SM Breakpoint </p>
+        <p v-if="styleBreakpoint == 'md'" class="">MD Breakpoint </p>
+        <p v-if="styleBreakpoint == 'lg'" class="">LG Breakpoint </p>
+        <p v-if="styleBreakpoint == 'xl'" class="">XL Breakpoint </p>
 
-        <p v-if="sm" class="">use prefix <b class="tw-text-base">sm:</b> </p>
-        <p v-if="md" class="">use prefix <b class="tw-text-base">md:</b> </p>
-        <p v-if="lg" class="">use prefix <b class="tw-text-base">lg:</b> </p>
-        <p v-if="xl" class="">use prefix <b class="tw-text-base">xl:</b> </p>
-        <!-- <p v-if="xxl" class="text-sm">use prefix <b class="text-base">2xl:</b> </p> -->
+        <p v-if="styleBreakpoint == 'sm'" class="">use prefix <b class="tw-text-base">sm:</b> </p>
+        <p v-if="styleBreakpoint == 'md'" class="">use prefix <b class="tw-text-base">md:</b> </p>
+        <p v-if="styleBreakpoint == 'lg'" class="">use prefix <b class="tw-text-base">lg:</b> </p>
+        <p v-if="styleBreakpoint == 'xl'" class="">use prefix <b class="tw-text-base">xl:</b> </p>
       </div>
     </BuilderToolsStylesPanelEditor>
 
@@ -91,67 +94,53 @@ const positionY = ref()
       <template #title>
         <div class="tw-flex tw-items-center tw-justify-between tw-w-full">
           <p class="tw-text-xs"> Editor </p>
-          <div v-if="!isFit" un-cloak class="tw-text-xs tw-flex tw-items-center tw-justify-end tw-space-x-2">
-            <div v-if="dataById?.classes?.xs?.length" @click="setDisplay('xs')"
-              :class="{ 'tw-cursor-pointer': true, 'tw-text-sm tw-font-bold tw-text-blue-500': display == 'xs' }">xs</div>
-            <div v-if="dataById?.classes?.sm?.length" @click="setDisplay('sm')"
-              :class="{ 'tw-cursor-pointer': true, 'tw-text-sm tw-font-bold tw-text-blue-500': display == 'sm' }">sm</div>
-            <div v-if="dataById?.classes?.md?.length" @click="setDisplay('md')"
-              :class="{ 'tw-cursor-pointer': true, 'tw-text-sm tw-font-bold tw-text-blue-500': display == 'md' }">md</div>
-            <div v-if="dataById?.classes?.lg?.length" @click="setDisplay('lg')"
-              :class="{ 'tw-cursor-pointer': true, 'tw-text-sm tw-font-bold tw-text-blue-500': display == 'lg' }">lg</div>
-            <div v-if="dataById?.classes?.xl?.length" @click="setDisplay('xl')"
-              :class="{ 'tw-cursor-pointer': true, 'tw-text-sm tw-font-bold tw-text-blue-500': display == 'xl' }">xl</div>
-          </div>
-          <div v-if="isFit" un-cloak class="text-xs flex items-center justify-end space-x-2">
-            <div v-if="dataById?.classes?.xs?.length" @click="setDisplay('xs')"
-              :class="{ 'tw-cursor-pointer': true, 'tw-text-sm tw-font-bold tw-text-blue-500': displaySize < Breakpoints.sm }">
-              xs
-            </div>
-            <div v-if="dataById?.classes?.sm?.length" @click="setDisplay('sm')"
-              :class="{ 'tw-cursor-pointer': true, 'tw-text-sm tw-font-bold tw-text-blue-500': displaySize >= Breakpoints.sm && displaySize < Breakpoints.md }">
+          <div un-cloak class="tw-text-xs tw-flex tw-items-center tw-justify-end tw-space-x-2">
+            <div @click="changeStyleBreakpoint('xs')"
+              :class="{ 'tw-cursor-pointer tw-relative': true, 'tw-text-sm tw-font-bold tw-text-blue-500': styleBreakpoint == 'xs', 'after:tw-absolute after:-tw-top-[0.5px] after:tw-h-1 after:tw-w-1 after:tw-rounded-full after:tw-bg-yellow-50 after:tw-left-1/2 after:-tw-translate-x-1/2': dataById.classes?.xs?.length }">
+              xs</div>
+            <div @click="changeStyleBreakpoint('sm')"
+              :class="{ 'tw-cursor-pointer tw-relative': true, 'tw-text-sm tw-font-bold tw-text-blue-500': styleBreakpoint == 'sm', 'after:tw-absolute after:-tw-top-[0.5px] after:tw-h-1 after:tw-w-1 after:tw-rounded-full after:tw-bg-yellow-50 after:tw-left-1/2 after:-tw-translate-x-1/2': dataById.classes?.sm?.length }">
               sm</div>
-            <div v-if="dataById?.classes?.md?.length" @click="setDisplay('md')"
-              :class="{ 'tw-cursor-pointer': true, 'tw-text-sm tw-font-bold tw-text-blue-500': displaySize >= Breakpoints.md && displaySize < Breakpoints.lg }">
+            <div @click="changeStyleBreakpoint('md')"
+              :class="{ 'tw-cursor-pointer tw-relative': true, 'tw-text-sm tw-font-bold tw-text-blue-500': styleBreakpoint == 'md', 'after:tw-absolute after:-tw-top-[0.5px] after:tw-h-1 after:tw-w-1 after:tw-rounded-full after:tw-bg-yellow-50 after:tw-left-1/2 after:-tw-translate-x-1/2': dataById.classes?.md?.length }">
               md</div>
-            <div v-if="dataById?.classes?.lg?.length" @click="setDisplay('lg')"
-              :class="{ 'tw-cursor-pointer': true, 'tw-text-sm tw-font-bold tw-text-blue-500': displaySize >= Breakpoints.lg && displaySize < Breakpoints.xl }">
+            <div @click="changeStyleBreakpoint('lg')"
+              :class="{ 'tw-cursor-pointer tw-relative': true, 'tw-text-sm tw-font-bold tw-text-blue-500': styleBreakpoint == 'lg', 'after:tw-absolute after:-tw-top-[0.5px] after:tw-h-1 after:tw-w-1 after:tw-rounded-full after:tw-bg-yellow-50 after:tw-left-1/2 after:-tw-translate-x-1/2': dataById.classes?.lg?.length }">
               lg</div>
-            <div v-if="dataById?.classes?.xl?.length" @click="setDisplay('xl')"
-              :class="{ 'tw-cursor-pointer': true, 'tw-text-sm tw-font-bold tw-text-blue-500': displaySize >= Breakpoints.xl }">
-              xl
-            </div>
+            <div @click="changeStyleBreakpoint('xl')"
+              :class="{ 'tw-cursor-pointer tw-relative': true, 'tw-text-sm tw-font-bold tw-text-blue-500': styleBreakpoint == 'xl', 'after:tw-absolute after:-tw-top-[0.5px] after:tw-h-1 after:tw-w-1 after:tw-rounded-full after:tw-bg-yellow-50 after:tw-left-1/2 after:-tw-translate-x-1/2': dataById.classes?.xl?.length }">
+              xl</div>
           </div>
         </div>
       </template>
 
       <div :class="{ 'tw-bg-slate-700 tw-min-h-full': true }">
         <template v-if="dataById.classes">
-          <textarea v-if="xs" :class="{ '!tw-min-h-[100px]': true }"
+          <textarea v-if="styleBreakpoint == 'xs'" :class="{ '!tw-min-h-[100px]': true }"
             placeholder="No style in XS Breakpoint, write here..."
             class="tw-min-h-[300px] tw-w-full tw-p-1 tw-mt-1 tw-mb-2 tw-bg-slate-900 tw-text-slate-200 tw-border tw-border-slate-500 tw-rounded-lg tw-text-sm tw-font-mono"
             v-model="dataById.classes.xs"></textarea>
         </template>
         <template v-if="dataById.classes">
-          <textarea v-if="sm" :class="{ '!tw-min-h-[100px]': true }"
+          <textarea v-if="styleBreakpoint == 'sm'" :class="{ '!tw-min-h-[100px]': true }"
             placeholder="No style in SM Breakpoint, write here..."
             class="tw-min-h-[300px] tw-w-full tw-p-1 tw-mt-1 tw-mb-2 tw-bg-slate-900 tw-text-slate-200 tw-border tw-border-slate-500 tw-rounded-lg tw-text-sm tw-font-mono"
             v-model="dataById.classes.sm"></textarea>
         </template>
         <template v-if="dataById.classes">
-          <textarea v-if="md" :class="{ '!tw-min-h-[100px]': true }"
+          <textarea v-if="styleBreakpoint == 'md'" :class="{ '!tw-min-h-[100px]': true }"
             placeholder="No style in MD Breakpoint, write here..."
             class="tw-min-h-[300px] tw-w-full tw-p-1 tw-mt-1 tw-mb-2 tw-bg-slate-900 tw-text-slate-200 tw-border tw-border-slate-500 tw-rounded-lg tw-text-sm tw-font-mono"
             v-model="dataById.classes.md"></textarea>
         </template>
         <template v-if="dataById.classes">
-          <textarea v-if="lg" :class="{ '!tw-min-h-[100px]': true }"
+          <textarea v-if="styleBreakpoint == 'lg'" :class="{ '!tw-min-h-[100px]': true }"
             placeholder="No style in LG Breakpoint, write here..."
             class="tw-min-h-[300px] tw-w-full tw-p-1 tw-mt-1 tw-mb-2 tw-bg-slate-900 tw-text-slate-200 tw-border tw-border-slate-500 tw-rounded-lg tw-text-sm tw-font-mono"
             v-model="dataById.classes.lg"></textarea>
         </template>
         <template v-if="dataById.classes">
-          <textarea v-if="xl" :class="{ '!tw-min-h-[100px]': true }"
+          <textarea v-if="styleBreakpoint == 'xl'" :class="{ '!tw-min-h-[100px]': true }"
             placeholder="No style in XL Breakpoint, write here..."
             class="tw-min-h-[300px] tw-w-full tw-p-1 tw-mt-1 tw-mb-2 tw-bg-slate-900 tw-text-slate-200 tw-border tw-border-slate-500 tw-rounded-lg tw-text-sm tw-font-mono"
             v-model="dataById.classes.xl"></textarea>

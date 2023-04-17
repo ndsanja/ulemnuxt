@@ -41,7 +41,7 @@ const handleMouseOver = (e: any, itemId: any) => {
 </script>
 
 <template>
-  <Element v-for="(item, index) in props.data" :key="item.id" :dataItemProps="item" :data-itemId="item.id"
+  <ElementEditable v-for="(item, index) in props.data" :key="item.id" :dataItemProps="item" :data-itemId="item.id"
     :data-item="JSON.stringify(item)" :data-index="index" draggable="true"
     @mouseover.self.prevent="handleMouseOver($event, item.id)" @click.self.prevent="handleCLick($event, item.id)"
     @touchstart.self.prevent.passive="handleTouch($event, item.id)"
@@ -84,8 +84,9 @@ const handleMouseOver = (e: any, itemId: any) => {
     </div>
 
 
-    <ElementTypography v-show="item.elKind == 'p'" :data="item"
-      class="w-full inline-block bg-transparent focus:outline-none"
+    <ElementTypography
+      v-show="item.elKind == 'p' || item.elKind == 'h1' || item.elKind == 'h2' || item.elKind == 'h3' || item.elKind == 'h4' || item.elKind == 'h5' || item.elKind == 'h6'"
+      :data="item" class="bg-transparent focus:outline-none"
       :class="`${item.id} ${dataClasses(item)} ${drag.itemId == item.id && 'dragItem'} ${overlapItemId == item.id && 'dropTarget tw-text-black'} ${overlapItemId == item.id && isDropBefore ? 'tw-mt-[20px]' : ''} ${overlapItemId == item.id && isDropAfter ? 'tw-mb-[20px]' : ''}`"
       @mouseover.self="handleMouseOver($event, item.id)" @click.stop="handleCLick($event, item.id)" />
 
@@ -102,7 +103,7 @@ const handleMouseOver = (e: any, itemId: any) => {
     </div>
 
     <ComponentsEditable :data="item.children" />
-  </Element>
+  </ElementEditable>
 </template>
 
 <style scoped>
