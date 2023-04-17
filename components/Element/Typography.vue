@@ -23,9 +23,11 @@ const resizeTextarea = () => {
   }
 }
 
+onMounted(() => {
 
-watch(props.data.content, () => {
-  resizeTextarea()
+  watchEffect(() => {
+    resizeTextarea()
+  })
 })
 
 const handleCLick = (e: any, elId: any) => {
@@ -46,7 +48,7 @@ const handleMouseOver = (e: any, itemId: any) => {
 
 
 <template>
-  <textarea @mouseover.self.prevent="handleMouseOver($event, props.data.id)"
-    @click.stop.self.prevent="handleCLick($event, props.data.id)" v-model="props.data.content" @input="resizeTextarea"
-    rows="1" style="resize: none;" class="w-full focus:outline-none bg-transparent" />
+  <textarea :data-itemId="props.data.id" @mouseover.self.prevent="handleMouseOver($event, props.data.id)"
+    @click.stop.prevent="handleCLick($event, props.data.id)" v-model="props.data.content" @input="resizeTextarea" rows="1"
+    style="resize: none;" class="w-full focus:outline-none bg-transparent" />
 </template>

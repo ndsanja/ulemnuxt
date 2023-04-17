@@ -166,9 +166,27 @@ export const useDragAndDrop = () => {
       if (e.clientX) {
         drag.value.x = e.clientX;
         drag.value.y = e.clientY;
+
+        let windowHeight = window.innerHeight;
+        let scrollSpeed = 5;
+
+        if (drag.value.y < 50) {
+          window.scrollBy(0, -scrollSpeed);
+        } else if (drag.value.y > windowHeight - 50) {
+          window.scrollBy(0, scrollSpeed);
+        }
       } else {
         drag.value.x = e.touches[0].clientX;
         drag.value.y = e.touches[0].clientY;
+
+        let windowHeight = window.innerHeight;
+        let scrollSpeed = 5;
+
+        if (drag.value.y < 50) {
+          window.scrollBy(0, -scrollSpeed);
+        } else if (drag.value.y > windowHeight - 50) {
+          window.scrollBy(0, scrollSpeed);
+        }
       }
 
       // get all child Node recursively
