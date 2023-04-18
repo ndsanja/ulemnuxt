@@ -11,5 +11,5 @@ const { textarea, triggerResize } = useTextareaAutosize()
 
 <template>
   <textarea ref="textarea" :data-itemId="props.data.id" v-model="props.data.content" @input="triggerResize" rows="1"
-    style="resize: none;" class="focus:outline-none bg-transparent w-full inline-block" />
+    style="resize: none;" class="focus:outline-none bg-transparent w-auto max-w-full inline-block" />
 </template>

@@ -36,11 +36,35 @@ const handleMouseOver = (e: any, itemId: any) => {
   hoverId.value = itemId
 
 }
+
+const handleClickElName = (e: any) => {
+  let activeEl = document.querySelector(`[data-itemId="${activeId.value}"]`)
+  let parrent = activeEl?.parentNode
+  let granParrent = parrent?.parentNode
+  let granGrandParrent = granParrent?.parentNode
+
+  // @ts-ignore
+  console.log(parrent?.attributes['data-itemId']?.value)
+  // @ts-ignore
+  console.log(granParrent?.attributes['data-itemId']?.value)
+  // @ts-ignore
+  console.log(granGrandParrent?.attributes['data-itemId']?.value)
+
+  // @ts-ignore
+  console.log(parrent?.attributes['data-itemName']?.value)
+  // @ts-ignore
+  console.log(granParrent?.attributes['data-itemName']?.value)
+  // @ts-ignore
+  console.log(granGrandParrent?.attributes['data-itemName']?.value)
+
+
+
+}
 </script>
 
 <template>
   <ElementEditable v-for="(item, index) in props.data" :key="item.id" :dataItemProps="item" :data-itemId="item.id"
-    :data-item="JSON.stringify(item)" :data-index="index" draggable="true"
+    :data-itemName="item.elName" :data-item="JSON.stringify(item)" :data-index="index" draggable="true"
     @mouseover.self.prevent="handleMouseOver($event, item.id)" @click.self.prevent="handleCLick($event, item.id)"
     @touchstart.self.prevent.passive="handleTouch($event, item.id)"
     @mousedown.self.prevent="useOnDragStart($event, item, index, false, 300)"
@@ -52,7 +76,7 @@ const handleMouseOver = (e: any, itemId: any) => {
     <div v-show="activeId == item.id"
       style="position: absolute; top: -21px; left: 0; z-index: 40; min-width: 24px; height: 20px; padding: 0 4px; background-color: #22c55e; border: 1px solid white; font-size: 11px; display: flex; align-items: center; justify-content: start; gap: 4px; border-top-left-radius: 4px; border-top-right-radius: 4px; overflow: hidden">
 
-      <p style="width: 100%;">{{ item.elName }}</p>
+      <p @click.self="handleClickElName" style="width: 100%;" class="tw-cursor-pointer">{{ item.elName }}</p>
 
       <div
         style="display: flex; align-items: center; justify-content: center; border-left: 1px white solid; padding-left: 4px;">
