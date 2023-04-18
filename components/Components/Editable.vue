@@ -24,7 +24,7 @@ const handleTouch = (e: any, elId: any) => {
   id.value = elId
   activeId.value = elId
   isTouch.value = true
-  typographyFocus.value.blur()
+  window.blur()
 
   if (elId == 'root') {
     isDraging.value = false
@@ -46,7 +46,7 @@ const handleMouseOver = (e: any, itemId: any) => {
     @mousedown.self.prevent="useOnDragStart($event, item, index, false, 300)"
     @mousemove.self.prevent="useOnDraging($event, item.id)" @mouseup.self.prevent="useOnDragEnd"
     :class="`${item.id} ${dataClasses(item)} ${hoverId == item.id && `hover:tw-outline hover:tw-outline-offset-1 hover:tw-outline-2 hover:tw-outline-green-500 tw-relative tw-text-black`} ${activeId == item.
-      id && `tw-outline tw-outline-offset-1 tw-outline-2 tw-outline-green-500 tw-relative tw-text-black`} ${overlapItemId == item.id && 'dropTarget tw-text-black'} ${drag.itemId == item.id && 'dragItem'} ${overlapItemId == item.id && isDropBefore ? 'tw-mt-[20px]' : ''} ${overlapItemId == item.id && isDropAfter ? 'tw-mb-[20px]' : ''}`"
+      id && `tw-outline tw-outline-offset-1 tw-outline-2 tw-outline-green-500 tw-relative tw-text-black`} ${overlapItemId == item.id && 'dropTarget tw-text-black'} ${drag.itemId == item.id && 'dragItem'} ${overlapItemId == item.id && isDropBefore ? 'tw-mt-[12px]' : ''} ${overlapItemId == item.id && isDropAfter ? 'tw-mb-[12px]' : ''}`"
     class="">
 
     <div v-show="activeId == item.id"
@@ -85,7 +85,7 @@ const handleMouseOver = (e: any, itemId: any) => {
     <ElementTypography
       v-show="item.elKind == 'p' || item.elKind == 'h1' || item.elKind == 'h2' || item.elKind == 'h3' || item.elKind == 'h4' || item.elKind == 'h5' || item.elKind == 'h6'"
       :data="item" class="bg-transparent focus:outline-none"
-      :class="`${item.id} ${dataClasses(item)} ${drag.itemId == item.id && 'dragItem'}`"
+      :class="`${item.id} ${dataClasses(item)} ${drag.itemId == item.id && 'dragItem'} ${isDraging && 'm-3'}`"
       @mouseover.self="handleMouseOver($event, item.id)" @click.stop="handleCLick($event, item.id)" />
 
 
@@ -94,10 +94,10 @@ const handleMouseOver = (e: any, itemId: any) => {
     </div>
 
     <div
-      :class="{ 'tw-hidden': false, 'tw-block tw-absolute -tw-top-[20px] tw-left-0 tw-right-0 tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropBefore }">
+      :class="{ 'tw-hidden': false, 'tw-block tw-absolute -tw-top-[15px] tw-left-0 tw-right-0 tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropBefore }">
     </div>
     <div
-      :class="{ 'tw-hidden': false, 'tw-block tw-absolute -tw-bottom-[20px] tw-left-0 tw-right-0 tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropAfter }">
+      :class="{ 'tw-hidden': false, 'tw-block tw-absolute -tw-bottom-[15px] tw-left-0 tw-right-0 tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropAfter }">
     </div>
 
     <ComponentsEditable :data="item.children" />
