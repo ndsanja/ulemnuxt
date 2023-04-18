@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const { id, hoverId, activeId, handleDelete, dataClasses } = useStore()
+const { id, hoverId, activeId, handleDelete, dataClasses, } = useStore()
 const { drag, useOnDragStart, useOnDragEnd, useOnDraging, isDraging, overlapItemId, isTouch, isDropAfter, isDropBefore, isDropInside, typographyFocus } = useDragAndDrop()
 
 
@@ -15,6 +15,8 @@ const props = defineProps<Props>()
 const handleCLick = (e: any, elId: any) => {
   id.value = elId
   activeId.value = elId
+  window.blur()
+
 
   if (elId == 'root') {
     isDraging.value = false
@@ -71,7 +73,7 @@ const handleClickElName = (e: any) => {
     @mousemove.self.prevent="useOnDraging($event, item.id)" @mouseup.self.prevent="useOnDragEnd"
     :class="`${item.id} ${dataClasses(item)} ${hoverId == item.id && `hover:tw-outline hover:tw-outline-offset-1 hover:tw-outline-2 hover:tw-outline-green-500 tw-relative tw-text-black`} ${activeId == item.
       id && `tw-outline tw-outline-offset-1 tw-outline-2 tw-outline-green-500 tw-relative tw-text-black`} ${overlapItemId == item.id && 'dropTarget tw-text-black'} ${drag.itemId == item.id && 'dragItem'} ${overlapItemId == item.id && isDropBefore ? 'tw-mt-[12px]' : ''} ${overlapItemId == item.id && isDropAfter ? 'tw-mb-[12px]' : ''}`"
-    :style="item.elKind == 'p' || item.elKind == 'h1' || item.elKind == 'h2' || item.elKind == 'h3' || item.elKind == 'h4' || item.elKind == 'h5' || item.elKind == 'h6' ? `width: calc(${item.content.match(/\S/g).length}ch - 1px); max-width: 100%` : ''">
+    :style="item.elKind == 'p' || item.elKind == 'h1' || item.elKind == 'h2' || item.elKind == 'h3' || item.elKind == 'h4' || item.elKind == 'h5' || item.elKind == 'h6' ? `width: ${item.content.match(/\S/g).length}ch; max-width: 100%` : ''">
 
     <div v-show="activeId == item.id"
       style="position: absolute; top: -21px; left: 0; z-index: 40; min-width: 24px; height: 20px; padding: 0 4px; background-color: #22c55e; border: 1px solid white; font-size: 11px; display: flex; align-items: center; justify-content: start; gap: 4px; border-top-left-radius: 4px; border-top-right-radius: 4px; overflow: hidden">
@@ -108,10 +110,10 @@ const handleClickElName = (e: any) => {
 
     <ElementTypography
       v-show="item.elKind == 'p' || item.elKind == 'h1' || item.elKind == 'h2' || item.elKind == 'h3' || item.elKind == 'h4' || item.elKind == 'h5' || item.elKind == 'h6'"
-      :data="item" class="bg-transparent focus:outline-none"
+      :data="item" class="bg-transparent focus:outline-none inline-block"
       :class="`${item.id} ${dataClasses(item)} ${drag.itemId == item.id && 'dragItem'} ${isDraging && 'm-3'}`"
       @mouseover.self="handleMouseOver($event, item.id)" @click.stop="handleCLick($event, item.id)"
-      :style="`width: calc(${item.content.match(/\S/g).length}ch - 1px); max-width: 100% ; min-width: 1px;`" />
+      :style="`width: ${item.content.match(/\S/g).length}ch; max-width: 100% ; min-width: 1px; resize: none;`" />
 
 
     <div

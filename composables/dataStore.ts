@@ -266,6 +266,7 @@ export const useStore = () => {
   const isDragAddNew = useState('drag-add-new', () => false);
   const currentData = useState<any>('current-data', () => null);
   const currentParentData = useState<any>('current-parent-data', () => null);
+  const contentLen = useState<any>('contentLen', () => 0);
 
   const getElementById = (elementId: any, data: ElementDataType[]) => {
     let resultElement: ElementDataType | any = {};
@@ -358,6 +359,7 @@ export const useStore = () => {
     idFromDrag,
     currentData,
     currentParentData,
+    contentLen,
     getElementById,
     getDataById,
     getAddElementDataById,
