@@ -267,6 +267,9 @@ export const useStore = () => {
   const currentData = useState<any>('current-data', () => null);
   const currentParentData = useState<any>('current-parent-data', () => null);
   const contentLen = useState<any>('contentLen', () => 0);
+  const textContent = useState('textContent', () => '');
+  const fontContent = useState('fontContent', () => '30px Arial');
+  const textWidth = useState<any>('textWidth', () => 0);
 
   const getElementById = (elementId: any, data: ElementDataType[]) => {
     let resultElement: ElementDataType | any = {};
@@ -347,6 +350,18 @@ export const useStore = () => {
       : item?.classes?.xs;
   };
 
+  function getTextWidth(text: any, font: any) {
+    // create an offscreen element
+    const element = document.createElement('canvas');
+    const context = element.getContext('2d');
+    if (context) {
+      context.font = font;
+    }
+    const width = context?.measureText(text).width;
+    // return the width of the text
+    return width;
+  }
+
   return {
     data,
     addElementData,
@@ -360,6 +375,10 @@ export const useStore = () => {
     currentData,
     currentParentData,
     contentLen,
+    textContent,
+    fontContent,
+    textWidth,
+    getTextWidth,
     getElementById,
     getDataById,
     getAddElementDataById,

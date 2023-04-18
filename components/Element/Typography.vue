@@ -4,7 +4,6 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-
 const { textarea, triggerResize } = useTextareaAutosize()
 
 </script>

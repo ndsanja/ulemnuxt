@@ -17,9 +17,10 @@ const { isPreview } = useStateUiBuilder()
       <BuilderCanvas>
         <Components v-if="isPreview == true" :data="data" />
         <div v-else class="rootBuilder">
-          <ComponentsEditable :data="data" />
+          <ClientOnly fallback-tag="span" fallback="Loading comments...">
+            <ComponentsEditable :data="data" un-cloak />
+          </ClientOnly>
         </div>
-
       </BuilderCanvas>
       <BuilderToolsAddElements />
       <BuilderToolsStylesCodeEditor />
