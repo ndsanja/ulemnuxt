@@ -1,6 +1,7 @@
 <script setup lang="ts">
-const { data } = useStore()
+const { data, getDataById, dataClasses, baseClasses } = useStore()
 const { isPreview } = useStateUiBuilder()
+
 </script>
 
 <template>
@@ -15,10 +16,10 @@ const { isPreview } = useStateUiBuilder()
     }">
 
       <BuilderCanvas>
-        <Components v-if="isPreview == true" :data="data" />
-        <div v-else class="rootBuilder">
-          <ComponentsEditable :data="data" />
-        </div>
+        <!-- <Components v-if="isPreview == true" :data="data" />
+          <div v-else class="rootBuilder"> -->
+        <ComponentsEditor :data="data" />
+        <!-- </div> -->
       </BuilderCanvas>
       <BuilderToolsAddElements />
       <BuilderToolsStylesCodeEditor />

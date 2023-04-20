@@ -10,14 +10,7 @@ const initial = [
     elKind: 'div',
     content: 'root',
     elId: '',
-    classes: {
-      xs: 'thisRoot p-2 bg-white h-full w-full relative pb-100px',
-      sm: '',
-      md: '',
-      lg: '',
-      xl: '',
-      xxl: '',
-    },
+    classes: 'thisRoot p-2 bg-white h-full w-full relative pb-100px',
     css: '',
     children: [
       {
@@ -29,14 +22,8 @@ const initial = [
         elKind: 'div',
         content: 'section',
         elId: '',
-        classes: {
-          xs: 'bg-green-500 p-2 min-h-[100px] min-w-[300px] w-full',
-          sm: '',
-          md: '',
-          lg: '',
-          xl: '',
-          xxl: '',
-        },
+        classes:
+          'bg-green-500 sm:bg-blue-500 md:bg-yellow-500 lg:bg-red-500 xl:bg-black p-2 min-h-[100px] min-w-[300px] w-full',
         css: '',
         children: [],
       },
@@ -49,14 +36,7 @@ const initial = [
         elKind: 'section',
         content: 'section',
         elId: '',
-        classes: {
-          xs: 'bg-red-500 p-2 min-h-[100px] min-w-[300px] w-full',
-          sm: '',
-          md: '',
-          lg: '',
-          xl: '',
-          xxl: '',
-        },
+        classes: 'bg-red-500 p-2 min-h-[100px] min-w-[300px] w-full',
         css: '',
         children: [
           {
@@ -68,14 +48,7 @@ const initial = [
             elKind: 'div',
             content: 'section',
             elId: '',
-            classes: {
-              xs: 'bg-yellow-500 p-2 min-h-[100px] min-w-[300px] w-full',
-              sm: '',
-              md: '',
-              lg: '',
-              xl: '',
-              xxl: '',
-            },
+            classes: 'bg-yellow-500 p-2 min-h-[100px] min-w-[300px] w-full',
             css: '',
             children: [],
           },
@@ -90,14 +63,8 @@ const initial = [
         elKind: 'div',
         content: 'section',
         elId: '',
-        classes: {
-          xs: 'bg-blue-500 p-2 min-h-[100px] min-w-[300px] w-full',
-          sm: '',
-          md: '',
-          lg: '',
-          xl: '',
-          xxl: '',
-        },
+        classes: 'bg-blue-500 p-2 min-h-[100px] min-w-[300px] w-full',
+
         css: '',
         children: [],
       },
@@ -110,14 +77,8 @@ const initial = [
         elKind: 'p',
         content: 'Hello World',
         elId: '5',
-        classes: {
-          xs: 'text-3xl text-red-500',
-          sm: '',
-          md: '',
-          lg: '',
-          xl: '',
-          xxl: '',
-        },
+        classes: 'text-3xl text-red-500',
+
         css: '',
         children: [],
       },
@@ -130,14 +91,8 @@ const initial = [
         elKind: 'h1',
         content: 'untuk konten',
         elId: '6',
-        classes: {
-          xs: 'text-3xl text-blue-500',
-          sm: '',
-          md: '',
-          lg: '',
-          xl: '',
-          xxl: '',
-        },
+        classes: 'text-3xl text-blue-500',
+
         css: '',
         children: [],
       },
@@ -155,14 +110,7 @@ const sectionData = [
     elKind: 'section',
     content: 'section',
     elId: '',
-    classes: {
-      xs: 'bg-green-500 min-h-[100px] min-w-[300px] w-full',
-      sm: '',
-      md: '',
-      lg: '',
-      xl: '',
-      xxl: '',
-    },
+    classes: 'bg-green-500 min-h-[100px] min-w-[300px] w-full',
     css: '',
     children: [],
   },
@@ -175,14 +123,7 @@ const sectionData = [
     elKind: 'div',
     content: 'container',
     elId: '',
-    classes: {
-      xs: 'container mx-auto bg-cyan min-h-[100px] min-w-[300px]',
-      sm: '',
-      md: '',
-      lg: '',
-      xl: '',
-      xxl: '',
-    },
+    classes: 'container mx-auto bg-cyan min-h-[100px] min-w-[300px]',
     css: '',
     children: [],
   },
@@ -195,14 +136,7 @@ const sectionData = [
     elKind: 'div',
     content: 'flex',
     elId: '',
-    classes: {
-      xs: 'flex bg-red min-h-[100px] min-w-[300px] w-full',
-      sm: '',
-      md: '',
-      lg: '',
-      xl: '',
-      xxl: '',
-    },
+    classes: 'flex bg-red min-h-[100px] min-w-[300px] w-full',
     css: '',
     children: [],
   },
@@ -215,27 +149,12 @@ const sectionData = [
     elKind: 'div',
     content: 'grid',
     elId: '',
-    classes: {
-      xs: 'grid bg-yellow min-h-[100px] min-w-[300px] w-full',
-      sm: '',
-      md: '',
-      lg: '',
-      xl: '',
-      xxl: '',
-    },
+    classes: 'grid bg-yellow min-h-[100px] min-w-[300px] w-full',
     css: '',
     children: [],
   },
 ];
 
-type Classes = {
-  xs: string;
-  sm: string;
-  md: string;
-  lg: string;
-  xl: string;
-  xxl: string;
-};
 type ElementDataType = {
   id: any;
   elName: string;
@@ -245,19 +164,21 @@ type ElementDataType = {
   elKind: string;
   content: string;
   elId: string;
-  classes: Classes;
+  classes: string;
   css: any;
   children: ElementDataType[];
 };
 
 export const useStore = () => {
+  const { display } = useStateUiBuilder();
+
   const data = useState<ElementDataType[]>('data', () => initial);
   const addElementData = useState<ElementDataType[]>(
     'element-data',
     () => sectionData
   );
 
-  const id = useState('id', () => '');
+  const id = useState('id', () => '1');
   const idFromDrag = useState('id-from-drag', () => '');
   const currentIndex = useState('current-index', () => 0);
   const currentParentId = useState('current-parent-id', () => '');
@@ -267,9 +188,10 @@ export const useStore = () => {
   const currentData = useState<any>('current-data', () => null);
   const currentParentData = useState<any>('current-parent-data', () => null);
   const contentLen = useState<any>('contentLen', () => 0);
-  const textContent = useState('textContent', () => '');
-  const fontContent = useState('fontContent', () => '30px Arial');
+  const textContent = useState<any>('textContent', () => '');
+  const fontContent = useState<any>('fontContent', () => '30px Arial');
   const textWidth = useState<any>('textWidth', () => 0);
+  const displaySize = useState('display-size', () => 0);
 
   const getElementById = (elementId: any, data: ElementDataType[]) => {
     let resultElement: ElementDataType | any = {};
@@ -298,8 +220,6 @@ export const useStore = () => {
       getElementById(id, addElementData.value)
     );
   };
-
-  const displaySize = useState('display-size', () => 0);
 
   const xs = computed(() => displaySize.value < Breakpoints.sm);
   const sm = computed(
@@ -338,16 +258,55 @@ export const useStore = () => {
     });
   };
 
-  const dataClasses = (item: any) => {
-    return xl.value
-      ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md} ${item?.classes?.lg} ${item?.classes?.xl}`
-      : lg.value
-      ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md} ${item?.classes?.lg}`
-      : md.value
-      ? `${item?.classes?.xs} ${item?.classes?.sm} ${item?.classes?.md}`
-      : sm.value
-      ? `${item?.classes?.xs} ${item?.classes?.sm}`
-      : item?.classes?.xs;
+  const filterClasses = (classes: any, filtered: any) => {
+    return classes
+      .replaceAll('\n', ' ')
+      .split(' ')
+      .filter((e: any) => e.startsWith(filtered))
+      .join(' ');
+  };
+
+  const baseClasses = (classes: any) => {
+    return classes
+      .replaceAll('\n', ' ')
+      .split(' ')
+      .filter(
+        (e: any) =>
+          !e.startsWith('sm:') &&
+          !e.startsWith('md:') &&
+          !e.startsWith('lg:') &&
+          !e.startsWith('xl:')
+      )
+      .join(' ');
+  };
+  const dataClasses = (classes: any) => {
+    if (xl.value) {
+      return `${baseClasses(classes)} ${filterClasses(
+        classes,
+        'sm:'
+      )} ${filterClasses(classes, 'md:')} ${filterClasses(
+        classes,
+        'lg:'
+      )} ${filterClasses(classes, 'xl:')}`;
+    }
+    if (lg.value) {
+      return `${baseClasses(classes)} ${filterClasses(
+        classes,
+        'sm:'
+      )} ${filterClasses(classes, 'md:')} ${filterClasses(classes, 'lg:')}`;
+    }
+    if (md.value) {
+      return `${baseClasses(classes)} ${filterClasses(
+        classes,
+        'sm:'
+      )} ${filterClasses(classes, 'md:')}`;
+    }
+    if (sm.value) {
+      return `${baseClasses(classes)} ${filterClasses(classes, 'sm:')}`;
+    }
+    if (xs.value) {
+      return `${baseClasses(classes)}`;
+    }
   };
 
   function getTextWidth(text: any, font: any) {
@@ -358,6 +317,10 @@ export const useStore = () => {
       context.font = font;
     }
     const width = context?.measureText(text).width;
+
+    textContent.value = text;
+    fontContent.value = font;
+    textWidth.value = width;
     // return the width of the text
     return width;
   }
@@ -385,6 +348,8 @@ export const useStore = () => {
     handleDelete,
     handleDuplicate,
     dataClasses,
+    filterClasses,
+    baseClasses,
     dataById,
     displaySize,
     xs,

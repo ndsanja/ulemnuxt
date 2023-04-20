@@ -135,12 +135,12 @@ export const useDragAndDrop = () => {
     if (item.id == 'root') return;
 
     longPress.value = setTimeout(function () {
+      isDragStart.value = true;
+      isDragAddNew.value = isAddNew;
+
       root.value = document.querySelector('.rootBuilder');
       drag.value.ref = document.querySelector(`[data-itemId="${item.id}"]`);
       drag.value.itemId = item.id;
-
-      isDragStart.value = true;
-      isDragAddNew.value = isAddNew;
 
       //set item data
       drag.value.item = item;
@@ -148,9 +148,9 @@ export const useDragAndDrop = () => {
       drag.value.itemIndex = Number(index);
       drag.value.itemIndexOld = Number(index);
       drag.value.parentId =
-        drag.value.ref.parentNode.attributes['data-itemId'].value;
+        drag.value.ref.parentNode.attributes?.['data-itemId']?.value;
       drag.value.parentIndex =
-        drag.value.ref.parentNode.attributes['data-index'].value;
+        drag.value.ref.parentNode.attributes?.['data-index']?.value;
       drag.value.parent = getDataById(drag.value.parentId).value;
     }, delay);
   };
@@ -212,7 +212,7 @@ export const useDragAndDrop = () => {
       // filtered childNode by Id
       let filteredItems = items.filter((e: any) => {
         if (e.hasAttribute('data-itemId')) {
-          return e.attributes['data-itemId'].value != drag.value.itemId;
+          return e.attributes?.['data-itemId']?.value != drag.value.itemId;
         }
       });
 
@@ -233,13 +233,14 @@ export const useDragAndDrop = () => {
             isDraging.value == true
           ) {
             overlapItemId.value =
-              dropItem.value.attributes['data-itemId'].value;
+              dropItem.value.attributes?.['data-itemId']?.value;
             drop.value.itemIndex =
-              dropItem.value.attributes['data-index'].value;
+              dropItem.value.attributes?.['data-index']?.value;
             dragOver.value.itemId =
-              dropItem.value.attributes['data-itemId'].value;
-            dragOver.value.item = dropItem.value.attributes['data-item'].value;
-            drop.value.parentId = dropItem.value.parentNode.classList[0];
+              dropItem.value.attributes?.['data-itemId']?.value;
+            dragOver.value.item =
+              dropItem.value.attributes?.['data-item']?.value;
+            drop.value.parentId = dropItem.value.parentNode?.classList?.[0];
 
             if (e.clientX) {
               if (overlapItemId.value == itemId) {
@@ -467,6 +468,10 @@ export const useDragAndDrop = () => {
     }, delay);
   };
 
+  const handleDelete = (index: any) => {
+    getDataById(drag.value.parentId).value.children.splice(Number(index), 1);
+  };
+
   return {
     isOnDrag,
     isDisabledDragAndDrop,
@@ -487,5 +492,6 @@ export const useDragAndDrop = () => {
     useOnDragEnd,
     useOnDraging,
     onDragStart,
+    handleDelete,
   };
 };

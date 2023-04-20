@@ -85,11 +85,11 @@ const { useOnDragEnd, useOnDraging, onDragStart } = useDragAndDrop()
         <div>Slider</div>
         <div>Tab</div>
         <div>Back to Top</div>
-      <div>Map</div>
-      <div>Faceboox</div>
-      <div>Twitter</div>
-      <div>WA</div>
+        <div>Map</div>
+        <div>Faceboox</div>
+        <div>Twitter</div>
+        <div>WA</div>
+      </div>
     </div>
   </div>
-
-</div></template>
+</template>

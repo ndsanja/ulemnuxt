@@ -1,7 +1,6 @@
 <script setup lang="ts">
-
-const { id, hoverId, activeId, dataClasses, textWidth, textContent, fontContent, getTextWidth } = useStore()
-const { drag, useOnDragStart, useOnDragEnd, useOnDraging, isDraging, overlapItemId, isTouch, isDropAfter, isDropBefore, isDropInside, handleDelete, isDragStart } = useDragAndDrop()
+const { id, hoverId, activeId, handleDelete, dataClasses, textWidth, textContent, fontContent, getTextWidth } = useStore()
+const { drag, useOnDragStart, useOnDragEnd, useOnDraging, isDraging, overlapItemId, isTouch, isDropAfter, isDropBefore, isDropInside } = useDragAndDrop()
 
 
 interface Props {
@@ -17,31 +16,16 @@ const handleCLick = (e: any, elId: any) => {
   activeId.value = elId
   window.blur()
 
-  let activeEl = document.querySelector(`[data-itemId="${activeId.value}"]`)
-  // @ts-ignore
-  drag.value.parentId = activeEl?.parentNode?.attributes?.['data-itemId']?.value;
-
-  toogleParent.value = false
 
   if (elId == 'root') {
     isDraging.value = false
   }
 }
-
-
 const handleTouch = (e: any, elId: any) => {
   id.value = elId
   activeId.value = elId
   isTouch.value = true
   window.blur()
-
-  let activeEl = document.querySelector(`[data-itemId="${activeId.value}"]`)
-
-  // @ts-ignore
-  drag.value.parentId = activeEl?.parentNode?.attributes?.['data-itemId']?.value;
-
-  toogleParent.value = false
-
 
   if (elId == 'root') {
     isDraging.value = false
@@ -54,66 +38,34 @@ const handleMouseOver = (e: any, itemId: any) => {
 
 }
 
-const toogleParent = ref(false)
-const parentId = ref<any>('')
-const grantParentId = ref<any>('')
-const grandGrandParentId = ref<any>('')
-const parentElName = ref<any>('')
-const grantParentElName = ref<any>('')
-const grandGrandParentElName = ref<any>('')
-
-const handleClickElName = () => {
+const handleClickElName = (e: any) => {
   let activeEl = document.querySelector(`[data-itemId="${activeId.value}"]`)
-
   let parrent = activeEl?.parentNode
   let granParrent = parrent?.parentNode
   let granGrandParrent = granParrent?.parentNode
 
   // @ts-ignore
-  parentId.value = parrent?.attributes?.['data-itemId']?.value
+  console.log(parrent?.attributes['data-itemId']?.value)
+  // @ts-ignore
+  console.log(granParrent?.attributes['data-itemId']?.value)
+  // @ts-ignore
+  console.log(granGrandParrent?.attributes['data-itemId']?.value)
 
   // @ts-ignore
-  grantParentId.value = granParrent?.attributes?.['data-itemId']?.value
-
+  console.log(parrent?.attributes['data-itemName']?.value)
   // @ts-ignore
-  grandGrandParentId.value = granGrandParrent?.attributes?.['data-itemId']?.value
-
+  console.log(granParrent?.attributes['data-itemName']?.value)
   // @ts-ignore
-  parentElName.value = parrent?.attributes?.['data-itemName']?.value
-
-  // @ts-ignore
-  grantParentElName.value = granParrent?.attributes?.['data-itemName']?.value
-
-  // @ts-ignore
-  grandGrandParentElName.value = granGrandParrent?.attributes?.['data-itemName']?.value
-
-  toogleParent.value = !toogleParent.value
+  console.log(granGrandParrent?.attributes['data-itemName']?.value)
 }
 
-const handleToParent = (parentId: any) => {
-  activeId.value = parentId
-  id.value = parentId
-
-  let activeEl = document.querySelector(`[data-itemId="${parentId}"]`)
-  // @ts-ignore
-  drag.value.parentId = activeEl?.parentNode?.attributes?.['data-itemId']?.value;
-
-
-  toogleParent.value = false
-}
-
-watchEffect(() => {
-  textContent.value
-  fontContent.value
-  textWidth.value
-})
-
-const testTouch = (e: any) => {
-  console.log(e);
-
-}
-
+// watchEffect(() => {
+//   textContent.value
+//   fontContent.value
+//   textWidth.value
+// })
 </script>
+
 
 <template>
   <ElementEditable v-for="(item, index) in props.data" :key="item.id" :dataItemProps="item" :data-itemId="item.id"
@@ -122,22 +74,18 @@ const testTouch = (e: any) => {
     @touchstart.self.passive="handleTouch($event, item.id)"
     @mousedown.self.prevent="useOnDragStart($event, item, index, false, 300)"
     @mousemove.self.prevent="useOnDraging($event, item.id)" @mouseup.self.prevent="useOnDragEnd"
-    :class="`${item.id} ${dataClasses(item.classes)} ${hoverId == item.id && `hover:tw-outline hover:tw-outline-offset-1 hover:tw-outline-2 hover:tw-outline-green-500 tw-relative tw-text-black`} ${activeId == item.
-      id && `tw-outline tw-outline-offset-1 tw-outline-2 tw-outline-green-500 tw-relative tw-text-black`
-      } ${overlapItemId == item.id && 'dropTarget tw-text-black'} ${drag.itemId == item.id && isDragStart ? 'dragItem' : ''} ${overlapItemId == item.id && isDropBefore ? 'tw-mt-[12px]' : ''} ${overlapItemId == item.id && isDropAfter ? 'tw-mb-[12px]' : ''}`"
+    :class="`${dataClasses(item?.classes)}`"
     :style="item.elKind == 'p' || item.elKind == 'h1' || item.elKind == 'h2' || item.elKind == 'h3' || item.elKind == 'h4' || item.elKind == 'h5' || item.elKind == 'h6' ? `width: calc(${getTextWidth(item.content, '30px Arial')}px + 2ch); max-width: 100% ; min-width: 1ch` : ''">
 
-    <!-- Active toots Handle Start -->
     <div v-show="activeId == item.id"
       style="position: absolute; top: -21px; left: 0; z-index: 40; min-width: 24px; height: 20px; padding: 0 4px; background-color: #22c55e; border: 1px solid white; font-size: 11px; display: flex; align-items: center; justify-content: start; gap: 4px; border-top-left-radius: 4px; border-top-right-radius: 4px; overflow: hidden">
 
-      <div @click="handleClickElName" class="tw-flex tw-items-center tw-justify-center tw-cursor-pointer">
-        <p>{{ item.elName }}</p>
-      </div>
+      <p @click.self="handleClickElName" style="width: 100%;" class="tw-cursor-pointer">{{ item.elName }}</p>
 
-      <div @click="handleDelete(index)"
+      <div
         style="display: flex; align-items: center; justify-content: center; border-left: 1px white solid; padding-left: 4px;">
-        <Icon name="fluent:settings-24-regular" style="font-size: 16px; cursor: pointer;" />
+        <Icon name="fluent:settings-24-regular" style="font-size: 16px; cursor: pointer;"
+          @click.self="handleDelete(index)" />
       </div>
 
       <div @touchstart.stop.prevent="useOnDragStart($event, item, index, false, 300)"
@@ -145,29 +93,12 @@ const testTouch = (e: any) => {
         @mousedown.stop.prevent="useOnDragStart($event, item, index, false, 300)"
         @mousemove.self.prevent="useOnDraging($event, item.id)" @mouseup.self.prevent="useOnDragEnd"
         style=" display: flex; align-items: center; justify-content: center; border-left: 1px white solid; padding-left: 4px;">
-        <Icon name="fluent:arrow-move-24-regular" style="font-size: 16px; cursor: move;" />
+        <Icon name="fluent:arrow-move-24-regular" style="font-size: 16px; cursor: move;"
+          @click.self="handleDelete(index)" />
       </div>
-
     </div>
 
-    <!-- Get Parent Element Start -->
-    <div @click="handleToParent(parentId)" v-if="(toogleParent && activeId == item.id) && parentId"
-      class="tw-cursor-pointer tw-flex tw-items-center tw-justify-center tw-absolute -tw-top-[40px] tw-left-0 tw-min-w-[24px] tw-px-1 tw-text-[11px] tw-h-[20px] tw-bg-green-500 tw-border tw-border-white">
-      <p> {{ parentElName }}</p>
-    </div>
-    <div @click="handleToParent(grantParentId)" v-if="(toogleParent && activeId == item.id) && grantParentId"
-      class="tw-cursor-pointer tw-flex tw-items-center tw-justify-center tw-absolute -tw-top-[60px] tw-left-0 tw-min-w-[24px] tw-px-1 tw-text-[11px] tw-h-[20px] tw-bg-green-500 tw-border tw-border-white">
-      <p> {{ grantParentElName }}</p>
-    </div>
-    <div @click="handleToParent(grandGrandParentId)" v-if="(toogleParent && activeId == item.id) && grandGrandParentId"
-      class="tw-cursor-pointer tw-flex tw-items-center tw-justify-center tw-absolute -tw-top-[80px] tw-left-0 tw-min-w-[24px] tw-px-1 tw-text-[11px] tw-h-[20px] tw-bg-green-500 tw-border tw-border-white">
-      <p> {{ grandGrandParentElName }}</p>
-    </div>
-    <!-- Get Parent Element End -->
-    <!-- Active toots Handle Start -->
-
-
-    <div v-if="hoverId == item.id && activeId != item.id"
+    <div v-if="hoverId == item.id"
       style="position: absolute; top: -21px; left: 0; z-index: 40; min-width: 24px; height: 20px; padding: 0 4px; background-color: transparent; color: #052e16; font-size: 11px; display: flex; align-items: center; justify-content: start; gap: 4px; border-top-left-radius: 4px; border-top-right-radius: 4px; overflow: hidden">
 
       <p style="width: 100%;">{{ item.elName }}</p>
@@ -197,7 +128,7 @@ const testTouch = (e: any) => {
     <div
       :class="{ 'tw-hidden': false, 'tw-block tw-absolute -tw-bottom-[15px] tw-left-0 tw-right-0 tw-h-[3px] tw-bg-blue-700 tw-my-[6px]': overlapItemId == item.id && isDropAfter }">
     </div>
-    <ComponentsEditable :data="item.children" />
+    <ComponentsEditor :data="item.children" />
   </ElementEditable>
 </template>
 
