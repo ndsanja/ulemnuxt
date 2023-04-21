@@ -10,7 +10,7 @@ const initial = [
     elKind: 'div',
     content: 'root',
     elId: '',
-    classes: 'thisRoot p-2 bg-white h-full w-full relative pb-100px',
+    classes: 'thisRoot bg-white h-full w-full relative pb-100px !relative',
     css: '',
     children: [
       {
@@ -23,7 +23,7 @@ const initial = [
         content: 'section',
         elId: '',
         classes:
-          'bg-green-500 sm:bg-blue-500 md:bg-yellow-500 lg:bg-red-500 xl:bg-black p-2 min-h-[100px] min-w-[300px] w-full',
+          'bg-green-500 sm:bg-blue-500 md:bg-yellow-500 lg:bg-red-500 xl:bg-black h-[100px] w-[100px]',
         css: '',
         children: [],
       },
@@ -36,7 +36,7 @@ const initial = [
         elKind: 'section',
         content: 'section',
         elId: '',
-        classes: 'bg-red-500 p-2 min-h-[100px] min-w-[300px] w-full',
+        classes: 'bg-red-500 h-[100px] w-[100px]',
         css: '',
         children: [
           {
@@ -48,7 +48,7 @@ const initial = [
             elKind: 'div',
             content: 'section',
             elId: '',
-            classes: 'bg-yellow-500 p-2 min-h-[100px] min-w-[300px] w-full',
+            classes: 'bg-yellow-500 h-[100px] w-[100px]',
             css: '',
             children: [],
           },
@@ -63,7 +63,7 @@ const initial = [
         elKind: 'div',
         content: 'section',
         elId: '',
-        classes: 'bg-blue-500 p-2 min-h-[100px] min-w-[300px] w-full',
+        classes: 'bg-blue-500 h-[100px] w-[100px]',
 
         css: '',
         children: [],
@@ -110,7 +110,7 @@ const sectionData = [
     elKind: 'section',
     content: 'section',
     elId: '',
-    classes: 'bg-green-500 min-h-[100px] min-w-[300px] w-full',
+    classes: 'bg-green-500 h-[100px] w-[100px]',
     css: '',
     children: [],
   },
@@ -136,7 +136,7 @@ const sectionData = [
     elKind: 'div',
     content: 'flex',
     elId: '',
-    classes: 'flex bg-red min-h-[100px] min-w-[300px] w-full',
+    classes: 'flex bg-red h-[100px] w-[100px]',
     css: '',
     children: [],
   },
@@ -149,7 +149,7 @@ const sectionData = [
     elKind: 'div',
     content: 'grid',
     elId: '',
-    classes: 'grid bg-yellow min-h-[100px] min-w-[300px] w-full',
+    classes: 'grid bg-yellow h-[100px] w-[100px]',
     css: '',
     children: [],
   },
