@@ -2,6 +2,7 @@
 import { UseDraggable as Draggable } from '@vueuse/components'
 const { setDisplay, display, isPreview, isFit } = useStateUiBuilder()
 const { dataById, baseClasses, filterClasses, id } = useStore()
+const { editorItemSelectedId } = useEditor()
 
 
 const { width, height } = useWindowSize()

@@ -26,7 +26,11 @@ export const useEditor = () => {
     editorItemSelectedId.value = id;
     editorDragItem.value = e.target;
     editorParentSection.value =
-      editorDragItem.value.attributes['data-item-id'].value;
+      editorDragItem.value.parentNode?.attributes?.['data-item-id']?.value;
+
+    document
+      .querySelector(`[data-item-id="${editorParentSection.value}"]`)
+      ?.classList.add('selected');
   };
 
   const useEditorDragMove = (e: any) => {
@@ -37,6 +41,15 @@ export const useEditor = () => {
     )
       return;
     editorIsDragging.value = true;
+
+    document
+      .querySelector(`[data-item-id="${editorItemSelectedId.value}"]`)
+      ?.classList.remove('selected');
+
+    document
+      .querySelector(`[data-item-id="${editorItemSelectedId.value}"]`)
+      ?.classList.remove('hovered');
+
     // @ts-ignore
     $(function () {
       // // @ts-ignore

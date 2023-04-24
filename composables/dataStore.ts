@@ -172,6 +172,7 @@ type ElementDataType = {
 
 export const useStore = () => {
   const { display } = useStateUiBuilder();
+  const { editorItemSelectedId } = useEditor();
 
   const data = useState<ElementDataType[]>('data', () => initial);
   const addElementData = useState<ElementDataType[]>(
@@ -208,7 +209,7 @@ export const useStore = () => {
   };
 
   const dataById = computed<ElementDataType | any>(() =>
-    getElementById(id.value, data.value)
+    getElementById(editorItemSelectedId.value, data.value)
   );
 
   const getDataById = (id: any) => {
