@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 const { dataClasses } = useStore()
-const { editorIsDragStart, editorIsDragging, editorIsDragEnd, editorIsDragOver, useEditorDragStart, useEditorDragMove, useEditorDragEnd, editorItemHoverId, editorItemSelectedId, editorOrderedSection, editorGettDataById } = useEditor()
+const { editorIsDragStart, editorIsDragging, editorIsDragEnd, editorIsDragOver, useEditorDragStart, useEditorDragMove, useEditorDragEnd, editorItemHoverId, editorItemSelectedId, editorOrderedSection, editorGettDataById, editorAddSection, editorDeleteSection, editorDuplicateSection } = useEditor()
 
 interface Props {
   data: any
@@ -31,24 +31,41 @@ const handleMouseOver = (e: any, id: any) => {
     <ComponentsEditor :data="item.children" />
 
     <div :class="{ 'hidden': true, 'flex': item.elKind == 'section' && editorItemSelectedId == item.id }"
-      class="tw-space-x-2 tw-px-2 tw-items-center tw-justify-center tw-absolute tw-top-[20px] tw-right-[20px] tw-bg-white tw-w-[100px] tw-h-[50px] tw-rounded-lg tw-border tw-border-black">
+      class="tw-space-x-2 tw-px-2 tw-items-center tw-justify-center tw-absolute tw-top-[10px] tw-right-[10px] tw-bg-white tw-min-w-[120px] tw-h-[50px] tw-rounded-lg tw-border tw-border-black">
       <button @click.prevent="editorOrderedSection(index, 'before')" class="tw-cursor-pointer"
         :class="{ 'tw-opacity-40 tw-cursor-not-allowed': index == 0 }" :disabled="index == 0">
-        <Icon name="fluent:chevron-up-24-regular" class="text-[28px]" />
+        <Icon name="fluent:chevron-up-24-regular" class="tw-text-[24px]" />
       </button>
       <button @click.prevent="editorOrderedSection(index, 'after')" class="tw-cursor-pointer"
         :class="{ 'tw-opacity-40 tw-cursor-not-allowed': editorGettDataById('root').value.children.length - 1 == index }"
         :disabled="editorGettDataById('root').value.children.length - 1 == index">
-        <Icon name="fluent:chevron-down-24-regular" class="text-[28px]" />
+        <Icon name="fluent:chevron-down-24-regular" class="tw-text-[24px]" />
+      </button>
+      <button @click.prevent="editorDuplicateSection(index)" class="tw-cursor-pointer">
+        <Icon name="fluent:copy-add-24-regular" class="tw-text-[24px]" />
+      </button>
+      <button @click.prevent="editorDeleteSection(index)" class="tw-cursor-pointer">
+        <Icon name="fluent:delete-24-regular" class="tw-text-[24px] tw-text-red-500" />
       </button>
     </div>
+
+    <button @click="editorAddSection(index, 'before')"
+      :class="{ 'hidden': true, 'flex': item.elKind == 'section' && editorItemSelectedId == item.id }"
+      class="tw-z-30 tw-bg-blue-500 tw-text-white tw-px-3 tw-py-1 tw-rounded-full tw-border tw-border-black tw-absolute -tw-top-4 tw-left-1/2 -tw-translate-x-1/2 text-sm font-semibol">
+      Add Section
+    </button>
+    <button @click="editorAddSection(index, 'after')"
+      :class="{ 'hidden': true, 'flex': item.elKind == 'section' && editorItemSelectedId == item.id }"
+      class="tw-z-30 tw-bg-blue-500 tw-text-white tw-px-3 tw-py-1 tw-rounded-full tw-border tw-border-black tw-absolute -tw-bottom-4 tw-left-1/2 -tw-translate-x-1/2 text-sm font-semibol">
+      Add Section
+    </button>
+
   </ElementEditable>
 </template>
 
 <style scoped>
 .selected {
   outline: 1px blue solid;
-  outline-offset: 1px;
 }
 
 .dragging {
@@ -59,6 +76,5 @@ const handleMouseOver = (e: any, id: any) => {
 
 .hovered {
   outline: 1px blue solid;
-  outline-offset: 1px;
 }
 </style>

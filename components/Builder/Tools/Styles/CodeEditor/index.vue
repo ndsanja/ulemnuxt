@@ -2,7 +2,7 @@
 import { UseDraggable as Draggable } from '@vueuse/components'
 const { setDisplay, display, isPreview, isFit } = useStateUiBuilder()
 const { dataById, baseClasses, filterClasses, id } = useStore()
-const { editorItemSelectedId } = useEditor()
+const { editorItemSelectedId, editorItemById } = useEditor()
 
 
 const { width, height } = useWindowSize()
@@ -40,9 +40,9 @@ const positionY = ref()
       <div class="tw-flex tw-items-center tw-justify-between tw-w-full">
         <p class="tw-flex-1 tw-flex tw-items-center tw-space-x-1 tw-text-[11px]">
           <Icon name="ci:main-component" class="tw-text-[16px]" />
-          <span v-if="dataById.id">
+          <span v-if="editorItemById.id">
             {{
-              dataById.elName
+              editorItemById.elName
             }}
           </span>
           <span v-else>No item Selected</span>
@@ -64,9 +64,9 @@ const positionY = ref()
           <p :ondrag="positionY = y" ref="handle" :class="{ 'tw-cursor-move': true }"
             class="tw-flex-1 tw-flex tw-items-center tw-space-x-1 tw-text-[11px]">
             <Icon name="ci:main-component" class="tw-text-[16px]" />
-            <span v-if="dataById.id">
+            <span v-if="editorItemById.id">
               {{
-                dataById.elName
+                editorItemById.elName
               }}
             </span>
             <span v-else>No item Selected</span>
@@ -102,11 +102,11 @@ const positionY = ref()
         </div>
       </template>
       <div :class="{ 'tw-bg-slate-700 tw-min-h-full': true }">
-        <template v-if="dataById.classes">
+        <template v-if="editorItemById.classes">
           <textarea :spellcheck="false" v-if="styleBreakpoint == 'xs'" :class="{ 'tw-min-h-[100px]': true }"
             placeholder="No style write here..."
             class="tw-overflow-hidden tw-w-full tw-p-1 tw-pt-2 tw-pb-3 tw-mt-1 tw-mb-2 tw-bg-slate-900 tw-text-slate-200 tw-border tw-border-slate-500 tw-rounded-lg tw-text-sm tw-font-mono"
-            v-model="dataById.classes"></textarea>
+            v-model="editorItemById.classes"></textarea>
         </template>
       </div>
     </BuilderToolsStylesPanelEditor>

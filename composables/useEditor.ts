@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 type ElementDataType = {
   id: any;
   elName: string;
@@ -134,6 +136,56 @@ export const useEditor = () => {
     }
   };
 
+  const editorAddSection = (index: any, position: any) => {
+    let section = {
+      id: '1',
+      elName: 'section 1',
+      isRoot: false,
+      parentId: '',
+      currentIndex: null,
+      elKind: 'section',
+      content: 'section',
+      elId: '',
+      classes: 'h-[300px] w-[100%] relative',
+      css: '',
+      children: [],
+    };
+    if (position == 'before') {
+      editorGettDataById('root').value.children.splice(Number(index), 0, {
+        ...section,
+        id: uuidv4(),
+      });
+    }
+    if (position == 'after') {
+      editorGettDataById('root').value.children.splice(Number(index) + 1, 0, {
+        ...section,
+        id: uuidv4(),
+      });
+    }
+  };
+
+  const editorDeleteSection = (index: any) => {
+    editorGettDataById('root').value.children.splice(Number(index), 1);
+  };
+
+  const changeIdObj = (obj: any, newId: any) => {
+    obj.id = newId;
+    obj.children.forEach((item: any) => {
+      changeIdObj(item, newId);
+    });
+  };
+
+  const editorDuplicateSection = (index: any) => {
+    let duplicated = JSON.parse(
+      JSON.stringify(editorGettDataById(editorItemSelectedId.value).value)
+    );
+
+    editorGettDataById('root').value.children.splice(Number(index) + 1, 0, {
+      ...duplicated,
+      id: uuidv4(),
+    });
+  };
+
   return {
     editorIsDragStart,
     editorIsDragging,
@@ -147,6 +199,10 @@ export const useEditor = () => {
     editorDragItem,
     editorDropItem,
     editorDragOverItem,
+    editorItemById,
+    editorDuplicateSection,
+    editorDeleteSection,
+    editorAddSection,
     editorOrderedSection,
     editorGettDataById,
     useEditorDragStart,
