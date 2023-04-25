@@ -97,6 +97,34 @@ const initial = [
           },
         ],
       },
+      {
+        id: '1423432',
+        elName: 'section 1',
+        isRoot: false,
+        parentId: '',
+        currentIndex: null,
+        elKind: 'section',
+        content: 'section',
+        elId: '',
+        classes: 'h-[300px] w-[100%] relative',
+        css: '',
+        children: [
+          {
+            id: '423436',
+            elName: 'heading 1',
+            isRoot: false,
+            parentId: '',
+            currentIndex: null,
+            elKind: 'div',
+            content: 'untuk konten',
+            elId: '6',
+            classes: 'bg-red h-[100px] w-[100px] absolute',
+
+            css: '',
+            children: [],
+          },
+        ],
+      },
     ],
   },
 ];
@@ -172,7 +200,7 @@ type ElementDataType = {
 
 export const useStore = () => {
   const { display } = useStateUiBuilder();
-  const { editorItemSelectedId } = useEditor();
+  // const { editorItemSelectedId } = useEditor();
 
   const data = useState<ElementDataType[]>('data', () => initial);
   const addElementData = useState<ElementDataType[]>(
@@ -209,7 +237,7 @@ export const useStore = () => {
   };
 
   const dataById = computed<ElementDataType | any>(() =>
-    getElementById(editorItemSelectedId.value, data.value)
+    getElementById(id.value, data.value)
   );
 
   const getDataById = (id: any) => {

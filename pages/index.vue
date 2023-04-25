@@ -5,7 +5,7 @@ const { data } = useStore()
 
 <template>
   <div class="un-cloak">
-    <NuxtLink to="/builder">Builder</NuxtLink>
+    <NuxtLink to="/editor">Editor</NuxtLink>
     <Components :data="data" />
   </div>
 </template>

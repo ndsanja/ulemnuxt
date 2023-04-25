@@ -1,4 +1,20 @@
+type ElementDataType = {
+  id: any;
+  elName: string;
+  isRoot: boolean;
+  parentId: any;
+  currentIndex: any;
+  elKind: string;
+  content: string;
+  elId: string;
+  classes: string;
+  css: any;
+  children: ElementDataType[];
+};
+
 export const useEditor = () => {
+  const { data } = useStore();
+
   const editorIsDragStart = useState('is-drag-start', () => false);
   const editorIsDragging = useState('is-dragging', () => false);
   const editorIsDragEnd = useState('is-drag-end', () => false);
@@ -68,6 +84,19 @@ export const useEditor = () => {
     });
   };
 
+  const getElementById = (elementId: any, data: ElementDataType[]) => {
+    let resultElement: ElementDataType | any = {};
+
+    data.some(function iter(element: ElementDataType) {
+      if (element.id == elementId) {
+        resultElement = element;
+        return true;
+      }
+      return Array.isArray(element.children) && element.children.some(iter);
+    });
+    return resultElement;
+  };
+
   const useEditorDragEnd = (e: any) => {
     editorDropItem.value = e.target;
 
@@ -76,6 +105,33 @@ export const useEditor = () => {
     editorIsDragEnd.value = true;
     editorIsDragOver.value = false;
     editorIsDragCancel.value = false;
+  };
+
+  const editorItemById = computed<ElementDataType | any>(() =>
+    getElementById(editorItemSelectedId.value, data.value)
+  );
+
+  const editorGettDataById = (id: any) => {
+    return computed<ElementDataType | any>(() =>
+      getElementById(id, data.value)
+    );
+  };
+
+  const editorOrderedSection = (index: any, position: any) => {
+    let temp = JSON.parse(
+      JSON.stringify(editorGettDataById(editorItemActiveId.value).value)
+    );
+
+    let parentSection = editorGettDataById('root').value;
+
+    if (position == 'after') {
+      parentSection.children.splice(Number(index), 1);
+      parentSection.children.splice(Number(index) + 1, 0, { ...temp });
+    }
+    if (position == 'before') {
+      parentSection.children.splice(Number(index), 1);
+      parentSection.children.splice(Number(index) - 1, 0, { ...temp });
+    }
   };
 
   return {
@@ -91,6 +147,8 @@ export const useEditor = () => {
     editorDragItem,
     editorDropItem,
     editorDragOverItem,
+    editorOrderedSection,
+    editorGettDataById,
     useEditorDragStart,
     useEditorDragMove,
     useEditorDragEnd,
