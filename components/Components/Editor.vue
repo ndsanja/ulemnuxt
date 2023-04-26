@@ -31,33 +31,39 @@ const handleMouseOver = (e: any, id: any) => {
     <ComponentsEditor :data="item.children" />
 
     <div :class="{ 'hidden': true, 'flex': item.elKind == 'section' && editorItemSelectedId == item.id }"
-      class="tw-space-x-2 tw-px-2 tw-items-center tw-justify-center tw-absolute tw-top-[10px] tw-right-[10px] tw-bg-white tw-min-w-[120px] tw-h-[50px] tw-rounded-lg tw-border tw-border-black">
-      <button @click.prevent="editorOrderedSection(index, 'before')" class="tw-cursor-pointer"
-        :class="{ 'tw-opacity-40 tw-cursor-not-allowed': index == 0 }" :disabled="index == 0">
-        <Icon name="fluent:chevron-up-24-regular" class="tw-text-[24px]" />
-      </button>
-      <button @click.prevent="editorOrderedSection(index, 'after')" class="tw-cursor-pointer"
-        :class="{ 'tw-opacity-40 tw-cursor-not-allowed': editorGettDataById('root').value.children.length - 1 == index }"
-        :disabled="editorGettDataById('root').value.children.length - 1 == index">
-        <Icon name="fluent:chevron-down-24-regular" class="tw-text-[24px]" />
-      </button>
-      <button @click.prevent="editorDuplicateSection(index)" class="tw-cursor-pointer">
-        <Icon name="fluent:copy-add-24-regular" class="tw-text-[24px]" />
-      </button>
-      <button @click.prevent="editorDeleteSection(index)" class="tw-cursor-pointer">
-        <Icon name="fluent:delete-24-regular" class="tw-text-[24px] tw-text-red-500" />
-      </button>
+      class="tw-flex-col tw-items-center tw-justify-center tw-absolute tw-top-[10px] tw-right-[10px] tw-bg-white tw-rounded-lg tw-shadow-xl border">
+      <div class="tw-flex tw-justify-evenly tw-py-2 border-b w-full tw-cursor-pointer">
+        <Icon name="fluent:edit-24-regular" class="tw-text-[18px]" />
+        <p class="tw-text-sm tw-font-semibold">Edit Section</p>
+      </div>
+      <div class="tw-flex tw-py-2 tw-items-center tw-justify-center tw-space-x-2 tw-px-2">
+        <button @click.prevent="editorOrderedSection(index, 'before')" class="tw-cursor-pointer"
+          :class="{ 'tw-opacity-40 tw-cursor-not-allowed': index == 0 }" :disabled="index == 0">
+          <Icon name="fluent:chevron-up-24-regular" class="tw-text-[24px]" />
+        </button>
+        <button @click.prevent="editorOrderedSection(index, 'after')" class="tw-cursor-pointer"
+          :class="{ 'tw-opacity-40 tw-cursor-not-allowed': editorGettDataById('root').value.children.length - 1 == index }"
+          :disabled="editorGettDataById('root').value.children.length - 1 == index">
+          <Icon name="fluent:chevron-down-24-regular" class="tw-text-[24px]" />
+        </button>
+        <button @click.prevent="editorDuplicateSection(index)" class="tw-cursor-pointer">
+          <Icon name="fluent:copy-add-24-regular" class="tw-text-[24px]" />
+        </button>
+        <button @click.prevent="editorDeleteSection(index)" class="tw-cursor-pointer">
+          <Icon name="fluent:delete-24-regular" class="tw-text-[24px] tw-text-red-500" />
+        </button>
+      </div>
     </div>
 
     <button @click="editorAddSection(index, 'before')"
       :class="{ 'hidden': true, 'flex': item.elKind == 'section' && editorItemSelectedId == item.id }"
-      class="tw-z-30 tw-bg-blue-500 tw-text-white tw-px-3 tw-py-1 tw-rounded-full tw-border tw-border-black tw-absolute -tw-top-4 tw-left-1/2 -tw-translate-x-1/2 text-sm font-semibol">
-      Add Section
+      class="tw-items-center tw-justify-center tw-space-x-2 tw-z-30 tw-bg-blue-500 tw-text-white tw-px-1 tw-py-1 tw-rounded-full tw-border tw-border-black tw-absolute -tw-top-3 tw-left-1/2 -tw-translate-x-1/2 ">
+      <Icon name='fluent:add-24-filled' />
     </button>
     <button @click="editorAddSection(index, 'after')"
       :class="{ 'hidden': true, 'flex': item.elKind == 'section' && editorItemSelectedId == item.id }"
-      class="tw-z-30 tw-bg-blue-500 tw-text-white tw-px-3 tw-py-1 tw-rounded-full tw-border tw-border-black tw-absolute -tw-bottom-4 tw-left-1/2 -tw-translate-x-1/2 text-sm font-semibol">
-      Add Section
+      class="tw-items-center tw-justify-center tw-space-x-2 tw-z-30 tw-bg-blue-500 tw-text-white tw-px-1 tw-py-1 tw-rounded-full tw-border tw-border-black tw-absolute -tw-bottom-3 tw-left-1/2 -tw-translate-x-1/2 ">
+      <Icon name='fluent:add-24-filled' />
     </button>
 
   </ElementEditable>
