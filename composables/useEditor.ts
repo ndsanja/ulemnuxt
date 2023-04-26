@@ -183,6 +183,9 @@ export const useEditor = () => {
     editorGettDataById('root').value.children.splice(Number(index) + 1, 0, {
       ...duplicated,
       id: uuidv4(),
+      children: duplicated.children.map((e: any) => {
+        return { ...e, id: uuidv4() };
+      }),
     });
   };
 
